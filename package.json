@@ -1,0 +1,69 @@
+{
+  "name": "Badger",
+  "version": "0.0.1",
+  "description": "Badger",
+  "scripts": {
+    "prebuild": "rm -rf public",
+    "build": "webpack && cp -R src/html/* src/css public",
+    "eslint": "eslint src"
+  },
+  "author": "Rafal Kozik",
+  "license": "GPL",
+  "devDependencies": {
+    "@google-cloud/firestore": "*",
+    "font-awesome-animation": "*",
+    "vue-template-compiler": "*",
+    "expose-loader": "*",
+    "font-awesome": "*",
+    "style-loader": "*",
+    "webpack-cli": "*",
+    "file-loader": "*",
+    "css-loader": "*",
+    "url-loader": "*",
+    "vue-loader": "*",
+    "bootstrap": "*",
+    "popper.js": "*",
+    "jquery-ui": "*",
+    "vue-cli": "*",
+    "express": "*",
+    "webpack": "*",
+    "jquery": "*",
+    "eslint": "*",
+    "vuex": "*",
+    "vue": "*"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-console": "off",
+      "no-var": "warn",
+      "semi": [
+        "warn",
+        "never"
+      ],
+      "quotes": [
+        "warn",
+        "double"
+      ],
+      "camelcase": [
+        "warn",
+        {
+          "properties": "always"
+        }
+      ],
+      "object-shorthand": [
+        "warn",
+        "methods"
+      ]
+    },
+    "env": {
+      "browser": true,
+      "jquery": true,
+      "es6": true
+    }
+  }
+}

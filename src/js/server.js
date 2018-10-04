@@ -11,22 +11,26 @@ const firestore = new Firestore({
   timestampsInSnapshots: true
 });
 
+var fbtext = "No response"
+
 const document = firestore.collection('users').doc('kCnsrFaQlFB8yAvlS5NM');
 
 document.get().then(doc => {
 	      if (!doc.exists) {
-        console.log('No such document!');
+              fbtext = 'No such document!'
       } else {
-        console.log('Document data:', doc.data());
+              fbtext = doc.data()
       }
 });
-
 /*var sslOptions = {
   key: fs.readFileSync('cert/key.pem'),
   cert: fs.readFileSync('cert/cert.pem'),
   passphrase: 'haselko12'
 };*/
-app.get('/', (req, res) => res.send('Hello World! That was easy!'))
+app.use(express.static('public'))
+app.get('/fb', (req, res) => {
+    res.send('Hello World! ' + fbtext)
+})
 //https.createServer(sslOptions, app).listen(443)*/
 
 
