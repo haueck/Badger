@@ -2,8 +2,10 @@ import vue from "vue"
 import store from "store"
 import "bootstrap/dist/js/bootstrap.min.js"
 import "bootstrap/dist/css/bootstrap.min.css"
-import "font-awesome/css/font-awesome.css"
+import "@fortawesome/fontawesome-free/css/all.min.css"
 import "css/main.css"
+import "css/large.css"
+import "css/small.css"
 
 const broker = new vue()
 
@@ -21,11 +23,23 @@ window.addEventListener("load", () => {
     store: store,
     components: {},
     data() {
-      return {}
+      return {
+          ws: Object
+      }
     },
     mounted() {
+        this.ws = new WebSocket('ws://' + location.host)
+        this.ws.onopen = (event) => {
+            this.ws.send('{ "Message": "GetCard", "CardId": "lAwt435hlP5X69qxqHDW" }');
+        }
+        this.ws.onmessage = (event) => {
+         console.log(event.data);
+        }
       console.log("Mounted")
     },
-    methods: {}
+    methods: {},
+    destroyed() {
+      this.ws.close()
+    }
   })
 })

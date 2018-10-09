@@ -4,17 +4,17 @@
   "description": "Badger",
   "scripts": {
     "prebuild": "rm -rf public",
-    "build": "webpack && cp -R src/html/* src/css public",
+    "build": "./scripts/build.sh",
     "eslint": "eslint src"
   },
   "author": "Rafal Kozik",
   "license": "GPL",
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "*",
     "@google-cloud/firestore": "*",
-    "font-awesome-animation": "*",
     "vue-template-compiler": "*",
+    "html-webpack-plugin": "*",
     "expose-loader": "*",
-    "font-awesome": "*",
     "style-loader": "*",
     "webpack-cli": "*",
     "file-loader": "*",
@@ -30,7 +30,8 @@
     "jquery": "*",
     "eslint": "*",
     "vuex": "*",
-    "vue": "*"
+    "vue": "*",
+    "ws": "*"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",

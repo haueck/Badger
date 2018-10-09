@@ -1,5 +1,6 @@
 let webpack = require("webpack")
 let path = require("path")
+let HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require("vue-loader")
 
 module.exports = {
@@ -8,7 +9,7 @@ module.exports = {
   output: {
     path: __dirname + "/public/js",
     publicPath: "/js/",
-    filename: "bundle.js"
+    filename: "bundle.[contenthash].js"
   },
   module: {
     rules: [
@@ -40,6 +41,9 @@ module.exports = {
       "window.jQuery": "jquery",
       Popper: ["popper.js", "default"]
     }),
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'Caching'
+    })
   ]
 }

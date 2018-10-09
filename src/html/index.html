@@ -1,13 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Badger</title>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="/favicon.ico">
-    <script src="/js/bundle.js"></script>
+    <meta name="author" content="Rafał Kozik">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon" sizes="16x16 24x24 32x32">
+    <link rel="icon" href="/images/favicons/favicon-57.png" type="image/png" sizes="57x57">
+    <link rel="icon" href="/images/favicons/favicon-72.png" type="image/png" sizes="72x72">
+    <link rel="icon" href="/images/favicons/favicon-96.png" type="image/png" sizes="96x96">
+    <link rel="icon" href="/images/favicons/favicon-114.png" type="image/png" sizes="114x114">
+    <link rel="icon" href="/images/favicons/favicon-128.png" type="image/png" sizes="128x128">
+    <link rel="icon" href="/images/favicons/favicon-195.png" type="image/png" sizes="195x195">
+    <script src="/js/bundle.{contenthash}.js"></script>
   </head>
   <body>
+    <div class="topnav">
+      <a href="/" class="topnav-logo">
+        <img src="/images/favicons/favicon-24.png">
+      </a>
+      <a href="/" class="topnav-badger">Badger</a>
+      <div class="topnav-space"></div>
+      <form action="/" class="topnav-search">
+        <input type="hidden" name="Action" value="SimpleSearch">
+        <div class="input-group">
+          <input type="text" name="Search" class="form-control" placeholder="Search..." value="">
+          <div class="input-group-append">
+            <button type="submit" class="input-group-text">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+      <a href="/" class="topnav-account">Rafał</a>
+      <a href="/" class="topnav-logout">
+        <i class="fas fa-sign-out-alt"></i>
+      </a>
+    </div>
+    <div class="sidenav">
+      <div class="sidenav-entry">
+        <div></div>
+        <a href="/learn.html">Learn</a>
+      </div>
+      <div class="sidenav-entry">
+        <div></div>
+        <a href="/add.html">Add a new card</a>
+      </div>
+      <div class="sidenav-entry sidenav-space">
+        <div></div>
+        <a href="/notes.html">Notes</a>
+      </div>
+      <div class="sidenav-entry">
+        <div></div>
+        <a href="/roles.html">Roles</a>
+      </div>
+      <div class="sidenav-entry">
+        <div></div>
+        <a href="/backlog.html">Planning</a>
+      </div>
+      <div class="sidenav-entry sidenav-space">
+        <div></div>
+        <a href="/sprint.html">Ongoing work</a>
+      </div>
+      <div class="sidenav-entry">
+        <div></div>
+        <a href="/learn.html">Revise</a>
+      </div>
+      <div class="sidenav-entry">
+        <div></div>
+        <a href="/add.html">Manage tags</a>
+      </div>
+      <div class="sidenav-entry">
+        <div></div>
+        <a href="/notes.html">Manage revisions</a>
+      </div>
+    </div>
     <div id="application" class="application"></div>
   </body>
 </html>
