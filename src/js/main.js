@@ -1,8 +1,9 @@
 import vue from "vue"
 import store from "store"
+import questionInsert from "components/question/insert.vue"
+import "@fortawesome/fontawesome-free/css/all.min.css"
 import "bootstrap/dist/js/bootstrap.min.js"
 import "bootstrap/dist/css/bootstrap.min.css"
-import "@fortawesome/fontawesome-free/css/all.min.css"
 import "css/main.css"
 import "css/large.css"
 import "css/small.css"
@@ -21,7 +22,7 @@ window.addEventListener("load", () => {
   new vue({
     el: "#application",
     store: store,
-    components: {},
+    components: { questionInsert },
     data() {
       return {
           ws: Object

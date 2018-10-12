@@ -22,7 +22,7 @@ module.exports = {
         loader: "style-loader!css-loader?sourceMap"
       },
       {
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        test: /\.(png|woff|woff2|eot|ttf|svg|gif)$/,
         loader: "url-loader?limit=100000"
       }
     ]

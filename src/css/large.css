@@ -1,5 +1,10 @@
 @media (min-width: 768px) {
 
+#application {
+  margin: 50px 0 0 220px;
+  padding: 20px;
+}
+
 .topnav {
   position: fixed;
   height: 50px;

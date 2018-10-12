@@ -25,6 +25,7 @@
     "popper.js": "*",
     "jquery-ui": "*",
     "vue-cli": "*",
+    "tinymce": "*",
     "express": "*",
     "webpack": "*",
     "jquery": "*",

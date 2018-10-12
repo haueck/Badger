@@ -1,0 +1,13 @@
+.answer, .explanation {
+  width: 400px;
+}
+.answer:only-child .answer-index {
+  display: none;
+}
+.delete, .move-up, .move-down {
+  cursor: pointer;
+}
+.answer:only-child .delete, .answer:first-child .move-up, .answer:last-child .move-down {
+  color: gray;
+  cursor: default;
+}

@@ -1,0 +1,40 @@
+<div>
+   <tinymce id="tinymce" v-model="card['Question']">{{ card['Question'] }}</tinymce>
+   <div>
+     <div v-for="(answer, index) in card['Answers']" class="answer">
+       Answer<span class="answer-index"> ({{index + 1}})</span>:<br>
+       <div class="input-group">
+         <input class="form-control" v-model="answer['Value']">
+         <div class="input-group-append">
+           <button type="button" class="btn btn-secondary" data-toggle="dropdown">
+             <i class="fas fa-cog"></i>
+           </button>
+           <div class="dropdown-menu dropdown-menu-right">
+             <button class="move-up dropdown-item" v-on:click="moveUp(index)">Move up</button>
+             <button class="move-down dropdown-item" v-on:click="moveDown(index)">Move down</button>
+             <button class="delete dropdown-item" v-on:click="removeAnswer(index)">Delete</button>
+             <label class="dropdown-item">
+               <input type="checkbox" v-model="answer['Optional']"> It is optional
+             </label>
+             <label class="dropdown-item">
+               <input type="checkbox" v-model="answer['Brackets']"> Use / and ()
+             </label>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+   <div>
+     <button class="btn btn-secondary" v-on:click="addAnswer()">Add answer</button>
+   </div>
+   <div class="explanation">
+     Explanation:<br>
+     <textarea rows="3" class="form-control" v-model="card['Explanation']"></textarea>
+   </div>
+   <div>
+     <label>
+       <input type="checkbox" v-model="card['Unordered']"> Order of answers is not important
+     </label>
+   </div>
+   <button class="btn btn-primary" v-on:click="add()">Add</button>
+</div>
