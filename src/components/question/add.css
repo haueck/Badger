@@ -11,3 +11,6 @@
   color: gray;
   cursor: default;
 }
+.order-invisible {
+  display: none;
+}

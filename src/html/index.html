@@ -15,68 +15,68 @@
     <script src="/js/bundle.{contenthash}.js"></script>
   </head>
   <body>
-    <div class="topnav">
-      <a href="/" class="topnav-logo">
-        <img src="/images/favicons/favicon-24.png">
-      </a>
-      <a href="/" class="topnav-badger">Badger</a>
-      <div class="topnav-space"></div>
-      <form action="/" class="topnav-search">
-        <input type="hidden" name="Action" value="SimpleSearch">
-        <div class="input-group">
-          <input type="text" name="Search" class="form-control" placeholder="Search..." value="">
-          <div class="input-group-append">
-            <button type="submit" class="input-group-text">
-              <i class="fas fa-search"></i>
-            </button>
+    <div id="application">
+      <div class="topnav">
+        <router-link to="/" class="topnav-logo">
+          <img src="/images/favicons/favicon-24.png">
+        </router-link>
+        <router-link to="/" class="topnav-badger">Badger</router-link>
+        <div class="topnav-space"></div>
+        <form action="/" class="topnav-search">
+          <input type="hidden" name="Action" value="SimpleSearch">
+          <div class="input-group">
+            <input type="text" name="Search" class="form-control" placeholder="Search..." value="">
+            <div class="input-group-append">
+              <button type="submit" class="input-group-text">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
           </div>
+        </form>
+        <router-link to="/" class="topnav-account">Rafał</router-link>
+        <router-link to="/" class="topnav-logout">
+          <i class="fas fa-sign-out-alt"></i>
+        </router-link>
+      </div>
+      <div class="sidenav">
+        <div class="sidenav-entry">
+          <div></div>
+          <router-link to="/learn">Learn</router-link>
         </div>
-      </form>
-      <a href="/" class="topnav-account">Rafał</a>
-      <a href="/" class="topnav-logout">
-        <i class="fas fa-sign-out-alt"></i>
-      </a>
-    </div>
-    <div class="sidenav">
-      <div class="sidenav-entry">
-        <div></div>
-        <a href="/learn.html">Learn</a>
+        <div class="sidenav-entry">
+          <div></div>
+          <router-link to="/add">Add a new card</router-link>
+        </div>
+        <div class="sidenav-entry sidenav-space">
+          <div></div>
+          <a href="/notes.html">Notes</a>
+        </div>
+        <div class="sidenav-entry sidenav-space">
+          <div></div>
+          <a href="/sprint.html">Ongoing work</a>
+        </div>
+        <div class="sidenav-entry">
+          <div></div>
+          <a href="/backlog.html">Planning</a>
+        </div>
+        <div class="sidenav-entry">
+          <div></div>
+          <a href="/roles.html">Roles &amp; Projects</a>
+        </div>
+        <div class="sidenav-entry">
+          <div></div>
+          <a href="/learn.html">Revise</a>
+        </div>
+        <div class="sidenav-entry">
+          <div></div>
+          <a href="/add.html">Manage tags</a>
+        </div>
+        <div class="sidenav-entry">
+          <div></div>
+          <a href="/notes.html">Manage revisions</a>
+        </div>
       </div>
-      <div class="sidenav-entry">
-        <div></div>
-        <a href="/add.html">Add a new card</a>
-      </div>
-      <div class="sidenav-entry sidenav-space">
-        <div></div>
-        <a href="/notes.html">Notes</a>
-      </div>
-      <div class="sidenav-entry">
-        <div></div>
-        <a href="/roles.html">Roles</a>
-      </div>
-      <div class="sidenav-entry">
-        <div></div>
-        <a href="/backlog.html">Planning</a>
-      </div>
-      <div class="sidenav-entry sidenav-space">
-        <div></div>
-        <a href="/sprint.html">Ongoing work</a>
-      </div>
-      <div class="sidenav-entry">
-        <div></div>
-        <a href="/learn.html">Revise</a>
-      </div>
-      <div class="sidenav-entry">
-        <div></div>
-        <a href="/add.html">Manage tags</a>
-      </div>
-      <div class="sidenav-entry">
-        <div></div>
-        <a href="/notes.html">Manage revisions</a>
-      </div>
-    </div>
-    <div id="application" class="application">
-      <question-insert></question-insert>
+      <router-view></router-view>
     </div>
   </body>
 </html>

@@ -6,10 +6,12 @@ export default {
     return {}
   },
   props: {
-    'card' : {
+    card: {
       type: Object,
       default() {
         return {
+          "Type": "Question",
+          "Learn": true,
           "Question": "",
           "Explanation": "",
           "Unordered": false,
@@ -27,7 +29,11 @@ export default {
   },
   methods: {
     add() {
-      console.log(JSON.stringify(this.card))
+      let msg = {
+        "Message": "AddCard",
+        "Card": this.card
+      }
+      this.$bus.$emit('send', msg)
     },
     addAnswer() {
       this.card["Answers"].push({

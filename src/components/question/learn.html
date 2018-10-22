@@ -1,0 +1,14 @@
+<div>
+  <div v-html="card['Question']"></div>
+  <div v-if="card['Unordered']">
+    <strong>The order of answers is not important.</strong>
+  </div>
+  <div>
+    <div v-for="(answer, index) in answers" class="answer">
+      Answer<span class="answer-index"> ({{index + 1}})</span>: <input type="text" class="form-control" v-model="answers[index]">
+    </div>
+  </div>
+  <div>
+    <button v-on:click="verify()" class="btn btn-default">Check</button>
+  </div>
+</div>

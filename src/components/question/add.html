@@ -24,17 +24,17 @@
        </div>
      </div>
    </div>
+   <div v-bind:class="{ 'order-invisible': card['Answers'].length == 1 }">
+     <label>
+       <input type="checkbox" v-model="card['Unordered']"> Order of answers is not important
+     </label>
+   </div>
    <div>
      <button class="btn btn-secondary" v-on:click="addAnswer()">Add answer</button>
    </div>
    <div class="explanation">
      Explanation:<br>
      <textarea rows="3" class="form-control" v-model="card['Explanation']"></textarea>
-   </div>
-   <div>
-     <label>
-       <input type="checkbox" v-model="card['Unordered']"> Order of answers is not important
-     </label>
    </div>
    <button class="btn btn-primary" v-on:click="add()">Add</button>
 </div>

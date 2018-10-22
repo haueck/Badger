@@ -1,0 +1,6 @@
+.answer {
+  width: 400px;
+}
+.answer:only-child .answer-index {
+  display: none;
+}

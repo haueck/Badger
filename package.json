@@ -5,7 +5,8 @@
   "scripts": {
     "prebuild": "rm -rf public",
     "build": "./scripts/build.sh",
-    "eslint": "eslint src"
+    "eslint": "eslint src",
+    "test": "jest --no-cache"
   },
   "author": "Rafal Kozik",
   "license": "GPL",
@@ -14,16 +15,22 @@
     "@google-cloud/firestore": "*",
     "vue-template-compiler": "*",
     "html-webpack-plugin": "*",
+    "babel-preset-env": "*",
+    "@vue/test-utils": "*",
     "expose-loader": "*",
     "style-loader": "*",
+    "parenthesis": "*",
     "webpack-cli": "*",
     "file-loader": "*",
     "css-loader": "*",
     "url-loader": "*",
+    "vue-router": "*",
     "vue-loader": "*",
+    "babel-jest": "*",
     "bootstrap": "*",
     "popper.js": "*",
     "jquery-ui": "*",
+    "vue-jest": "*",
     "vue-cli": "*",
     "tinymce": "*",
     "express": "*",
@@ -31,6 +38,7 @@
     "jquery": "*",
     "eslint": "*",
     "vuex": "*",
+    "jest": "*",
     "vue": "*",
     "ws": "*"
   },
@@ -66,6 +74,33 @@
       "browser": true,
       "jquery": true,
       "es6": true
+    }
+  },
+  "babel": {
+    "env": {
+      "test": {
+        "presets": [
+          [
+            "env",
+            {
+              "modules": "commonjs"
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^vue$": "vue/dist/vue.common.js"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "vue"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest",
+      ".*\\.(vue)$": "vue-jest"
     }
   }
 }

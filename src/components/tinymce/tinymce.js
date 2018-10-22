@@ -31,7 +31,7 @@ export default {
   data() {
     return { }
   },
-  mounted(){
+  mounted() {
     let valid = "@[style|lang],br,p,span,strong/b,img[src|alt|width|height],a[href|title|target=_blank],ul,ol,li,pre,code,em/i,sup,sub,tbody,thead,h1,h2,h3,h4,h5,div,";
     valid = valid + "abbr,article,section,aside,caption,cite,col,colgroup,dd,dl,dt,dfn,kbd,samp,var,h6,footer,header,hgroup,time,wbr,summary,figure,figcaption,";
     valid = valid + "blockquote[cite],q[cite],canvas[height|width],details[open],video[autoplay|controls|height|width|loop|muted|poster|preload|src],source[media|src|type],";
@@ -58,6 +58,6 @@ export default {
     tinymce.init(options)
   },
   beforeDestroy () {
-    this.get(this.id).destroy();
+    tinymce.get(this.id).destroy();
   }
 }

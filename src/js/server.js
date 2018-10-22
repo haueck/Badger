@@ -14,14 +14,29 @@ const db = new firestore({
 
 app.use(express.static('public'))
 
-app.get('/fb', (req, res) => {
-    res.send('Hello World!')
-})
+/*app.get([ '/', '/add', '/learn' ], (req, res) => {
+    res.sendFile('/badger/public/index.html')
+})*/
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
     let msg = JSON.parse(message)
-    if (msg["Message"] === "GetCard") {
+    if (msg["Message"] === "AddCard") {
+      db.collection('Cards').add(msg["Card"]).then(reference => { console.log(reference.id) })
+    }
+    else if (msg["Message"] === "GetNextCard") {
+      const document = db.collection('Cards').doc('AYfo8oaiVe5gCMZyIjeJ')
+      document.get().then((doc) => {
+        if (!doc.exists) {
+          ws.send('{ "Message": "Error" }')
+        } else {
+          let card = doc.data()
+          card["Message"] = "NextCard"
+          ws.send(JSON.stringify(card))
+        }
+      })
+    }
+    else if (msg["Message"] === "GetCard") {
       const document = db.collection('Cards').doc(msg["CardId"])
       document.get().then((doc) => {
 	    if (!doc.exists) {
