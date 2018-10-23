@@ -14,7 +14,7 @@ export default {
       // smart/tough cookie => (smart)/(tough) cookie
       // a stitch in time (saves nine) => a stitch in time (saves nine)/()
       text = text.replace(/\s*\/\s*/g, '/').replace(/\/([^(][^\s()\/]*)/g, "/($1)").replace(/([^\s()\/]*[^)])\//g, "($1)/")
-      let tokens = parse(text)
+      let tokens = parse(text, { brackets: ['()'] })
       this.$_addEmpty(tokens)
       return tokens
     },

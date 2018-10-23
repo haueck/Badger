@@ -1,4 +1,5 @@
 import tinymce from "components/tinymce"
+import alternatives from "components/alternatives"
 import vue from "vue"
 
 export default {
@@ -24,7 +25,7 @@ export default {
       }
     }
   },
-  components: { tinymce },
+  components: { tinymce, alternatives },
   mounted () {
   },
   methods: {

@@ -1,4 +1,5 @@
 import vue from "vue"
+import contractions from 'contractions'
 import alternatives from 'alternatives'
 
 export default {
@@ -7,7 +8,7 @@ export default {
       answers: []
     }
   },
-  mixins: [ alternatives ],
+  mixins: [ alternatives, contractions ],
   props: [ 'card' ],
   components: { },
   mounted () {
@@ -16,7 +17,7 @@ export default {
   methods: {
     verify() {
       for (let i = 0; i < this.answers.length; i++) {
-        let expected = this.alternatives(this.card["Answers"][i]["Value"])
+        let expected = this.alternatives(this.contractions(this.card["Answers"][i]["Value"]))
         let supplied = this.alternatives(this.answers[i])
         console.log(expected)
         console.log(supplied)

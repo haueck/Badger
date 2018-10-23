@@ -1,5 +1,6 @@
 <div>
    <tinymce id="tinymce" v-model="card['Question']">{{ card['Question'] }}</tinymce>
+   <div>Don't use contractions</div>
    <div>
      <div v-for="(answer, index) in card['Answers']" class="answer">
        Answer<span class="answer-index"> ({{index + 1}})</span>:<br>
@@ -17,7 +18,7 @@
                <input type="checkbox" v-model="answer['Optional']"> It is optional
              </label>
              <label class="dropdown-item">
-               <input type="checkbox" v-model="answer['Brackets']"> Use / and ()
+               <input type="checkbox" v-model="answer['Raw']"> Don't parse (?)
              </label>
            </div>
          </div>
@@ -36,5 +37,6 @@
      Explanation:<br>
      <textarea rows="3" class="form-control" v-model="card['Explanation']"></textarea>
    </div>
+   <alternatives></alternatives>
    <button class="btn btn-primary" v-on:click="add()">Add</button>
 </div>
