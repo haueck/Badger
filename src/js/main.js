@@ -21,8 +21,8 @@ Object.defineProperties(vue.prototype, {
 
 vue.use(router)
 let routes = [
-  { path: '/learn', component: learn },
-  { path: '/add', component: add }
+  { path: "/learn", component: learn },
+  { path: "/add", component: add }
 ]
 
 window.addEventListener("load", () => {
@@ -37,9 +37,9 @@ window.addEventListener("load", () => {
       }
     },
     mounted() {
-      this.ws = new WebSocket('ws://' + location.host)
-      this.ws.onopen = (event) => {
-        this.$bus.$on('send', (message) => {
+      this.ws = new WebSocket("ws://" + location.host)
+      this.ws.onopen = () => {
+        this.$bus.$on("send", (message) => {
           this.ws.send(JSON.stringify(message))
         })
       }

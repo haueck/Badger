@@ -45,11 +45,12 @@
   "eslintConfig": {
     "extends": "eslint:recommended",
     "parserOptions": {
-      "ecmaVersion": 6,
+      "ecmaVersion": 9,
       "sourceType": "module"
     },
     "rules": {
       "no-console": "off",
+      "no-invalid-regexp": "off",
       "no-var": "warn",
       "semi": [
         "warn",
@@ -73,7 +74,8 @@
     "env": {
       "browser": true,
       "jquery": true,
-      "es6": true
+      "es6": true,
+      "jest": true
     }
   },
   "babel": {

@@ -12,7 +12,7 @@ export default {
   },
   mounted() {
     this.$bus.$on("NextCard", card => {
-      vue.set(this, 'card', card)
+      vue.set(this, "card", card)
     })
     this.$bus.$emit("send", { "Message": "GetNextCard" })
   }

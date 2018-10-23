@@ -1,6 +1,6 @@
 import vue from "vue"
-import contractions from 'contractions'
-import alternatives from 'alternatives'
+import contractions from "contractions"
+import alternatives from "alternatives"
 
 export default {
   data () {
@@ -9,7 +9,7 @@ export default {
     }
   },
   mixins: [ alternatives, contractions ],
-  props: [ 'card' ],
+  props: [ "card" ],
   components: { },
   mounted () {
     vue.set(this, "answers", new Array(this.card["Answers"].length))

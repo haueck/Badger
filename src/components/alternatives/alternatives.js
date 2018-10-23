@@ -1,4 +1,4 @@
-import parse from 'parenthesis'
+import parse from "parenthesis"
 
 export default {
   methods: {
@@ -6,20 +6,20 @@ export default {
       for (let i = 0; i + 2 < tokens.length; i = i + 2) {
         this.$_addEmpty(tokens[i + 1])
         if (tokens[i].match(/(?<!\/)\($/) && tokens[i + 2].match(/^\)(?!\/)/)) {
-          tokens.splice(i + 2, 0, ')/(', [ '' ])
+          tokens.splice(i + 2, 0, ")/(", [ "" ])
         }
       }
     },
     $_unify(text) {
       // smart/tough cookie => (smart)/(tough) cookie
       // a stitch in time (saves nine) => a stitch in time (saves nine)/()
-      text = text.replace(/\s*\/\s*/g, '/').replace(/\/([^(][^\s()\/]*)/g, "/($1)").replace(/([^\s()\/]*[^)])\//g, "($1)/")
-      let tokens = parse(text, { brackets: ['()'] })
+      text = text.replace(/\s*\/\s*/g, "/").replace(/\/([^(][^\s()/]*)/g, "/($1)").replace(/([^\s()/]*[^)])\//g, "($1)/")
+      let tokens = parse(text, { brackets: ["()"] })
       this.$_addEmpty(tokens)
       return tokens
     },
     $_addNode(graph, value) {
-      let text = value.replace(/^\)\s*/, '').replace(/\s*\($/, '')
+      let text = value.replace(/^\)\s*/, "").replace(/\s*\($/, "")
       graph.push({ "Text": text, "Edges": [ ] })
     },
     $_buildGraph(graph, tokens, previous) {
@@ -69,7 +69,7 @@ export default {
       this.$_dfs(graph, alternatives, path, 0)
       let cleaned = []
       for (let alternative of alternatives) {
-        cleaned.push(alternative.replace(/\s{2,}/g, ' ').replace(/^\s/, '').replace(/\s$/, '').toLowerCase())
+        cleaned.push(alternative.replace(/\s{2,}/g, " ").replace(/^\s/, "").replace(/\s$/, "").toLowerCase())
       }
       return cleaned
     },

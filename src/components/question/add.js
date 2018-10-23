@@ -1,6 +1,6 @@
+import vue from "vue"
 import tinymce from "components/tinymce"
 import alternatives from "components/alternatives"
-import vue from "vue"
 
 export default {
   data () {
@@ -34,7 +34,7 @@ export default {
         "Message": "AddCard",
         "Card": this.card
       }
-      this.$bus.$emit('send', msg)
+      this.$bus.$emit("send", msg)
     },
     addAnswer() {
       this.card["Answers"].push({

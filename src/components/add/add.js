@@ -1,4 +1,3 @@
-import vue from "vue"
 import question from "components/question/add.vue"
 
 export default {

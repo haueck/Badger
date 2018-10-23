@@ -1,5 +1,5 @@
-import alternatives from '../components/alternatives'
-import { shallowMount } from '@vue/test-utils'
+import alternatives from "../components/alternatives"
+import { shallowMount } from "@vue/test-utils"
 
 let testcases = [
   { "Input": "", "Expected": [""] },
@@ -55,8 +55,8 @@ let testcases = [
   { "Input": "run (the risk (of sth/(doing sth)))/risks", "Expected": ["run the risk of sth", "run the risk", "run the risk of doing sth", "run risks"] },
 ]
 
-describe('Alternatives', () => {
-  it('creates a proper list of alternatives', () => {
+describe("Alternatives", () => {
+  it("creates a proper list of alternatives", () => {
     const wrapper = shallowMount(alternatives)
     for (let tc of testcases) {
       expect(wrapper.vm.alternatives(tc["Input"]).sort()).toEqual(tc["Expected"].sort())

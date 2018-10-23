@@ -1,5 +1,5 @@
-import contractions from '../components/contractions'
-import { shallowMount } from '@vue/test-utils'
+import contractions from "../components/contractions"
+import { shallowMount } from "@vue/test-utils"
 
 let testcases = [
   { "Input": "I am leaving", "Expected": "(i am)/(i'm) leaving" },
@@ -23,8 +23,8 @@ let testcases = [
   { "Input": "has not been damaged", "Expected": "(has not)/(hasn't) been damaged" }
 ]
 
-describe('Contractions', () => {
-  it('creates a proper list of contractions', () => {
+describe("Contractions", () => {
+  it("creates a proper list of contractions", () => {
     const wrapper = shallowMount(contractions)
     for (let tc of testcases) {
       expect(wrapper.vm.contractions(tc["Input"]).toLowerCase()).toEqual(tc["Expected"].toLowerCase())
