@@ -7,4 +7,6 @@ ADD scripts ./scripts
 ADD images ./images
 ADD package.json webpack.config.js ./
 RUN npm install && npm run build
+RUN npm test
+RUN npm run-script eslint
 CMD [ "dumb-init", "node", "src/js/server.js" ]
