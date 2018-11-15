@@ -73,7 +73,8 @@ export default {
       }
       return cleaned
     },
-    alternatives(text) {
+    alternatives(input) {
+      let text = String(input)
       let tokens = this.$_unify(text)
       let graph = []
       this.$_addNode(graph, "")

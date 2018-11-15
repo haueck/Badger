@@ -4,3 +4,17 @@
 .answer:only-child .answer-index {
   display: none;
 }
+.correct {
+  color: green;
+}
+.possible {
+  color: blue;
+}
+.feedback-row:only-child .feedback-index {
+  display: none;
+}
+.feedback-index {
+  vertical-align: middle;
+  align: center;
+  width: 50px;
+}

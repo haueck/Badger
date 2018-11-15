@@ -11,4 +11,18 @@
   <div>
     <button v-on:click="verify()" class="btn btn-default">Check</button>
   </div>
+  <div v-if="correct" class="correct-answer">That's right! You rock!</div>
+  <div v-if="wrong" class="wrong-answer">Wrong!</div>
+  <div>
+    <table>
+      <tr v-for="(fb, index) in feedback" :class="'feedback-row feedback-row-' + index">
+        <td class="feedback-index">{{index + 1}}.</td>
+        <td>
+          <div v-for="correct in fb['Correct']" v-if="correct != ''" class="correct">{{ correct }}</div>
+          <div v-for="wrong in fb['Wrong']" class="wrong">{{ wrong }}</div>
+          <div v-for="possible in fb['Possible']" v-if="possible != ''" class="possible">{{ possible }}</div>
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>

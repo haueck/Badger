@@ -32,7 +32,7 @@ module.exports = {
       vue: "vue/dist/vue.js"
     },
     extensions: [".js", ".vue"],
-    modules: [ "node_modules", path.resolve(__dirname, "src/components"), path.resolve(__dirname, "src/js") , path.resolve(__dirname, "src") ],
+    modules: [ "node_modules", path.resolve(__dirname, "src/js") , path.resolve(__dirname, "src") ],
   },
   plugins: [
     new webpack.ProvidePlugin({
