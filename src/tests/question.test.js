@@ -7,7 +7,9 @@ function verify(testcase) {
       card: {
         "Type": "Question",
         "Question": testcase["Question"],
-        "Answers": testcase["Answers"]
+        "Answers": testcase["Answers"],
+        "Unordered": testcase["Unordered"],
+        "Raw": testcase["Raw"]
       }
     }
   })
@@ -16,24 +18,28 @@ function verify(testcase) {
   }
   wrapper.vm.verify()
   for (let j = 0; j < testcase["Expected"].length; ++j) {
-    let c = wrapper.findAll(".feedback-row-" + j + " .correct")
-    let p = wrapper.findAll(".feedback-row-" + j + " .possible")
-    let w = wrapper.findAll(".feedback-row-" + j + " .wrong")
+    for (let field of [ "Correct", "Possible", "Wrong" ]) {
+      if (!(field in testcase["Expected"][j])) {
+        testcase["Expected"][j][field] = []
+      }
+    }
+    let c = wrapper.vm.feedback[j]["Correct"]
+    let p = wrapper.vm.feedback[j]["Possible"]
+    let w = wrapper.vm.feedback[j]["Wrong"]
     expect(c.length).toBe(testcase["Expected"][j]["Correct"].length)
     expect(p.length).toBe(testcase["Expected"][j]["Possible"].length)
     expect(w.length).toBe(testcase["Expected"][j]["Wrong"].length)
     for (let i = 0; i < c.length; ++i) {
-      expect(testcase["Expected"][j]["Correct"].includes(c.at(i).text())).toBe(true)
+      expect(testcase["Expected"][j]["Correct"]).toContain(c[i])
     }
     for (let i = 0; i < p.length; ++i) {
-      expect(testcase["Expected"][j]["Possible"].includes(p.at(i).text())).toBe(true)
+      expect(testcase["Expected"][j]["Possible"]).toContain(p[i])
     }
     for (let i = 0; i < w.length; ++i) {
-      expect(testcase["Expected"][j]["Wrong"].includes(w.at(i).text())).toBe(true)
+      expect(testcase["Expected"][j]["Wrong"]).toContain(w[i])
     }
   }
-  expect(wrapper.contains(".correct-answer")).toBe(testcase["Pass"])
-  expect(wrapper.contains(".wrong-answer")).not.toBe(testcase["Pass"])
+  expect(wrapper.vm.pass).toBe(testcase["Pass"])
 }
 
 describe("Question", () => {
@@ -44,9 +50,7 @@ describe("Question", () => {
       "Answers": [{ "Value": "2" }],
       "Input": [ 2 ],
       "Expected": [{
-        "Correct": [ "2" ],
-        "Possible": [],
-        "Wrong": []
+        "Correct": [ "2" ]
       }],
       "Pass": true
     })
@@ -57,11 +61,7 @@ describe("Question", () => {
       "Question": "Empty",
       "Answers": [{ "Value": "" }],
       "Input": [ "" ],
-      "Expected": [{
-        "Correct": [],
-        "Possible": [],
-        "Wrong": []
-      }],
+      "Expected": [ { "Correct": [ "" ] } ],
       "Pass": true
     })
   })
@@ -72,7 +72,6 @@ describe("Question", () => {
       "Answers": [{ "Value": "2" }],
       "Input": [ 3 ],
       "Expected": [{
-        "Correct": [],
         "Possible": [ "2" ],
         "Wrong": [ "3" ]
       }],
@@ -86,11 +85,23 @@ describe("Question", () => {
       "Answers": [{ "Value": "2" }],
       "Input": [ "" ],
       "Expected": [{
-        "Correct": [],
         "Possible": [ "2" ],
         "Wrong": [ "" ]
       }],
       "Pass": false
+    })
+  })
+
+  it("properly handles answers with brackets", () => {
+    verify({
+      "Question": "What is you favorite equation?",
+      "Answers": [{ "Value": "sin(x) + 1/2" }],
+      "Input": [ "sin(x) + 1/2" ],
+      "Raw": true,
+      "Expected": [{
+        "Correct": [ "sin(x) + 1/2" ]
+      }],
+      "Pass": true
     })
   })
 
@@ -101,8 +112,7 @@ describe("Question", () => {
       "Input": [ "2" ],
       "Expected": [{
         "Correct": [ "2" ],
-        "Possible": [],
-        "Wrong": []
+        "Possible": [ "" ]
       }],
       "Pass": true
     })
@@ -114,9 +124,8 @@ describe("Question", () => {
       "Answers": [{ "Value": "(2)" }],
       "Input": [ "" ],
       "Expected": [{
-        "Correct": [],
-        "Possible": [ "2" ],
-        "Wrong": []
+        "Correct": [ "" ],
+        "Possible": [ "2" ]
       }],
       "Pass": true
     })
@@ -129,8 +138,7 @@ describe("Question", () => {
       "Input": [ "He is continually interrupting me" ],
       "Expected": [{
         "Correct": [ "he is continually interrupting me" ],
-        "Possible": [ "he is always interrupting me" ],
-        "Wrong": []
+        "Possible": [ "he is always interrupting me" ]
       }],
       "Pass": true
     })
@@ -143,8 +151,7 @@ describe("Question", () => {
       "Input": [ "He is always interrupting me" ],
       "Expected": [{
         "Correct": [ "he is always interrupting me" ],
-        "Possible": [ "he is continually interrupting me" ],
-        "Wrong": []
+        "Possible": [ "he is continually interrupting me" ]
       }],
       "Pass": true
     })
@@ -156,9 +163,7 @@ describe("Question", () => {
       "Answers": [{ "Value": "He is always/continually interrupting me" }],
       "Input": [ "He is continually/always interrupting me" ],
       "Expected": [{
-        "Correct": [ "he is always interrupting me", "he is continually interrupting me" ],
-        "Possible": [],
-        "Wrong": []
+        "Correct": [ "he is always interrupting me", "he is continually interrupting me" ]
       }],
       "Pass": true
     })
@@ -171,8 +176,7 @@ describe("Question", () => {
       "Input": [ "He is always/always interrupting me" ],
       "Expected": [{
         "Correct": [ "he is always interrupting me" ],
-        "Possible": [ "he is continually interrupting me" ],
-        "Wrong": []
+        "Possible": [ "he is continually interrupting me" ]
       }],
       "Pass": true
     })
@@ -184,7 +188,6 @@ describe("Question", () => {
       "Answers": [{ "Value": "He is always/continually interrupting me" }],
       "Input": [ "He is neverly interrupting me" ],
       "Expected": [{
-        "Correct": [],
         "Possible": [ "he is always interrupting me", "he is continually interrupting me" ],
         "Wrong": [ "he is neverly interrupting me" ]
       }],
@@ -213,8 +216,7 @@ describe("Question", () => {
       "Input": [ "single sth out for sth" ],
       "Expected": [{
         "Correct": [ "single sth out for sth" ],
-        "Possible": [ "single sb out", "single sb out as sb", "single sth out", "single sb out as sth", "single sth out as sth", "single sth out as sb", "single sb out for sth" ],
-        "Wrong": []
+        "Possible": [ "single sb out", "single sb out as sb", "single sth out", "single sb out as sth", "single sth out as sth", "single sth out as sb", "single sb out for sth" ]
       }],
       "Pass": true
     })
@@ -227,8 +229,7 @@ describe("Question", () => {
       "Input": [ "single sb out (as sb)" ],
       "Expected": [{
         "Correct": [ "single sb out", "single sb out as sb" ],
-        "Possible": [ "single sth out", "single sth out for sth", "single sb out as sth", "single sth out as sth", "single sth out as sb", "single sb out for sth" ],
-        "Wrong": []
+        "Possible": [ "single sth out", "single sth out for sth", "single sb out as sth", "single sth out as sth", "single sth out as sb", "single sb out for sth" ]
       }],
       "Pass": true
     })
@@ -240,9 +241,7 @@ describe("Question", () => {
       "Answers": [{ "Value": "single sb/sth out ((for sth)/(as sb/sth))" }],
       "Input": [ "single sb/sth out ((for sth)/(as sb/sth))" ],
       "Expected": [{
-        "Correct": [ "single sb out", "single sb out as sb", "single sth out", "single sth out for sth", "single sb out as sth", "single sth out as sth", "single sth out as sb", "single sb out for sth" ],
-        "Possible": [],
-        "Wrong": []
+        "Correct": [ "single sb out", "single sb out as sb", "single sth out", "single sth out for sth", "single sb out as sth", "single sth out as sth", "single sth out as sb", "single sb out for sth" ]
       }],
       "Pass": true
     })
@@ -268,9 +267,7 @@ describe("Question", () => {
       "Answers": [{ "Value": "I'm leaving" }],
       "Input": [ "I am leaving" ],
       "Expected": [{
-        "Correct": [ "i am leaving" ],
-        "Possible": [],
-        "Wrong": []
+        "Correct": [ "i am leaving" ]
       }],
       "Pass": true
     })
@@ -282,9 +279,7 @@ describe("Question", () => {
       "Answers": [{ "Value": "I'm leaving" }],
       "Input": [ "I'm leaving" ],
       "Expected": [{
-        "Correct": [ "i'm leaving" ],
-        "Possible": [],
-        "Wrong": []
+        "Correct": [ "i'm leaving" ]
       }],
       "Pass": true
     })
@@ -297,8 +292,7 @@ describe("Question", () => {
       "Input": [ "I am" ],
       "Expected": [{
         "Correct": [ "i am" ],
-        "Possible": [ "i'm leaving" ],
-        "Wrong": []
+        "Possible": [ "i'm leaving" ]
       }],
       "Pass": true
     })
@@ -311,12 +305,9 @@ describe("Question", () => {
       "Input": [ "Scott Key Fitzgerald", "Umberto Eco" ],
       "Expected": [{
         "Correct": [ "scott key fitzgerald" ],
-        "Possible": [ "francis scott key fitzgerald", "francis scott fitzgerald", "scott fitzgerald" ],
-        "Wrong": []
+        "Possible": [ "francis scott key fitzgerald", "francis scott fitzgerald", "scott fitzgerald" ]
       }, {
-        "Correct": [ "umberto eco" ],
-        "Possible": [],
-        "Wrong": []
+        "Correct": [ "umberto eco" ]
       }],
       "Pass": true
     })
@@ -332,10 +323,80 @@ describe("Question", () => {
         "Possible": [ "francis scott key fitzgerald", "francis scott fitzgerald", "scott key fitzgerald" ],
         "Wrong": [ "scott brian fitzgerald" ]
       }, {
-        "Correct": [ "umberto eco" ],
-        "Possible": [],
-        "Wrong": []
+        "Correct": [ "umberto eco" ]
       }],
+      "Pass": false
+    })
+  })
+
+  it("properly handles unordered answers", () => {
+    verify({
+      "Unordered": true,
+      "Question": "What are the highest mountains on each continent?",
+      "Answers": [
+        { "Value": "Kilimanjaro" },
+        { "Value": "Vinson Massif" },
+        { "Value": "Carstensz Pyramid" },
+        { "Value": "(Mount Everest)/Czomolungma" },
+        { "Value": "Elbrus" },
+        { "Value": "Aconcagua" },
+        { "Value": "Mount McKinley" }
+      ],
+      "Input": [ "Czomolungma", "Elbrus", "Kilimanjaro", "Carstensz Pyramid", "Mount McKinley", "Vinson Massif", "Aconcagua" ],
+      "Expected": [
+        {
+          "Correct": [ "czomolungma" ],
+          "Possible": [ "mount everest" ]
+        },
+        { "Correct": [ "elbrus" ] },
+        { "Correct": [ "kilimanjaro" ] },
+        { "Correct": [ "carstensz pyramid" ] },
+        { "Correct": [ "mount mckinley" ] },
+        { "Correct": [ "vinson massif" ] },
+        { "Correct": [ "aconcagua" ] }
+      ],
+      "Pass": true
+    })
+  })
+
+  it("properly handles unordered answers", () => {
+    verify({
+      "Unordered": true,
+      "Question": "First 2 digits?",
+      "Answers": [ { "Value": "0" }, { "Value": "1" } ],
+      "Input": [ "1", "2" ],
+      "Expected": [
+        { "Correct": [ "1" ] },
+        { "Wrong": [ "2" ], "Possible": [ "0" ] }
+      ],
+      "Pass": false
+    })
+  })
+
+  it("properly handles unordered answers", () => {
+    verify({
+      "Unordered": true,
+      "Question": "First 2 digits?",
+      "Answers": [ { "Value": "0" }, { "Value": "1" } ],
+      "Input": [ "1", "1" ],
+      "Expected": [
+        { "Correct": [ "1" ] },
+        { "Wrong": [ "1" ], "Possible": [ "0" ] }
+      ],
+      "Pass": false
+    })
+  })
+
+  it("properly handles unordered answers", () => {
+    verify({
+      "Unordered": true,
+      "Question": "First 2 digits?",
+      "Answers": [ { "Value": "0" }, { "Value": "1" } ],
+      "Input": [ "6", "7" ],
+      "Expected": [
+        { "Wrong": [ "6" ], "Possible": [ "0" ] },
+        { "Wrong": [ "7" ], "Possible": [ "1" ] }
+      ],
       "Pass": false
     })
   })

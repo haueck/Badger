@@ -14,6 +14,15 @@ export default {
     this.$bus.$on("NextCard", card => {
       vue.set(this, "card", card)
     })
-    this.$bus.$emit("send", { "Message": "GetNextCard" })
+    this.$bus.$on("GetNextCard", () => {
+      this.card["Type"] = "None"
+      this.getNextCard()
+    })
+    this.getNextCard()
+  },
+  methods: {
+    getNextCard() {
+      this.$bus.$emit("send", { "Message": "GetNextCard" })
+    }
   }
 }

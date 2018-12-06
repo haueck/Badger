@@ -5,24 +5,22 @@
   </div>
   <div>
     <div v-for="(answer, index) in answers" class="answer">
-      Answer<span class="answer-index"> ({{index + 1}})</span>: <input type="text" class="form-control" v-model="answers[index]">
+      <div>Answer<span class="answer-index"> {{index + 1}}</span>:</div>
+      <div class="answer-input">
+        <input type="text" v-on:keyup.enter="verify($event)" :class="'form-control answer-' + (verified ? feedback[index]['Pass'] : 'not-verified')" v-model="answers[index]" ref="answer">
+      </div>
+      <div v-if="verified">
+        <img v-if="feedback[index]['Pass']" src="/images/correct.png">
+        <img v-else src="/images/wrong.png">
+        <span v-if="!feedback[index]['Pass']">Expected: {{ feedback[index]['Expected'] }}</span>
+        <span v-else-if="feedback[index]['Possible'].length">Possible: {{ feedback[index]['Possible'].join(', ') }}</span>
+      </div>
     </div>
   </div>
-  <div>
-    <button v-on:click="verify()" class="btn btn-default">Check</button>
+  <button v-if="!verified" v-on:click="verify()" class="btn btn-default check-button">Check</button>
+  <div v-if="verified" class="feedback">
+    <strong v-if="pass">That's right! You rock!</strong>
+    <strong v-else>Wrong!</strong>
   </div>
-  <div v-if="correct" class="correct-answer">That's right! You rock!</div>
-  <div v-if="wrong" class="wrong-answer">Wrong!</div>
-  <div>
-    <table>
-      <tr v-for="(fb, index) in feedback" :class="'feedback-row feedback-row-' + index">
-        <td class="feedback-index">{{index + 1}}.</td>
-        <td>
-          <div v-for="correct in fb['Correct']" v-if="correct != ''" class="correct">{{ correct }}</div>
-          <div v-for="wrong in fb['Wrong']" class="wrong">{{ wrong }}</div>
-          <div v-for="possible in fb['Possible']" v-if="possible != ''" class="possible">{{ possible }}</div>
-        </td>
-      </tr>
-    </table>
-  </div>
+  <button v-if="verified" v-on:click="$bus.$emit('GetNextCard')" class="btn btn-primary" ref="next" >Next one!</button>
 </div>

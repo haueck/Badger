@@ -1,20 +1,23 @@
 .answer {
-  width: 400px;
+  display: flex;
+  align-items: center;
+}
+.answer-input {
+  margin: 5px 10px;
+  width: 300px;
 }
 .answer:only-child .answer-index {
   display: none;
 }
-.correct {
-  color: green;
+.answer-true {
+  border-color: green;
 }
-.possible {
-  color: blue;
+.answer-false {
+  border-color: red;
 }
-.feedback-row:only-child .feedback-index {
-  display: none;
+.check-button {
+  margin: 10px 0;
 }
-.feedback-index {
-  vertical-align: middle;
-  align: center;
-  width: 50px;
+.feedback {
+  margin: 15px 0;
 }
