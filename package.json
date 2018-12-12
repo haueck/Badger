@@ -19,6 +19,7 @@
     "@vue/test-utils": "*",
     "expose-loader": "*",
     "style-loader": "*",
+    "vuedraggable": "*",
     "kontractions": "*",
     "parenthesis": "*",
     "webpack-cli": "*",
@@ -43,7 +44,9 @@
     "vue": "*",
     "ws": "*"
   },
-  "eslintIgnore": [ "temp.js" ],
+  "eslintIgnore": [
+    "temp.js"
+  ],
   "eslintConfig": {
     "extends": "eslint:recommended",
     "parserOptions": {
@@ -110,6 +113,8 @@
       "^.+\\.js$": "babel-jest",
       ".*\\.(vue)$": "vue-jest"
     },
-    "testPathIgnorePatterns": [ "/node_modules/" ]
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }

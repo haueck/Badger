@@ -1,10 +1,15 @@
 import vue from "vue"
 import tinymce from "components/tinymce"
+import draggable from 'vuedraggable'
 import alternatives from "components/alternatives"
 
 export default {
   data () {
-    return {}
+    return {
+      dragging: false,
+      trash: [],
+      icon: null
+    }
   },
   props: {
     card: {
@@ -25,7 +30,7 @@ export default {
       }
     }
   },
-  components: { tinymce, alternatives },
+  components: { tinymce, alternatives, draggable },
   mounted () {
   },
   methods: {
@@ -43,25 +48,29 @@ export default {
         "Brackets": false
       })
     },
-    removeAnswer(index) {
-      if (this.card["Answers"].length > 1) {
-        this.card["Answers"].splice(index, 1)
-      }
+    onStart() {
+      this.dragging = true
+      vue.nextTick(() => {
+        this.icon = this.$el.getElementsByClassName("fa-trash-alt")[0]
+        let height = this.$el.getElementsByClassName('trash')[0].clientHeight
+        this.icon.style.lineHeight = height + "px"
+      })
     },
-    moveDown(index) {
-      if (index < this.card["Answers"].length - 1) {
-        this.swapAnswers(index, index + 1)
+    onEnd(evt) {
+      if (evt.from !== evt.to) {
+        this.trash.splice(0, 1)
       }
+      setTimeout(() => {
+        this.dragging = false
+        this.icon.style.lineHeight = "auto"
+      }, 100)
     },
-    moveUp(index) {
-      if (index > 0) {
-        this.swapAnswers(index, index - 1)
+    onMove(evt) {
+      if (evt.from === evt.to) {
+        this.icon.style.backgroundColor = "#ffe6e6"
+      } else {
+        this.icon.style.backgroundColor = "#ffcccc"
       }
-    },
-    swapAnswers(i, j) {
-      let temp = this.card["Answers"][i]
-      vue.set(this.card["Answers"], i, this.card["Answers"][j])
-      vue.set(this.card["Answers"], j, temp)
     }
   }
 }
