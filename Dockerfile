@@ -7,7 +7,6 @@ ADD scripts ./scripts
 ADD images ./images
 ADD package.json webpack.config.js ./
 RUN npm install
-RUN cp src/js/temp.js node_modules/kontractions/index.js
 RUN npm run build
 RUN npm test
 RUN npm run-script eslint

@@ -1,6 +1,6 @@
 import vue from "vue"
 import tinymce from "components/tinymce"
-import draggable from 'vuedraggable'
+import draggable from "vuedraggable"
 import alternatives from "components/alternatives"
 
 export default {
@@ -52,7 +52,7 @@ export default {
       this.dragging = true
       vue.nextTick(() => {
         this.icon = this.$el.getElementsByClassName("fa-trash-alt")[0]
-        let height = this.$el.getElementsByClassName('trash')[0].clientHeight
+        let height = this.$el.getElementsByClassName("trash")[0].clientHeight
         this.icon.style.lineHeight = height + "px"
       })
     },

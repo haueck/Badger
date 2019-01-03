@@ -1,5 +1,5 @@
 import vue from "vue"
-import contractions from "kontractions"
+import contractions from "components/contractions"
 import alternatives from "components/alternatives"
 
 export default {
@@ -12,7 +12,7 @@ export default {
       pass: false
     }
   },
-  mixins: [ alternatives ],
+  mixins: [ alternatives, contractions ],
   props: [ "card" ],
   components: { },
   mounted () {
@@ -82,9 +82,9 @@ export default {
       let matched = provided.map(() => false)
       for (let j = 0; j < expected.length; ++j) {
         let match = null
-        let expected1 = contractions.expandToList(expected[j])
+        let expected1 = this.expand(expected[j])
         for (let k = 0; k < provided.length; ++k) {
-          let provided1 = contractions.expandToList(provided[k])
+          let provided1 = this.expand(provided[k])
           if (expected1.filter(x => provided1.includes(x)).length > 0) {
             match = k
             break

@@ -20,7 +20,6 @@
     "expose-loader": "*",
     "style-loader": "*",
     "vuedraggable": "*",
-    "kontractions": "*",
     "parenthesis": "*",
     "webpack-cli": "*",
     "file-loader": "*",
@@ -44,9 +43,6 @@
     "vue": "*",
     "ws": "*"
   },
-  "eslintIgnore": [
-    "temp.js"
-  ],
   "eslintConfig": {
     "extends": "eslint:recommended",
     "parserOptions": {
