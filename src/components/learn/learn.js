@@ -1,8 +1,9 @@
 import vue from "vue"
 import question from "components/question/learn.vue"
+import english from "components/english/learn.vue"
 
 export default {
-  components: { question },
+  components: { question, english },
   data() {
     return {
       card: {

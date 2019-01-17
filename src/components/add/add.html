@@ -1,3 +1,12 @@
 <div>
-  <question></question>
+  <select v-model="selected" class="form-control card-selection">
+    <option disabled value="None">Select type</option>
+    <option>English</option>
+    <option>Question</option>
+    <option>Reminder</option>
+    <option>Multiple choice</option>
+    <option>Word</option>
+  </select>
+  <english v-if="selected == 'English'"></english>
+  <question v-if="selected == 'Question'"></question>
 </div>

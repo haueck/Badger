@@ -1,0 +1,135 @@
+<div class="english-root">
+  <div>
+    Word:<br/>
+    <div class="input-group">
+      <input type="text" class="form-control" v-model="card['Word']"/>
+      <div class="input-group-append" data-toggle="collapse" data-target="#help">
+        <button class="btn btn-outline-secondary"><i class="fas fa-info-circle"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="collapse" id="help">
+    <alternatives></alternatives>
+  </div>
+  <div>
+    Part of speech:<br/>
+    <select class="form-control" v-model="card['PartOfSpeech']">
+      <option>Noun</option>
+      <option>Verb</option>
+      <option>Adjective</option>
+      <option>Adverb</option>
+      <option>Preposition</option>
+      <option>Pronoun</option>
+      <option>Conjunction</option>
+      <option>Interjection</option>
+      <option>Prefix</option>
+      <option>Suffix</option>
+    </select>
+  </div>
+  <div>
+    Pronunciation:<br/>
+    <div class="input-group">
+      <input type="text" class="form-control" v-model="card['Pronunciation']"/>
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">IPA</button>
+        <div class="dropdown-menu">
+          <div class="ipa">
+            <div @click="ipa">ʒ</div>
+            <div @click="ipa">ŋ</div>
+            <div @click="ipa">ʃ</div>
+            <div @click="ipa">θ</div>
+            <div @click="ipa">ð</div>
+          </div>
+          <div class="ipa">
+            <div @click="ipa">æ</div>
+            <div @click="ipa">ɪ</div>
+            <div @click="ipa">ɛ</div>
+            <div @click="ipa">ɜ</div>
+            <div @click="ipa">ə</div>
+          </div>
+          <div class="ipa">
+            <div @click="ipa">ʊ</div>
+            <div @click="ipa">ʌ</div>
+            <div @click="ipa">ː</div>
+            <div @click="ipa">ɒ</div>
+            <div @click="ipa">ɔ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    Use of prepositions:<br/>
+    <input type="text" class="form-control" v-model="card['UseOfPrepositions']"/>
+  </div>
+  <div>
+    Definition:<br/>
+    <textarea rows="3" class="form-control" v-model="card['Definition']"></textarea>
+  </div>
+  <div v-for="(example, index) in card['Examples']">
+    Example:<br/>
+    <textarea rows="3" class="form-control" v-model="card['Examples'][index]" placeholder="Leave empty to ignore"></textarea>
+  </div>
+  <div>
+    <button class="btn btn-outline-secondary" @click="card['Examples'].push('')">Add an example</button>
+  </div>
+  <div v-for="related in card['Related']" class="related-word">
+    <div>
+      Related word:<br/>
+      <input type="text" class="form-control" v-model="related['Word']"/>
+    </div>
+    <div>
+      Description:<br/>
+      <input type="text" class="form-control" v-model="related['Description']"/>
+    </div>
+    <div>
+      While learning:<br/>
+      <select class="form-control" v-model="related['Visibility']">
+        <option value="Hide">Show after giving an answer</option>
+        <option value="Show">Visible all the time</option>
+      </select>
+    </div>
+  </div>
+  <div>
+    <button class="btn btn-outline-secondary" @click="addRelated">Add a related word</button>
+  </div>
+  <div class="auxiliary">
+    <div>
+      <div>
+        <label>
+          <input type="checkbox" v-model="card['PhrasalVerb']"/> Phrasal verb
+        </label>
+      </div>
+      <div>
+        <label>
+          <input type="checkbox" v-model="card['Idiom']"/> Idiom
+        </label>
+      </div>
+    </div>
+    <div>
+      <div>
+        <label>
+          <input type="checkbox" v-model="card['Formal']"/> Formal
+        </label>
+      </div>
+      <div>
+        <label>
+          <input type="checkbox" v-model="card['Informal']"/> Informal
+        </label>
+      </div>
+    </div>
+    <div>
+      <div>
+        <label>
+          <input type="checkbox" v-model="card['Approval']"/> Approval
+        </label>
+      </div>
+      <div>
+        <label>
+          <input type="checkbox" v-model="card['Derogatory']"/> Derogatory
+        </label>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-primary" @click="add()">Add</button>
+</div>
