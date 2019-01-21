@@ -6,6 +6,7 @@ export default {
   components: { question, english },
   data() {
     return {
+      verified: false,
       card: {
         "Type": "None"
       }
@@ -16,8 +17,15 @@ export default {
       vue.set(this, "card", card)
     })
     this.$bus.$on("GetNextCard", () => {
+      this.verified = false
       this.card["Type"] = "None"
       this.getNextCard()
+    })
+    this.$bus.$on("Verified", () => {
+      this.verified = true
+      vue.nextTick(() => {
+        this.$refs.next.focus()
+      })
     })
     this.getNextCard()
   },

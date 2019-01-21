@@ -7,13 +7,12 @@ export default {
     return {
       answers: [],
       feedback: [],
-      verified: false,
       count: 0,
       pass: false
     }
   },
   mixins: [ alternatives, contractions ],
-  props: [ "card" ],
+  props: [ "card", "verified" ],
   components: { },
   mounted () {
     this.count = this.card["Answers"].length
@@ -60,10 +59,7 @@ export default {
         }
       }
       this.pass = correct == this.count
-      this.verified = true
-      vue.nextTick(() => {
-        this.$refs.next.focus()
-      })
+      this.$bus.$emit('Verified')
     },
     compare(expectedAnswer, providedAnswer, raw) {
       let expected = []

@@ -1,135 +1,31 @@
 <div>
-  <div>Part of speech: {{ card['PartOfSpeech'] }}</div>
-  <div>Definition: {{ card['Definition'] }}</div>
+  <div>Part of speech: {{ card['PartOfSpeech'].toLowerCase() }}</div>
+  <div>Definition: <i>{{ card['Grammar'] }}</i> <strong>{{ card['UseOfPrepositions'] }}</strong> {{ card['Definition'] }}</div>
   <div v-for="example in card['Examples']">Example: <i>{{ example }}</i></div>
+  <div v-for="related in card['Related']" v-if="related['Visibility'] == 'Show'">
+    <span v-if="related['Description'].length">{{ related['Description'] }}:</span>
+    <span v-else>Related word:</span>
+    <i>{{ related['Word'] }}</i>
+  </div>
   <div>
     Answer:<br/>
-    <input type="text" class="form-control" autofocus="autofocus"/>
+    <input type="text" class="form-control" spellcheck="false" v-on:keyup.enter="verify()" v-model="answer" ref="answer"/>
   </div>
-  <button v-if="!verified" v-on:click="verify()" class="btn btn-default check-button">Check</button>
-  <div v-if="verified" class="feedback">
-    <strong v-if="pass">That's right! You rock!</strong>
-    <strong v-else>Wrong!</strong>
-  </div>
-  <button v-if="verified" v-on:click="$bus.$emit('GetNextCard')" class="btn btn-primary" ref="next" >Next one!</button>
-</div>
-
-<!--  <p>Part of speech: <xsl:apply-templates select="PartOfSpeech/@Value" mode="space-before"/></p>
-  <p>
-    <xsl:text>Definition: </xsl:text>
-    <xsl:apply-templates select="@PhrasalVerb" mode="brackets"/>
-    <xsl:apply-templates select="@Idiom" mode="brackets"/>
-    <xsl:apply-templates select="@Formal" mode="brackets"/>
-    <xsl:apply-templates select="@Informal" mode="brackets"/>
-    <xsl:apply-templates select="@Approval" mode="brackets"/>
-    <xsl:apply-templates select="@Derogatory" mode="brackets"/>
-    <xsl:apply-templates select="Prepositions[@Value!='']" mode="space-before"/>
-    <xsl:apply-templates select="Definition/Text" mode="space-before"/>
-  </p>
-  <xsl:apply-templates select="RelatedWord[RelationType/@ID=3]"/>
-  <xsl:apply-templates select="EnglishExample/EnglishCutExample"/>
-  <p>
-    Answer:<br/>
-    <input type="text" name="Answer" id="ra" style="margin-right: 5px;" autofocus="autofocus" spellcheck="false" class="form-control"/>
-  </p>
-  <p id="question">
-    <input type="submit" value="Check" class="btn btn-default"/>
-  </p>
-</xsl:template>
-
-<xsl:template match="RelatedWord">
-  <p>
-    Synonym:
-    <xsl:apply-templates select="@Value"/>
-  </p>
-</xsl:template>
-
-<xsl:template match="Prepositions">
-  <strong>
-    <xsl:apply-templates select="@Value"/>
-  </strong>
-</xsl:template>
-
-<xsl:template match="EnglishCutExample">
-  <p>
-    <xsl:text>Example: </xsl:text>
-    <i>
-      <xsl:apply-templates select="Text"/>
-    </i>
-  </p>
-</xsl:template>
-
-<xsl:template match="@*[.=1]" mode="brackets">
-  <xsl:text>(</xsl:text>
-  <i>
-    <xsl:value-of select="name()"/>
-  </i>
-  <xsl:text>)</xsl:text>
-</xsl:template>
-
-
-
-
-
-<xsl:template match="/*">
-  <div>
-    <xsl:apply-templates select="Answer"/>
-    <p>
-      <strong>
-        <xsl:apply-templates select="key('r','Word')/@Value"/>
-      </strong>
-      <xsl:apply-templates select="key('r','Pronunciation')[@Value!='']"/>
+  <button v-if="!verified" v-on:click="verify()" class="btn btn-primary">Check</button>
+  <div v-if="verified">
+    <p v-if="pass">That's right! You rock!</p>
+    <p v-else>Wrong!</p>
+    <p><strong>{{ card['Word'] }}</strong> /{{ card['Pronunciation'] }}/</p>
+    <div v-if="complex">
+      <p v-for="phrase in correct" class="correct">Correct: {{ phrase }}</p>
+      <p v-for="phrase in wrong" class="wrong">Wrong: {{ phrase }}</p>
+      <p v-for="phrase in possible">Possible answer: {{ phrase }}</p>
+    </div>
+    <p v-for="example in card['Examples']">Example: <i>{{ example }}</i></p>
+    <p v-for="related in card['Related']" v-if="related['Visibility'] == 'Hide'">
+      <span v-if="related['Description'].length">{{ related['Description'] }}:</span>
+      <span v-else>Related word:</span>
+      <i>{{ related['Word'] }}</i>
     </p>
-    <xsl:apply-templates select="Correct"/>
-    <xsl:apply-templates select="Wrong"/>
-    <xsl:apply-templates select="OtherPossible"/>
-    <xsl:apply-templates select="key('r','RelatedWord')"/>
-    <xsl:apply-templates select="key('r','EnglishExample')"/>
-    <xsl:apply-templates select="*[@lang=key('p','Language')]/Riddles/Riddle" mode="action"/>
-    <xsl:apply-templates select="*[@lang=key('p','Language')]/Riddles/Riddle[@Successes&gt;4 and current()/Answer[@Correct=1]]" mode="schedule-show"/>
   </div>
-</xsl:template>
-
-<xsl:template match="RelatedWord">
-  <p>
-    <xsl:apply-templates select="RelationType/Text" mode="colon"/>
-    <strong>
-      <xsl:apply-templates select="@Value"/>
-    </strong>
-    <xsl:apply-templates select="@RelatedDescription" mode="space-before"/>
-  </p>
-</xsl:template>
-
-<xsl:template match="Wrong">
-  <p style="color: #bb5454">
-      <xsl:text>Wrong: </xsl:text>
-      <xsl:apply-templates/>
-  </p>
-</xsl:template>
-
-<xsl:template match="Correct">
-  <p style="color: #469d46">
-      <xsl:text>Correct: </xsl:text>
-      <xsl:apply-templates/>
-  </p>
-</xsl:template>
-
-<xsl:template match="OtherPossible">
-  <p>
-    <xsl:text>Possible answer: </xsl:text>
-    <xsl:apply-templates/>
-  </p>
-</xsl:template>
-
-<xsl:template match="EnglishExample">
-  <p>
-    <xsl:text>Example: </xsl:text>
-    <xsl:apply-templates select="Text"/>
-  </p>
-</xsl:template>
-
-<xsl:template match="Pronunciation">
-  <xsl:value-of select="concat(' /',@Value,'/')"/>
-</xsl:template>
-
--->
+</div>

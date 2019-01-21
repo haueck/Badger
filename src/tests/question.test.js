@@ -2,6 +2,9 @@ import learn from "../components/question/learn.vue"
 import { mount } from "@vue/test-utils"
 
 function verify(testcase) {
+  let $bus = {
+    $emit() { }
+  }
   const wrapper = mount(learn, {
     propsData: {
       card: {
@@ -11,6 +14,9 @@ function verify(testcase) {
         "Unordered": testcase["Unordered"],
         "Raw": testcase["Raw"]
       }
+    },
+    mocks: {
+      $bus
     }
   })
   for (let i = 0; i < testcase["Input"].length; ++i) {

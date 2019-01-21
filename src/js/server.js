@@ -24,7 +24,7 @@ wss.on("connection", function connection(ws) {
       db.collection("Cards").add(msg["Card"]).then(reference => { console.log(reference.id) })
     }
     else if (msg["Message"] === "GetNextCard") {
-      const document = db.collection("Cards").doc("eVdXf8KsPPotfC23JOET")
+      const document = db.collection("Cards").doc("uoihje1GuVzYy0oorD8V")
       document.get().then((doc) => {
         if (!doc.exists) {
           ws.send("{ 'Message': 'Error' }")
