@@ -2,6 +2,10 @@
   "name": "Badger",
   "version": "0.0.1",
   "description": "Badger",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/haueck/Badger.git"
+  },
   "scripts": {
     "prebuild": "rm -rf public",
     "build": "./scripts/build.sh",
@@ -9,7 +13,7 @@
     "test": "jest --no-cache"
   },
   "author": "Rafal Kozik",
-  "license": "GPL",
+  "license": "GPL-3.0",
   "devDependencies": {
     "@fortawesome/fontawesome-free": "*",
     "@google-cloud/firestore": "*",
@@ -28,6 +32,7 @@
     "vue-router": "*",
     "vue-loader": "*",
     "babel-jest": "*",
+    "babel-core": "*",
     "bootstrap": "*",
     "popper.js": "*",
     "jquery-ui": "*",

@@ -6,11 +6,11 @@ export default {
   data () {
     return {
       answer: "",
-      pass: false,
       possible: [],
       correct: [],
       wrong: [],
-      complex: false
+      complex: false,
+      pass: false
     }
   },
   mixins: [ alternatives, contractions ],
@@ -44,7 +44,7 @@ export default {
         }
       }
       this.pass = this.wrong.length == 0
-      this.$bus.$emit('Verified')
+      this.$bus.$emit("Verified")
     }
   },
   computed: {

@@ -23,10 +23,11 @@ function verify(testcase) {
     wrapper.vm.answers[i] = testcase["Input"][i]
   }
   wrapper.vm.verify()
+  let fields = [ "Correct", "Possible", "Wrong" ]
   for (let j = 0; j < testcase["Expected"].length; ++j) {
-    for (let field of [ "Correct", "Possible", "Wrong" ]) {
-      if (!(field in testcase["Expected"][j])) {
-        testcase["Expected"][j][field] = []
+    for (let i = 0; i < fields.length; ++i) {
+      if (!(fields[i] in testcase["Expected"][j])) {
+        testcase["Expected"][j][fields[i]] = []
       }
     }
     let c = wrapper.vm.feedback[j]["Correct"]

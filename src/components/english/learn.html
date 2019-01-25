@@ -1,7 +1,7 @@
 <div>
   <div>Part of speech: {{ card['PartOfSpeech'].toLowerCase() }}</div>
   <div>Definition: <i>{{ card['Grammar'] }}</i> <strong>{{ card['UseOfPrepositions'] }}</strong> {{ card['Definition'] }}</div>
-  <div v-for="example in card['Examples']">Example: <i>{{ example }}</i></div>
+  <div v-for="example in card['CutExamples']">Example: <i>{{ example }}</i></div>
   <div v-for="related in card['Related']" v-if="related['Visibility'] == 'Show'">
     <span v-if="related['Description'].length">{{ related['Description'] }}:</span>
     <span v-else>Related word:</span>

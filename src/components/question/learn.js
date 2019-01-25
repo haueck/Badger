@@ -59,7 +59,7 @@ export default {
         }
       }
       this.pass = correct == this.count
-      this.$bus.$emit('Verified')
+      this.$bus.$emit("Verified")
     },
     compare(expectedAnswer, providedAnswer, raw) {
       let expected = []

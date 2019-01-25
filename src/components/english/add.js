@@ -1,4 +1,3 @@
-import vue from "vue"
 import alternatives from "components/alternatives"
 
 export default {

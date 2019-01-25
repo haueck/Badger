@@ -19,9 +19,10 @@ function verify(testcase) {
   })
   wrapper.vm.answer = testcase["Answer"]
   wrapper.vm.verify()
-  for (let field of [ "Correct", "Possible", "Wrong" ]) {
-    if (!(field in testcase)) {
-      testcase[field] = []
+  let fields = [ "Correct", "Possible", "Wrong" ]
+  for (let i = 0; i < fields.length; ++i) {
+    if (!(fields[i] in testcase)) {
+      testcase[fields[i]] = []
     }
   }
   expect(wrapper.vm.correct.length).toBe(testcase["Correct"].length)
@@ -110,4 +111,13 @@ describe("English", () => {
     })
   })
 
+  it("properly handles complex alternatives", () => {
+    verify({
+      "Word": "cast (an eye)/(one's eye/eyes) over sb/sth",
+      "Answer": "cast one's eye over sb/sth",
+      "Correct": [ "cast one's eye over sb", "cast one's eye over sth" ],
+      "Possible": [ "cast one's eyes over sb", "cast one's eyes over sth", "cast an eye over sb", "cast an eye over sth" ],
+      "Pass": true
+    })
+  })
 })
