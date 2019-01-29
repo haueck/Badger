@@ -5,6 +5,7 @@ const firestore = new Firestore({ projectId: process.env.GCP_PROJECT })
 exports.processCard = (event, context) => {
   const resource = context.resource
   console.log("Function triggered by change to: " +  resource)
+  // Add Queue and Hits when absent?
   if (event.value && event.value.fields["Type"].stringValue === "English") {
     console.log("Processing English card")
     if ("CutExamples" in event.value.fields) {
