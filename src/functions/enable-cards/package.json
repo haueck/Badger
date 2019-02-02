@@ -1,5 +1,5 @@
 {
-  "name": "badger-prepare-cards",
+  "name": "badger-enable-cards",
   "version": "0.0.1",
   "dependencies": {
     "@google-cloud/firestore": "*"

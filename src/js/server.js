@@ -32,7 +32,7 @@ wss.on("connection", function connection(ws) {
           ws.send(JSON.stringify(card))
         }
       }).catch(function(error) {
-          console.error("Error getting documents: ", error);
+          console.error("Error getting documents: ", error)
       })
     }
     else if (msg["Message"] === "GetCard") {

@@ -1,3 +1,4 @@
+import vue from "vue"
 import alternatives from "components/alternatives"
 
 export default {
@@ -44,10 +45,21 @@ export default {
       event.stopPropagation()
     },
     addRelated() {
+      let last = this.card["Related"].length
       this.card["Related"].push({
         "Word": "",
         "Description": "",
         "Visibility": "Hide"
+      })
+      vue.nextTick(() => {
+        this.$refs.related[last].focus()
+      })
+    },
+    addExample() {
+      let last = this.card["Examples"].length
+      this.card["Examples"].push("")
+      vue.nextTick(() => {
+        this.$refs.example[last].focus()
       })
     }
   }

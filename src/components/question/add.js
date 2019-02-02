@@ -42,10 +42,14 @@ export default {
       this.$bus.$emit("send", msg)
     },
     addAnswer() {
+      let last = this.card["Answers"].length
       this.card["Answers"].push({
         "Value": "",
         "Optional": false,
         "Brackets": false
+      })
+      vue.nextTick(() => {
+        this.$refs.answer[last].focus()
       })
     },
     onStart() {
