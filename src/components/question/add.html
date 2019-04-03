@@ -1,10 +1,10 @@
 <div>
    <tinymce id="tinymce" v-model="card['Question']">{{ card['Question'] }}</tinymce>
    <div class="answers">
-     <draggable v-if="dragging" v-model="trash" :options="{ group: 'answers' }" class="trash">
+     <draggable v-if="dragging" v-model="trash" group="answers" class="trash">
        <i class="fas fa-trash-alt"></i>
      </draggable>
-     <draggable v-model="card['Answers']" :options="{ handle: '.input-group-append', group: 'answers' }" @start="onStart" @end="onEnd" :move="onMove" class="inputs">
+     <draggable v-model="card['Answers']" handle=".input-group-append" group="answers" @start="onStart" @end="onEnd" :move="onMove" class="inputs">
        <div v-for="(answer, index) in card['Answers']" class="answer">
          Answer<span class="answer-index"> ({{index + 1}})</span>:<br>
          <div class="input-group">
