@@ -6,32 +6,44 @@ export default {
   components: { question, english },
   data() {
     return {
-      verified: false,
-      card: {
-        "Type": "None"
-      }
+      card: {}
     }
   },
+  beforeMount() {
+    this.initCard()
+  },
   mounted() {
-    this.$bus.$on("NextCard", card => {
-      vue.set(this, "card", card)
+    this.$bus.$on("NextCard", message => {
+      vue.set(this, "card", message["Card"])
+      this.id = message["CardId"]
     })
     this.$bus.$on("GetNextCard", () => {
-      this.verified = false
-      this.card["Type"] = "None"
+      this.initCard()
       this.getNextCard()
     })
-    this.$bus.$on("Verified", () => {
-      this.verified = true
+    this.$bus.$on("Graded", pass => {
+      vue.set(this.card, "Pass", pass)
+      vue.set(this.card, "Graded", true)
       vue.nextTick(() => {
         this.$refs.next.focus()
       })
+      this.sendResult(pass)
     })
     this.getNextCard()
   },
   methods: {
+    sendResult(pass) {
+      this.$bus.$emit("send", {
+        "Message": "Result",
+        "CardId": this.id,
+        "Pass": pass
+      })
+    },
     getNextCard() {
       this.$bus.$emit("send", { "Message": "GetNextCard" })
+    },
+    initCard() {
+      vue.set(this.card, "Type", "None")
     }
   }
 }

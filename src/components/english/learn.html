@@ -11,9 +11,8 @@
     Answer:<br/>
     <input type="text" class="form-control" spellcheck="false" v-on:keyup.enter="verify()" v-model="answer" ref="answer"/>
   </div>
-  <button v-if="!verified" v-on:click="verify()" class="btn btn-primary">Check</button>
-  <div v-if="verified">
-    <p v-if="pass">That's right! You rock!</p>
+  <div v-if="card['Graded']">
+    <p v-if="card['Pass']">That's right! You rock!</p>
     <p v-else>Wrong!</p>
     <p><strong>{{ card['Word'] }}</strong> /{{ card['Pronunciation'] }}/</p>
     <div v-if="complex">
@@ -28,4 +27,5 @@
       <i>{{ related['Word'] }}</i>
     </p>
   </div>
+  <button v-else v-on:click="verify()" class="btn btn-primary">Check</button>
 </div>

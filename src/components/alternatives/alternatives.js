@@ -3,7 +3,7 @@ import parse from "parenthesis"
 function addEmpty(tokens) {
   for (let i = 0; i + 2 < tokens.length; i = i + 2) {
     addEmpty(tokens[i + 1])
-    if (tokens[i].match(/(?<!\/)\($/) && tokens[i + 2].match(/^\)(?!\/)/)) {
+    if (tokens[i].match(/(?:^|[^/])\($/) && tokens[i + 2].match(/^\)(?!\/)/)) {
       tokens.splice(i + 2, 0, ")/(", [ "" ])
     }
   }

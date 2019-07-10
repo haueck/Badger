@@ -3,7 +3,8 @@ import { mount } from "@vue/test-utils"
 
 function verify(testcase) {
   let $bus = {
-    $emit() { }
+    pass: undefined,
+    $emit(signal, pass) { this.pass = pass }
   }
   const wrapper = mount(learn, {
     propsData: {
@@ -37,7 +38,7 @@ function verify(testcase) {
   for (let i = 0; i < wrapper.vm.wrong.length; ++i) {
     expect(testcase["Wrong"]).toContain(wrapper.vm.wrong[i])
   }
-  expect(wrapper.vm.pass).toBe(testcase["Pass"])
+  expect($bus.pass).toBe(testcase["Pass"])
 }
 
 describe("English", () => {

@@ -11,6 +11,7 @@ module.exports = {
     publicPath: "/js/",
     filename: "bundle.[contenthash].js"
   },
+  devtool: 'source-map',
   module: {
     rules: [
       {

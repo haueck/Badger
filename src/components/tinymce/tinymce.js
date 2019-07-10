@@ -46,7 +46,7 @@ export default {
       content_css: "/css/tinymce/content/default/content.min.css",
       toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image codesample",
       plugins: "autolink lists link image charmap print searchreplace visualblocks code nonbreaking insertdatetime media table paste codesample",
-      codesample_languages: [ { text: 'C++', value: 'cpp' }, { text: 'JavaScript', value: 'javascript' }, { text: 'Python', value: 'python' } ],
+      codesample_languages: [ { text: "C++", value: "cpp" }, { text: "JavaScript", value: "javascript" }, { text: "Python", value: "python" } ],
       init_instance_callback: (editor) => {
         editor.on("Change", () => {
           this.$emit("input", editor.getContent())

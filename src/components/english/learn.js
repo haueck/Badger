@@ -9,12 +9,11 @@ export default {
       possible: [],
       correct: [],
       wrong: [],
-      complex: false,
-      pass: false
+      complex: false
     }
   },
   mixins: [ alternatives, contractions ],
-  props: [ "card", "verified" ],
+  props: [ "card" ],
   components: { },
   mounted () {
     vue.nextTick(() => {
@@ -43,8 +42,7 @@ export default {
           this.wrong.push(answer)
         }
       }
-      this.pass = this.wrong.length == 0
-      this.$bus.$emit("Verified")
+      this.$bus.$emit("Graded", this.wrong.length == 0)
     }
   },
   computed: {

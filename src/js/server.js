@@ -14,37 +14,78 @@ app.use(express.static("public"))
     res.sendFile("/badger/public/index.html")
 })*/
 
-wss.on("connection", function connection(ws) {
+wss.on("connection", ws => {
   let user = db.collection("Users").doc("mhfzCGbFpYkjkpNgiQ14")
-  ws.on("message", function incoming(message) {
+  ws.on("message", message => {
     let msg = JSON.parse(message)
     if (msg["Message"] === "AddCard") {
       user.collection("Cards").add(msg["Card"]).then(reference => { console.log(reference.id) })
     }
     else if (msg["Message"] === "GetNextCard") {
       const query = user.collection("Cards").where("Queue", ">", 0).orderBy("Queue").limit(1)
-      query.get().then((snapshot) => {
+      query.get().then(snapshot => {
         if (snapshot.empty) {
           ws.send(JSON.stringify({ "Message": "Error" }))
         } else {
-          let card = snapshot.docs[0].data()
-          card["Message"] = "NextCard"
-          ws.send(JSON.stringify(card))
+          let doc = snapshot.docs[0]
+          ws.send(JSON.stringify({
+            "Message": "NextCard",
+            "Card": doc.data(),
+            "CardId": doc.id
+          }))
+          let tomorrow  = new Date()
+          tomorrow.setDate(tomorrow.getDate() + 1)
+          doc.ref.update({
+            "Queue": firestore.FieldValue.delete(),
+            "AvailableFrom": tomorrow
+          })
         }
-      }).catch(function(error) {
+      }).catch(error => {
           console.error("Error getting documents: ", error)
       })
     }
     else if (msg["Message"] === "GetCard") {
       const document = user.collection("Cards").doc(msg["CardId"])
-      document.get().then((doc) => {
+      document.get().then(doc => {
       if (!doc.exists) {
           ws.send(JSON.stringify({ "Message": "Error" }))
         } else {
           ws.send(JSON.stringify(doc.data()))
         }
       })
-    } else {
+    }
+    else if (msg["Message"] === "Result") {
+      let card = user.collection("Cards").doc(msg["CardId"])
+      card.get().then(doc => {
+        if (doc.exists) {
+          let successes = doc.data()["Successes"]
+          if (msg["Pass"]) {
+            successes = Math.min(successes + 1, 7)
+          }
+          let hiatus = {
+            0: 1,
+            1: 2,
+            2: 3,
+            3: 5,
+            4: 9,
+            5: 21,
+            6: 21,
+            7: 21
+          }
+          let available  = new Date()
+          available.setDate(available.getDate() + hiatus[successes])
+          card.update({
+            "Hits": firestore.FieldValue.increment(1),
+            "Successes": successes,
+            "AvailableFrom": available
+          })
+        }
+        else {
+          ws.send(JSON.stringify({ "Message": "Error" }))
+        }
+      })
+    }
+    else {
       ws.send(JSON.stringify({ "Message": "Error" }))
     }
   })

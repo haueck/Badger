@@ -7,12 +7,11 @@ export default {
     return {
       answers: [],
       feedback: [],
-      count: 0,
-      pass: false
+      count: 0
     }
   },
   mixins: [ alternatives, contractions ],
-  props: [ "card", "verified" ],
+  props: [ "card" ],
   components: { },
   mounted () {
     this.count = this.card["Answers"].length
@@ -58,8 +57,7 @@ export default {
           }
         }
       }
-      this.pass = correct == this.count
-      this.$bus.$emit("Verified")
+      this.$bus.$emit("Graded", correct == this.count)
     },
     compare(expectedAnswer, providedAnswer, raw) {
       let expected = []
