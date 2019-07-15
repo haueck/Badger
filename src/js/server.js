@@ -33,12 +33,12 @@ wss.on("connection", ws => {
             "Card": doc.data(),
             "CardId": doc.id
           }))
-          let tomorrow  = new Date()
+          /*let tomorrow  = new Date()
           tomorrow.setDate(tomorrow.getDate() + 1)
           doc.ref.update({
             "Queue": firestore.FieldValue.delete(),
             "AvailableFrom": tomorrow
-          })
+          })*/
         }
       }).catch(error => {
           console.error("Error getting documents: ", error)

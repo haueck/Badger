@@ -6,7 +6,7 @@ exports.processCard = (event, context) => {
   const resource = context.resource
   console.log("Function triggered by change to: " +  resource)
   // Add Successes, AvailableFrom and Hits when absent
-  if (event.value && event.value.fields["Type"].stringValue === "English") {
+  /*if (event.value && event.value.fields["Type"].stringValue === "English") {
     console.log("Processing English card")
     if ("CutExamples" in event.value.fields) {
       console.log("Updating...")
@@ -19,7 +19,7 @@ exports.processCard = (event, context) => {
       }
       return doc.set({ "CutExamples": cut }, { merge: true })
     }
-  }
+  }*/
 }
 
 /*

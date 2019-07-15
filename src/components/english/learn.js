@@ -1,6 +1,7 @@
 import vue from "vue"
 import contractions from "components/contractions"
 import alternatives from "components/alternatives"
+import examples from "components/examples"
 
 export default {
   data () {
@@ -12,13 +13,19 @@ export default {
       complex: false
     }
   },
-  mixins: [ alternatives, contractions ],
+  mixins: [ alternatives, contractions, examples ],
   props: [ "card" ],
   components: { },
   mounted () {
     vue.nextTick(() => {
       this.$refs.answer.focus()
     })
+    vue.set(this.card, "DisguisedExamples", [])
+    let list = this.card["Related"].filter(related => related["Visibility"] == "Hide")
+    list.unshift(this.card['Word'])
+    for (let example of this.card["Examples"]) {
+      this.card["DisguisedExamples"].push(this.concealWords(example, this.prepareWords(list)))
+    }
   },
   methods: {
     verify() {
@@ -46,6 +53,7 @@ export default {
     }
   },
   computed: {
+    // Gdzie to jest uzyte?
     grammar() {
       let map = {
         "PhrasalVerb": "phrasal verb",

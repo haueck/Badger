@@ -1,4 +1,5 @@
 import learn from "../components/english/learn.vue"
+import add from "../components/english/add.vue"
 import { mount } from "@vue/test-utils"
 
 function verify(testcase) {
@@ -11,7 +12,9 @@ function verify(testcase) {
       card: {
         "Type": "English",
         "Word": testcase["Word"],
-        "PartOfSpeech": "Noun"
+        "PartOfSpeech": "Noun",
+        "Examples": [],
+        "Related": []
       },
     },
     mocks: {
@@ -41,7 +44,7 @@ function verify(testcase) {
   expect($bus.pass).toBe(testcase["Pass"])
 }
 
-describe("English", () => {
+describe("English grading", () => {
 
   it("properly handles a successful attempt", () => {
     verify({
@@ -121,4 +124,30 @@ describe("English", () => {
       "Pass": true
     })
   })
+})
+
+describe("English words concealing", () => {
+
+    it("properly handles a single word", () => {
+      let $bus = {}
+      const wrapper = mount(add, {
+        propsData: {
+          card: {
+            "Type": "English",
+            "Word": "embark",
+            "PartOfSpeech": "Noun",
+            "Related": [],
+            "Examples": [ "Passengers with cars must embark first" ],
+            "FullExamples": [ "" ]
+          },
+        },
+        mocks: {
+          $bus
+        }
+      })
+      wrapper.vm.updateExamples()
+      expect(wrapper.vm.card["Examples"][0]).toBe("Passengers with cars must ~ first")
+      expect(wrapper.vm.card["FullExamples"][0]).toBe("Passengers with cars must embark first")
+    })
+
 })

@@ -11,6 +11,9 @@ module.exports = {
     publicPath: "/js/",
     filename: "bundle.[contenthash].js"
   },
+  node: {
+    fs: "empty"
+  },
   devtool: 'source-map',
   module: {
     rules: [
@@ -25,6 +28,10 @@ module.exports = {
       {
         test: /\.(png|woff|woff2|eot|ttf|svg|gif)$/,
         loader: "url-loader?limit=100000"
+      },
+      {
+        test: /\.txt$/,
+        use: 'raw-loader'
       }
     ]
   },
