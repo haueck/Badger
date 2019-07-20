@@ -6,39 +6,39 @@ describe("Concealing", () => {
   let vm = mount(concealing).vm
 
   it("correctly preprocesses [ 'one', 'two', 'three' ]", () => {
-    expect(vm.prepareWords([ 'one', 'two', 'three' ])).toStrictEqual([ 'one', 'two', 'three' ])
+    expect(vm.prepareWords([ "one", "two", "three" ])).toStrictEqual([ "one", "two", "three" ])
   })
 
   it("correctly preprocesses [ 'one', 'two', 'two' ]", () => {
-    expect(vm.prepareWords([ 'one', 'two', 'two' ])).toStrictEqual([ 'one', 'two' ])
+    expect(vm.prepareWords([ "one", "two", "two" ])).toStrictEqual([ "one", "two" ])
   })
 
   it("correctly preprocesses [ 'one two two' ]", () => {
-    expect(vm.prepareWords([ 'one two two' ])).toStrictEqual([ 'one', 'two' ])
+    expect(vm.prepareWords([ "one two two" ])).toStrictEqual([ "one", "two" ])
   })
 
   it("correctly preprocesses [ 'cast one's mind back' ]", () => {
-    expect(vm.prepareWords([ 'cast one\'s mind back' ])).toStrictEqual([ 'cast', 'one\'s', 'mind', 'back' ])
+    expect(vm.prepareWords([ "cast one's mind back" ])).toStrictEqual([ "cast", "one's", "mind", "back" ])
   })
 
   it("correctly preprocesses [ 'cast (an eye)/(one's eye/eyes) over sb/sth' ]", () => {
-    expect(vm.prepareWords([ 'cast (an eye)/(one\'s eye/eyes) over sb/sth' ])).toStrictEqual([ 'cast', 'an', 'eye', 'over', 'sb', 'sth', 'one\'s', 'eyes' ])
+    expect(vm.prepareWords([ "cast (an eye)/(one's eye/eyes) over sb/sth" ])).toStrictEqual([ "cast", "an", "eye", "over", "sb", "sth", "one's", "eyes" ])
   })
 
   it("correctly preprocesses [ 'rear-view mirror' ]", () => {
-    expect(vm.prepareWords([ 'rear-view mirror' ])).toStrictEqual([ 'rear-view', 'mirror' ])
+    expect(vm.prepareWords([ "rear-view mirror" ])).toStrictEqual([ "rear-view", "mirror" ])
   })
 
   it("correctly preprocesses [ 'stick'em (up!)/up' ]", () => {
-    expect(vm.prepareWords([ 'stick\'em (up!)/up' ])).toStrictEqual([ 'stick\'em', 'up' ])
+    expect(vm.prepareWords([ "stick'em (up!)/up" ])).toStrictEqual([ "stick'em", "up" ])
   })
 
   it("correctly preprocesses [ 'nothing venture, nothing gain/win' ]", () => {
-    expect(vm.prepareWords([ 'nothing venture, nothing gain/win' ])).toStrictEqual([ 'nothing', 'venture', "gain", 'win' ])
+    expect(vm.prepareWords([ "nothing venture, nothing gain/win" ])).toStrictEqual([ "nothing", "venture", "gain", "win" ])
   })
 
   it("correctly preprocesses [ 'Holy cow!' ]", () => {
-    expect(vm.prepareWords([ 'Holy cow!' ])).toStrictEqual([ 'holy', 'cow' ])
+    expect(vm.prepareWords([ "Holy cow!" ])).toStrictEqual([ "holy", "cow" ])
   })
 
   it("handles 'I would be wiser to wait few days'", () => {

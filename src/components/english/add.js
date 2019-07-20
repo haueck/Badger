@@ -37,12 +37,11 @@ export default {
   },
   methods: {
     add() {
-      /*let msg = {
+      let msg = {
         "Message": "AddCard",
         "Card": this.card
       }
-      this.$bus.$emit("send", msg)*/
-
+      this.$bus.$emit("send", msg)
     },
     ipa(event) {
       this.card["Pronunciation"] += event.target.textContent
@@ -69,7 +68,7 @@ export default {
     },
     words() {
       let list = this.card["Related"].filter(related => related["Visibility"] == "Hide").map(related => related["Word"])
-      list.unshift(this.card['Word'])
+      list.unshift(this.card["Word"])
       return this.prepareWords(list)
     },
     replaceExample(index) {
@@ -81,18 +80,13 @@ export default {
     },
     updateExamples() {
       for (let i = 0; i < this.card["Examples"].length; ++i) {
+        this.restoreExample(i)
         this.replaceExample(i)
       }
     },
-    wordsChanged() {
-      for (let i = 0; i < this.card["Examples"].length; ++i) {
-        this.restoreExample(i)
-      }
-      this.updateExamples()
-    },
     relatedChanged(index) {
       if (this.card["Related"][index]["Visibility"] == "Hide") {
-        this.wordsChanged()
+        this.updateExamples()
       }
     }
   }

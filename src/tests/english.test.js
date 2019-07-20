@@ -141,7 +141,7 @@ describe("English", () => {
         $bus: {}
       }
     })
-    wrapper.vm.updateExamples()
+    wrapper.vm.replaceExample(0)
     expect(wrapper.vm.card["Examples"][0]).toBe("Passengers with cars must ~ first")
     expect(wrapper.vm.card["FullExamples"][0]).toBe("Passengers with cars must embark first")
   })
@@ -162,7 +162,8 @@ describe("English", () => {
         $bus: {}
       }
     })
-    wrapper.vm.updateExamples()
+    wrapper.vm.replaceExample(0)
+    wrapper.vm.replaceExample(1)
     expect(wrapper.vm.card["Examples"][0]).toBe("We don't want to ~ ~ ~ ~ losing their business")
     expect(wrapper.vm.card["Examples"][1]).toBe("Investment is all about ~ing ~s")
   })
@@ -187,7 +188,8 @@ describe("English", () => {
         $bus: {}
       }
     })
-    wrapper.vm.updateExamples()
+    wrapper.vm.replaceExample(0)
+    wrapper.vm.replaceExample(1)
     expect(wrapper.vm.card["Examples"][0]).toBe("The New York ~")
     expect(wrapper.vm.card["Examples"][1]).toBe("The London ~")
   })
@@ -212,7 +214,8 @@ describe("English", () => {
         $bus: {}
       }
     })
-    wrapper.vm.updateExamples()
+    wrapper.vm.replaceExample(0)
+    wrapper.vm.replaceExample(1)
     expect(wrapper.vm.card["Examples"][0]).toBe("The New York subway")
     expect(wrapper.vm.card["Examples"][1]).toBe("The London ~")
     wrapper.vm.card["Related"][0]["Word"] = "subway"

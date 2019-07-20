@@ -28,7 +28,6 @@
     "parenthesis": "*",
     "webpack-cli": "*",
     "file-loader": "*",
-    "wordnet-db": "*",
     "url-loader": "*",
     "vue-router": "*",
     "raw-loader": "*",

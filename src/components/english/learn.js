@@ -21,10 +21,10 @@ export default {
       this.$refs.answer.focus()
     })
     vue.set(this.card, "DisguisedExamples", [])
-    let list = this.card["Related"].filter(related => related["Visibility"] == "Hide")
-    list.unshift(this.card['Word'])
+    let related = this.card["Related"].filter(related => related["Visibility"] == "Hide")
+    let words = this.prepareWords([ this.card["Word"] ].concat(related))
     for (let example of this.card["Examples"]) {
-      this.card["DisguisedExamples"].push(this.concealWords(example, this.prepareWords(list)))
+      this.card["DisguisedExamples"].push(this.concealWords(example, words))
     }
   },
   methods: {
@@ -53,7 +53,6 @@ export default {
     }
   },
   computed: {
-    // Gdzie to jest uzyte?
     grammar() {
       let map = {
         "PhrasalVerb": "phrasal verb",

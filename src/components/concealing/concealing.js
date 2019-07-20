@@ -9,7 +9,7 @@ import rules from "natural/lib/natural/brill_pos_tagger/data/English/tr_from_pos
 
 export default {
   created() {
-    let defaultCategory = 'N'
+    let defaultCategory = "N"
     this.lexicon = new natural.Lexicon(null, defaultCategory)
     this.lexicon.lexicon = lexicon
     this.lexicon.addWord("wading", [ "VBG" ])
@@ -59,7 +59,7 @@ export default {
     patterns.push("[A-zÀ-ÿąćęłńóśźż-]+")
     patterns.push("[€$£]?[0-9]+[.,%0-9A-zÀ-ÿąćęłńóśźż-]*")
     patterns.push(".|!|\\?|\"|:|;|,|-")
-    var re = new RegExp("(" + patterns.join("|") + ")", "i");
+    let re = new RegExp("(" + patterns.join("|") + ")", "i")
     this.tokenizer = new natural.RegexpTokenizer({ pattern: re })
   },
   mixins: [ dictionary, alternatives ],
@@ -97,7 +97,7 @@ export default {
       let result = []
       let index = {}
       for (let phrase of phrases) {
-        let stripped = phrase.replace(/[…?!,.;:\[\]“”‘’]/g, "")
+        let stripped = phrase.replace(/[…?!,.;:[\]“”‘’]/g, "")
         for (let alternative of this.alternatives(stripped)) {
           for (let word of alternative.split(" ")) {
             if (!(word in index)) {
@@ -113,10 +113,6 @@ export default {
       let tokens = this.tokenizer.tokenize(sentence)
       let tags = this.tagger.tag(tokens.map(token => token.toLowerCase())).taggedWords
       let conceal = words.map(word => word.toLowerCase())
-      //console.log(tags)
-      //console.log("foulest:", this.stem("foulest", "JJS"))
-      //console.log("wiser:",this.stem("wiser", "JJR"))
-      //console.log("leaner:",this.stem("leaner", "JJR"))
       let concealed = []
       for (let i = 0; i < tags.length; ++i) {
         let matched = false
@@ -196,7 +192,7 @@ export default {
             result = result + token
             space = ""
           }
-          else if (token.match(/[(\[“‘]/)) {
+          else if (token.match(/[([“‘]/)) {
             result = result + space + token
             space = ""
           }
