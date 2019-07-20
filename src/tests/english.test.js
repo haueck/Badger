@@ -1,4 +1,5 @@
 import learn from "../components/english/learn.vue"
+import add from "../components/english/add.vue"
 import { mount } from "@vue/test-utils"
 
 function verify(testcase) {
@@ -11,7 +12,9 @@ function verify(testcase) {
       card: {
         "Type": "English",
         "Word": testcase["Word"],
-        "PartOfSpeech": "Noun"
+        "PartOfSpeech": "Noun",
+        "Examples": [],
+        "Related": []
       },
     },
     mocks: {
@@ -19,7 +22,7 @@ function verify(testcase) {
     }
   })
   wrapper.vm.answer = testcase["Answer"]
-  wrapper.vm.verify()
+  wrapper.vm.grade()
   let fields = [ "Correct", "Possible", "Wrong" ]
   for (let i = 0; i < fields.length; ++i) {
     if (!(fields[i] in testcase)) {
@@ -43,7 +46,7 @@ function verify(testcase) {
 
 describe("English", () => {
 
-  it("properly handles a successful attempt", () => {
+  it("properly grades a successful attempt", () => {
     verify({
       "Word": "test",
       "Answer": "test",
@@ -52,7 +55,7 @@ describe("English", () => {
     })
   })
 
-  it("properly handles an unsuccessful attempt", () => {
+  it("properly grades an unsuccessful attempt", () => {
     verify({
       "Word": "test",
       "Answer": "wrong answer",
@@ -62,7 +65,7 @@ describe("English", () => {
     })
   })
 
-  it("properly handles alternatives", () => {
+  it("properly grades alternatives", () => {
     verify({
       "Word": "cast/shed/throw light on sth",
       "Answer": "cast light on sth",
@@ -72,7 +75,7 @@ describe("English", () => {
     })
   })
 
-  it("properly handles alternatives", () => {
+  it("properly grades alternatives", () => {
     verify({
       "Word": "cast/shed/throw light on sth",
       "Answer": "cast/shed light on sth",
@@ -82,7 +85,7 @@ describe("English", () => {
     })
   })
 
-  it("properly handles alternatives", () => {
+  it("properly grades alternatives", () => {
     verify({
       "Word": "cast/shed/throw light on sth",
       "Answer": "cast/shed/throw light on sth",
@@ -91,7 +94,7 @@ describe("English", () => {
     })
   })
 
-  it("properly handles alternatives", () => {
+  it("properly grades alternatives", () => {
     verify({
       "Word": "cast/shed/throw light on sth",
       "Answer": "fire light on sth",
@@ -101,7 +104,7 @@ describe("English", () => {
     })
   })
 
-  it("properly handles alternatives", () => {
+  it("properly grades alternatives", () => {
     verify({
       "Word": "cast/shed/throw light on sth",
       "Answer": "cast/fire light on sth",
@@ -112,7 +115,7 @@ describe("English", () => {
     })
   })
 
-  it("properly handles complex alternatives", () => {
+  it("properly grades complex alternatives", () => {
     verify({
       "Word": "cast (an eye)/(one's eye/eyes) over sb/sth",
       "Answer": "cast one's eye over sb/sth",
@@ -121,4 +124,104 @@ describe("English", () => {
       "Pass": true
     })
   })
+
+  it("properly conceals a single word", () => {
+    const wrapper = mount(add, {
+      propsData: {
+        card: {
+          "Type": "English",
+          "Word": "embark",
+          "PartOfSpeech": "Noun",
+          "Related": [],
+          "Examples": [ "Passengers with cars must embark first" ],
+          "FullExamples": [ "" ]
+        },
+      },
+      mocks: {
+        $bus: {}
+      }
+    })
+    wrapper.vm.replaceExample(0)
+    expect(wrapper.vm.card["Examples"][0]).toBe("Passengers with cars must ~ first")
+    expect(wrapper.vm.card["FullExamples"][0]).toBe("Passengers with cars must embark first")
+  })
+
+  it("properly conceals a complex phrase", () => {
+    const wrapper = mount(add, {
+      propsData: {
+        card: {
+          "Type": "English",
+          "Word": "run (the risk (of sth/(doing sth)))/risks",
+          "PartOfSpeech": "Verb",
+          "Related": [],
+          "Examples": [ "We don't want to run the risk of losing their business", "Investment is all about running risks" ],
+          "FullExamples": [ "" ]
+        },
+      },
+      mocks: {
+        $bus: {}
+      }
+    })
+    wrapper.vm.replaceExample(0)
+    wrapper.vm.replaceExample(1)
+    expect(wrapper.vm.card["Examples"][0]).toBe("We don't want to ~ ~ ~ ~ losing their business")
+    expect(wrapper.vm.card["Examples"][1]).toBe("Investment is all about ~ing ~s")
+  })
+
+  it("properly conceals a related word", () => {
+    const wrapper = mount(add, {
+      propsData: {
+        card: {
+          "Type": "English",
+          "Word": "underground",
+          "PartOfSpeech": "Noun",
+          "Related": [{
+            "Word": "subway",
+            "Description": "NAmE",
+            "Visibility": "Hide"
+          }],
+          "Examples": [ "The New York subway", "The London Underground" ],
+          "FullExamples": [ "" ]
+        },
+      },
+      mocks: {
+        $bus: {}
+      }
+    })
+    wrapper.vm.replaceExample(0)
+    wrapper.vm.replaceExample(1)
+    expect(wrapper.vm.card["Examples"][0]).toBe("The New York ~")
+    expect(wrapper.vm.card["Examples"][1]).toBe("The London ~")
+  })
+
+  it("properly conceals after an update", () => {
+    const wrapper = mount(add, {
+      propsData: {
+        card: {
+          "Type": "English",
+          "Word": "underground",
+          "PartOfSpeech": "Noun",
+          "Related": [{
+            "Word": "suway",
+            "Description": "NAmE",
+            "Visibility": "Hide"
+          }],
+          "Examples": [ "The New York subway", "The London Underground" ],
+          "FullExamples": [ "" ]
+        },
+      },
+      mocks: {
+        $bus: {}
+      }
+    })
+    wrapper.vm.replaceExample(0)
+    wrapper.vm.replaceExample(1)
+    expect(wrapper.vm.card["Examples"][0]).toBe("The New York subway")
+    expect(wrapper.vm.card["Examples"][1]).toBe("The London ~")
+    wrapper.vm.card["Related"][0]["Word"] = "subway"
+    wrapper.vm.relatedChanged(0)
+    expect(wrapper.vm.card["Examples"][0]).toBe("The New York ~")
+    expect(wrapper.vm.card["Examples"][1]).toBe("The London ~")
+  })
+
 })

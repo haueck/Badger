@@ -22,7 +22,7 @@ export default {
     })
   },
   methods: {
-    verify() {
+    grade() {
       let correct = 0
       if (this.card["Unordered"]) {
         let used = new Array(this.count)
