@@ -1,7 +1,7 @@
 import vue from "vue"
 import contractions from "components/contractions"
 import alternatives from "components/alternatives"
-import examples from "components/examples"
+import concealing from "components/concealing"
 
 export default {
   data () {
@@ -13,7 +13,7 @@ export default {
       complex: false
     }
   },
-  mixins: [ alternatives, contractions, examples ],
+  mixins: [ alternatives, contractions, concealing ],
   props: [ "card" ],
   components: { },
   mounted () {
@@ -28,7 +28,7 @@ export default {
     }
   },
   methods: {
-    verify() {
+    grade() {
       let provided = this.alternatives(this.answer)
       let expected = this.alternatives(this.card["Word"])
       this.complex = expected.length > 1

@@ -2,7 +2,7 @@
   <div>
     Word:<br/>
     <div class="input-group">
-      <input type="text" class="form-control" v-model="card['Word']" @blur="updateExamples()"/>
+      <input type="text" class="form-control" v-model="card['Word']" @blur="wordsChanged()"/>
       <div class="input-group-append" data-toggle="collapse" data-target="#help">
         <button class="btn btn-outline-secondary"><i class="fas fa-info-circle"></i></button>
       </div>
@@ -84,7 +84,7 @@
     </div>
     <div>
       While learning:<br/>
-      <select class="form-control" v-model="related['Visibility']">
+      <select class="form-control" v-model="related['Visibility']" @change="wordsChanged()">
         <option value="Hide">Show after giving an answer</option>
         <option value="Show">Visible all the time</option>
       </select>

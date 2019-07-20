@@ -9,7 +9,7 @@
   </div>
   <div>
     Answer:<br/>
-    <input type="text" class="form-control" spellcheck="false" v-on:keyup.enter="verify()" v-model="answer" ref="answer"/>
+    <input type="text" class="form-control" spellcheck="false" v-on:keyup.enter="grade()" v-model="answer" ref="answer"/>
   </div>
   <div v-if="card['Graded']">
     <p v-if="card['Pass']">That's right! You rock!</p>
@@ -27,5 +27,5 @@
       <i>{{ related['Word'] }}</i>
     </p>
   </div>
-  <button v-else v-on:click="verify()" class="btn btn-primary">Check</button>
+  <button v-else v-on:click="grade()" class="btn btn-primary">Check</button>
 </div>

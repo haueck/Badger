@@ -1,5 +1,5 @@
 import vue from "vue"
-import examples from "components/examples"
+import concealing from "components/concealing"
 import alternatives from "components/alternatives"
 
 export default {
@@ -32,7 +32,7 @@ export default {
     }
   },
   components: { alternatives },
-  mixins: [ examples ],
+  mixins: [ concealing ],
   mounted () {
   },
   methods: {
@@ -68,7 +68,7 @@ export default {
       })
     },
     words() {
-      let list = this.card["Related"].filter(related => related["Visibility"] == "Hide")
+      let list = this.card["Related"].filter(related => related["Visibility"] == "Hide").map(related => related["Word"])
       list.unshift(this.card['Word'])
       return this.prepareWords(list)
     },
@@ -84,9 +84,15 @@ export default {
         this.replaceExample(i)
       }
     },
+    wordsChanged() {
+      for (let i = 0; i < this.card["Examples"].length; ++i) {
+        this.restoreExample(i)
+      }
+      this.updateExamples()
+    },
     relatedChanged(index) {
       if (this.card["Related"][index]["Visibility"] == "Hide") {
-        this.updateExamples()
+        this.wordsChanged()
       }
     }
   }

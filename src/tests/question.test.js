@@ -23,7 +23,7 @@ function verify(testcase) {
   for (let i = 0; i < testcase["Input"].length; ++i) {
     wrapper.vm.answers[i] = testcase["Input"][i]
   }
-  wrapper.vm.verify()
+  wrapper.vm.grade()
   let fields = [ "Correct", "Possible", "Wrong" ]
   for (let j = 0; j < testcase["Expected"].length; ++j) {
     for (let i = 0; i < fields.length; ++i) {
