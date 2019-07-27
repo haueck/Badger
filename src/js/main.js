@@ -3,6 +3,7 @@ import store from "store"
 import router from "vue-router"
 import learn from "components/learn"
 import add from "components/add"
+import toasts from "components/toasts"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "bootstrap/dist/js/bootstrap.min.js"
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -30,7 +31,7 @@ window.addEventListener("load", () => {
     el: "#application",
     store: store,
     router: new router({ routes }),
-    components: { },
+    components: { toasts },
     data() {
       return {
           ws: Object
@@ -51,7 +52,6 @@ window.addEventListener("load", () => {
         }
       }
     },
-    methods: {},
     destroyed() {
       this.ws.close()
     }

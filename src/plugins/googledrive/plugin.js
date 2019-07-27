@@ -1,3 +1,4 @@
+/*global tinymce gapi google*/
 import icon from "!!raw-loader!./googledrive.svg"
 
 tinymce.util.Tools.resolve("tinymce.PluginManager").add("googledrive", function(editor) {
@@ -61,7 +62,7 @@ tinymce.util.Tools.resolve("tinymce.PluginManager").add("googledrive", function(
     if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
       let doc = data[google.picker.Response.DOCUMENTS][0]
       let url = doc[google.picker.Document.URL]
-      let match = url.match(/\/file\/d\/([^\/]+)/)
+      let match = url.match(/\/file\/d\/([^/]+)/)
       if (match) {
         editor.insertContent("<img src=\"http://drive.google.com/uc?export=view&id=" + match[1] + "\">")
       }
