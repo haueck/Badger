@@ -7,7 +7,7 @@
     <div v-for="(answer, index) in answers" class="answer">
       <div>Answer<span class="answer-index"> {{index + 1}}</span>:</div>
       <div class="answer-input">
-        <input type="text" v-on:keyup.enter="grade($event)" :class="'form-control answer-' + (card['Graded'] ? feedback[index]['Pass'] : 'not-graded')" v-model="answers[index]" ref="answer">
+        <input type="text" v-on:keyup.enter="grade($event)" :class="'form-control answer-' + (card['Graded'] ? feedback[index]['Pass'] : 'not-graded')" v-model="answers[index]" ref="answer" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false">
       </div>
       <div v-if="card['Graded']">
         <img v-if="feedback[index]['Pass']" src="/images/correct.png">

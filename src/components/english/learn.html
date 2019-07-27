@@ -9,7 +9,7 @@
   </div>
   <div>
     Answer:<br/>
-    <input type="text" class="form-control" spellcheck="false" v-on:keyup.enter="grade()" v-model="answer" ref="answer"/>
+    <input type="text" class="form-control" v-on:keyup.enter="grade()" v-model="answer" ref="answer" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false"/>
   </div>
   <div v-if="card['Graded']">
     <p v-if="card['Pass']">That's right! You rock!</p>

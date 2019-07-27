@@ -15,6 +15,7 @@ import "tinymce/plugins/media"
 import "tinymce/plugins/table"
 import "tinymce/plugins/codesample"
 import "tinymce/plugins/paste"
+import "plugins/googledrive"
 import "prismjs"
 
 export default {
@@ -44,8 +45,8 @@ export default {
       entity_encoding: "raw",
       skin_url: "/css/tinymce/ui/oxide",
       content_css: "/css/tinymce/content/default/content.min.css",
-      toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image codesample",
-      plugins: "autolink lists link image charmap print searchreplace visualblocks code nonbreaking insertdatetime media table paste codesample",
+      toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link codesample image googledrive",
+      plugins: "autolink lists link image charmap print searchreplace visualblocks code nonbreaking insertdatetime media table paste codesample googledrive",
       codesample_languages: [ { text: "C++", value: "cpp" }, { text: "JavaScript", value: "javascript" }, { text: "Python", value: "python" } ],
       init_instance_callback: (editor) => {
         editor.on("Change", () => {
