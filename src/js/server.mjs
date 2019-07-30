@@ -1,18 +1,30 @@
-const express = require("express")
-const http = require("http")
-const ws = require("ws")
+//const {FirestoreStore} = require("@google-cloud/connect-firestore")
+import firestore from "@google-cloud/firestore"
+import session from "express-session"
+import express from "express"
+import http from "http"
+import ws from "ws"
+import secrets from "./secrets.mjs"
 
 const app = express()
 const server = http.createServer(null, app)
 const wss = new ws.Server({ server })
-const firestore = require("@google-cloud/firestore")
 const db = new firestore({ projectId: "badger-218310" })
 
 app.use(express.static("public"))
-
-/*app.get([ "/", "/add", "/learn" ], (req, res) => {
-    res.sendFile("/badger/public/index.html")
-})*/
+app.use(
+  session({
+    /*store: new FirestoreStore({
+      dataset: new Firestore({
+        projectId: "badger-218310",
+        kind: "express-sessions"
+      })
+    }),*/
+    resave: false,
+    secret: secrets["Sessions"],
+    saveUninitialized: true,
+  })
+)
 
 wss.on("connection", ws => {
   let user = db.collection("Users").doc("mhfzCGbFpYkjkpNgiQ14")

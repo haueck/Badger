@@ -1,9 +1,8 @@
 /*global tinymce gapi google*/
 import icon from "!!raw-loader!./googledrive.svg"
+import secrets from "js/secrets.mjs"
 
 tinymce.util.Tools.resolve("tinymce.PluginManager").add("googledrive", function(editor) {
-  let clientId = ""
-  let devKey = ""
   let scope = "https://www.googleapis.com/auth/drive.readonly"
   let pickerApiLoaded = false
   let pickerRequested = false
@@ -16,7 +15,7 @@ tinymce.util.Tools.resolve("tinymce.PluginManager").add("googledrive", function(
       signIn()
     })
     gapi.load("auth2", () => {
-      gapi.auth2.init({ client_id: clientId }).then(auth => {
+      gapi.auth2.init({ client_id: secrets["ClientId"] }).then(auth => {
         apiInitiated = true
         googleAuth = auth
         signIn()
@@ -51,7 +50,7 @@ tinymce.util.Tools.resolve("tinymce.PluginManager").add("googledrive", function(
     let picker = new google.picker.PickerBuilder().
         addView(google.picker.ViewId.DOCS_IMAGES).
         setOAuthToken(token).
-        setDeveloperKey(devKey).
+        setDeveloperKey(secrets["DeveloperKey"]).
         setCallback(insertImage).
         build()
     picker.setVisible(true)

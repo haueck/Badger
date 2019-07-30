@@ -1,4 +1,4 @@
-FROM node:10-stretch
+FROM node:12-buster
 
 WORKDIR /badger
 RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y dumb-init
