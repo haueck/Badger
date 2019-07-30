@@ -4,17 +4,17 @@ let HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require("vue-loader")
 
 module.exports = {
-  mode: "none",
+  mode: "development",
   entry: "./src/js/main.js",
   output: {
     path: __dirname + "/public/js",
     publicPath: "/js/",
-    filename: "bundle.[contenthash].js"
+    filename: "bundle.js"
   },
   node: {
     fs: "empty"
   },
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {

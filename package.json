@@ -7,20 +7,23 @@
     "url": "https://github.com/haueck/Badger.git"
   },
   "scripts": {
-    "prebuild": "rm -rf public",
-    "build": "./scripts/build.sh",
+    "static": "./scripts/static.sh",
     "eslint": "eslint src",
+    "build": "./scripts/build.sh",
+    "watch": "webpack --watch",
     "test": "jest --no-cache"
   },
   "author": "Rafal Kozik",
   "license": "GPL-3.0",
   "devDependencies": {
+    "@google-cloud/connect-firestore": "*",
     "@fortawesome/fontawesome-free": "*",
     "@google-cloud/firestore": "*",
     "vue-template-compiler": "*",
     "html-webpack-plugin": "*",
     "babel-preset-env": "*",
     "@vue/test-utils": "*",
+    "express-session": "*",
     "jest-raw-loader": "*",
     "expose-loader": "*",
     "style-loader": "*",
