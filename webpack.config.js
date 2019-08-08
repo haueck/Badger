@@ -5,11 +5,14 @@ const { VueLoaderPlugin } = require("vue-loader")
 
 module.exports = {
   mode: "development",
-  entry: "./src/js/main.js",
+  entry: {
+    app: "./src/client/app.js",
+    welcome: "./src/client/welcome.js"
+  },
   output: {
     path: __dirname + "/public/js",
     publicPath: "/js/",
-    filename: "bundle.js"
+    filename: "[name].js"
   },
   node: {
     fs: "empty"
@@ -40,7 +43,7 @@ module.exports = {
       vue: "vue/dist/vue.js"
     },
     extensions: [".js", ".vue"],
-    modules: [ "node_modules", path.resolve(__dirname, "src/js") , path.resolve(__dirname, "src") ],
+    modules: [ "node_modules", path.resolve(__dirname, "src/client") , path.resolve(__dirname, "src") ],
   },
   plugins: [
     new webpack.ProvidePlugin({

@@ -1,0 +1,65 @@
+<div>
+  <nav>
+    <div class="nav nav-tabs">
+      <a class="nav-item nav-link active" :data-toggle="working ? 'none' : 'tab'" href="#nav-sign-in">Sign in</a>
+      <a class="nav-item nav-link" :data-toggle="working ? 'none' : 'tab'" href="#nav-sign-up">Sign up</a>
+    </div>
+  </nav>
+  <div class="tab-content">
+    <div class="tab-pane fade show active border-left border-right" id="nav-sign-in">
+      <form>
+        <div class="form-group">
+          <div>E-mail</div>
+          <input type="email" name="email" class="form-control" placeholder="E-mail" required/>
+        </div>
+        <div class="form-group">
+          <div>Password</div>
+          <input type="password" name="password" class="form-control" placeholder="Password" required/>
+        </div>
+        <div class="form-group">
+          <a href="/password.html">Forgot your password?</a>
+        </div>
+        <div class="form-group">
+          <button type="button" name="button" class="btn btn-primary" @click="submit($event, '/signin')" :disabled="working">Sign in</button>
+        </div>
+      </form>
+    </div>
+    <div class="tab-pane fade border-left border-right" id="nav-sign-up" role="tabpanel" aria-labelledby="nav-sign-up-tab">
+      <form>
+        <div class="form-group">
+          <div>Firstname</div>
+          <input type="text" name="firstname" class="form-control" placeholder="Firstname" required/>
+        </div>
+        <div class="form-group">
+          <div>Lastname</div>
+          <input type="text" name="lastname" class="form-control" placeholder="Lastname" required/>
+        </div>
+        <div class="form-group">
+          <div>E-mail</div>
+          <input type="email" name="email" class="form-control" placeholder="E-mail" required/>
+        </div>
+        <div class="form-group">
+          <div>Password</div>
+          <input type="password" name="password" class="form-control" placeholder="Password" required/>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="terms" required> I agree to the <a href="/terms.html">Terms of Service</a>
+          </label>
+        </div>
+        <div class="form-group">
+          <button type="button" name="button" class="btn btn-primary" @click="submit($event, '/signup')" :disabled="working">Sign up</button>
+        </div>
+      </form>
+    </div>
+    <div class="border-bottom border-left border-right status-box">
+      <div v-if="working">
+        <span class="spinner-border spinner-border-sm"></span> Please wait...
+      </div>
+      <div v-else-if="invalidInput">Please correct your input and try again</div>
+      <div v-else-if="invalidCredentials">Incorrect email or password</div>
+      <div v-else-if="emailExists">Email already exists</div>
+      <div v-else-if="error">There was a problem</div>
+    </div>
+  </div>
+</div>

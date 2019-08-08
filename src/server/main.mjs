@@ -1,30 +1,33 @@
-//const {FirestoreStore} = require("@google-cloud/connect-firestore")
 import firestore from "@google-cloud/firestore"
-import session from "express-session"
 import express from "express"
+import parser from "body-parser"
 import http from "http"
 import ws from "ws"
+import Session from "./session.mjs"
+import Account from "./account.mjs"
 import secrets from "./secrets.mjs"
 
 const app = express()
 const server = http.createServer(null, app)
 const wss = new ws.Server({ server })
-const db = new firestore({ projectId: "badger-218310" })
+const db = new firestore({ projectId: secrets["ProjectId"]})
+let session = new Session({ database: db })
+let account = new Account({ database: db })
 
 app.use(express.static("public"))
-app.use(
-  session({
-    /*store: new FirestoreStore({
-      dataset: new Firestore({
-        projectId: "badger-218310",
-        kind: "express-sessions"
-      })
-    }),*/
-    resave: false,
-    secret: secrets["Sessions"],
-    saveUninitialized: true,
-  })
-)
+app.use(parser.urlencoded({ extended: true }))
+app.use(session.middleware)
+app.post("/signin", account.signIn.bind(account))
+app.post("/signup", account.signUp.bind(account))
+app.get("/signout", account.signOut.bind(account))
+app.get("/", (req, res) => {
+  if (req.session.user) {
+    res.sendFile("/badger/public/html/home.html")
+  }
+  else {
+    res.sendFile("/badger/public/html/welcome.html")
+  }
+})
 
 wss.on("connection", ws => {
   let user = db.collection("Users").doc("mhfzCGbFpYkjkpNgiQ14")

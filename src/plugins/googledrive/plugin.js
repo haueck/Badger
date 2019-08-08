@@ -1,6 +1,6 @@
 /*global tinymce gapi google*/
 import icon from "!!raw-loader!./googledrive.svg"
-import secrets from "js/secrets.mjs"
+import secrets from "client/secrets.js"
 
 tinymce.util.Tools.resolve("tinymce.PluginManager").add("googledrive", function(editor) {
   let scope = "https://www.googleapis.com/auth/drive.readonly"
