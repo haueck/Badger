@@ -38,7 +38,7 @@ class Store extends session.Store {
 
 export default class {
   constructor(options) {
-    this.middleware = session({
+    this.parser = session({
       store: new Store({ database: options.database }),
       resave: false,
       saveUninitialized: true,

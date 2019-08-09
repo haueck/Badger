@@ -9,14 +9,14 @@ import secrets from "./secrets.mjs"
 
 const app = express()
 const server = http.createServer(null, app)
-const wss = new ws.Server({ server })
+const wss = new ws.Server({ noServer: true })
 const db = new firestore({ projectId: secrets["ProjectId"]})
 let session = new Session({ database: db })
 let account = new Account({ database: db })
 
 app.use(express.static("public"))
 app.use(parser.urlencoded({ extended: true }))
-app.use(session.middleware)
+app.use(session.parser)
 app.post("/signin", account.signIn.bind(account))
 app.post("/signup", account.signUp.bind(account))
 app.get("/signout", account.signOut.bind(account))
@@ -29,8 +29,23 @@ app.get("/", (req, res) => {
   }
 })
 
-wss.on("connection", ws => {
-  let user = db.collection("Users").doc("mhfzCGbFpYkjkpNgiQ14")
+server.on("upgrade", function(request, socket, head) {
+  session.parser(request, {}, () => {
+    if (!request.session.user) {
+      console.error("Not logged!")
+      socket.destroy()
+      return
+    }
+    else {
+      wss.handleUpgrade(request, socket, head, ws => {
+        wss.emit("connection", ws, request)
+      })
+    }
+  })
+})
+
+wss.on("connection", (ws, request) => {
+  let user = db.collection("Users").doc(request.session.user)
   ws.on("message", message => {
     let msg = JSON.parse(message)
     if (msg["Message"] === "AddCard") {
