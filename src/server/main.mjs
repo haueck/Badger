@@ -48,7 +48,81 @@ wss.on("connection", (ws, request) => {
   let user = db.collection("Users").doc(request.session.user)
   ws.on("message", message => {
     let msg = JSON.parse(message)
-    if (msg["Message"] === "AddCard") {
+    if (msg["Message"] === "GetUserData") {
+      account.getUserData(ws, user)
+    }
+    else if (msg["Message"] === "ActivateTag") {
+      user.update({ ["Tags." + msg["Tag"] + ".Inactive"]: firestore.FieldValue.delete() }).then(() => {
+        account.getUserData(ws, user)
+      })
+    }
+    else if (msg["Message"] === "DeactivateTag") {
+      user.update({ ["Tags." + msg["Tag"] + ".Inactive"]: true }).then(() => {
+        account.getUserData(ws, user)
+      })
+    }
+    else if (msg["Message"] === "RemoveTag") {
+      user.collection("Cards").where("Tags", "array-contains", msg["Tag"]).get().then(snapshot => {
+        snapshot.forEach(doc => {
+          doc.ref.update({ "Tags": firestore.FieldValue.arrayRemove(msg["Tag"]) })
+        })
+      }).catch(error => {
+          console.error("Error getting cards: ", error)
+      })
+      user.update({ ["Tags." + msg["Tag"]]: firestore.FieldValue.delete() }).then(() => {
+        account.getUserData(ws, user)
+      })
+    }
+    else if (msg["Message"] === "RenameTag") {
+      user.get().then(doc => {
+        let tags = doc.data()["Tags"]
+        if (msg["To"] in tags) {
+          ws.send(JSON.stringify({ "Message": "Error", "Text": "Tag '" + msg["To"] + "' already exists" }))
+          return
+        }
+        user.collection("Cards").where("Tags", "array-contains", msg["From"]).get().then(snapshot => {
+          snapshot.forEach(doc => {
+            doc.ref.update({ "Tags": firestore.FieldValue.arrayRemove(msg["From"]) }).then(() => {
+              doc.ref.update({ "Tags": firestore.FieldValue.arrayUnion(msg["To"]) })
+            })
+          })
+          let data = tags[msg["From"]]
+          data["Count"] = snapshot.size
+          let update = {
+            ["Tags." + msg["From"]]: firestore.FieldValue.delete(),
+            ["Tags." + msg["To"]]: data
+          }
+          for (let tag in tags) {
+            if (tags[tag]["Parent"] == msg["From"]) {
+              update["Tags." + tag + ".Parent"] = msg["To"]
+            }
+          }
+          user.update(update).then(() => { account.getUserData(ws, user) })
+        })
+      }).catch(error => {
+          console.error("Error getting cards: ", error)
+      })
+    }
+    else if (msg["Message"] === "DisableCards") {
+      user.collection("Cards").where("Tags", "array-contains", msg["Tag"]).get().then(snapshot => {
+        snapshot.forEach(doc => {
+          doc.ref.update({ "Disabled": true })
+        })
+        user.update({ ["Tags." + msg["Tag"] + ".Count"]: snapshot.size })
+      }).catch(error => {
+          console.error("Error disabling cards: ", error)
+      })
+    }
+    else if (msg["Message"] === "EnableCards") {
+      user.collection("Cards").where("Tags", "array-contains", msg["Tag"]).where("Disabled", "==", true).get().then(snapshot => {
+        snapshot.forEach(doc => {
+          doc.ref.update({ "Disabled": firestore.FieldValue.delete() })
+        })
+      }).catch(error => {
+          console.error("Error enabling cards: ", error)
+      })
+    }
+    else if (msg["Message"] === "AddCard") {
       user.collection("Cards").add(msg["Card"]).then(reference => { console.log(reference.id) })
     }
     else if (msg["Message"] === "GetNextCard") {

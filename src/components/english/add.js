@@ -4,44 +4,36 @@ import alternatives from "components/alternatives"
 
 export default {
   data () {
-    return {
-    }
-  },
-  props: {
-    card: {
-      type: Object,
-      default() {
-        return {
-          "Type": "English",
-          "Word": "",
-          "PartOfSpeech": "Noun",
-          "Pronunciation" : "",
-          "UseOfPrepositions" : "",
-          "Examples": [ "" ],
-          "FullExamples": [ "" ],
-          "Related": [],
-          "PhrasalVerb": false,
-          "Idiom": false,
-          "Formal": false,
-          "Informal": false,
-          "Approval": false,
-          "Derogatory": false,
-          "Learn": true
-        }
-      }
-    }
+    return { }
   },
   components: { alternatives },
   mixins: [ concealing ],
+  props: [ "card" ],
   mounted () {
+    let defaults = {
+      "Word": "",
+      "PartOfSpeech": "Noun",
+      "Pronunciation" : "",
+      "UseOfPrepositions" : "",
+      "Examples": [ "" ],
+      "FullExamples": [ "" ],
+      "Related": [],
+      "PhrasalVerb": false,
+      "Idiom": false,
+      "Formal": false,
+      "Informal": false,
+      "Approval": false,
+      "Derogatory": false
+    }
+    for (let key in defaults) {
+      if (!(key in this.card)) {
+        vue.set(this.card, key, defaults[key])
+      }
+    }
   },
   methods: {
     add() {
-      let msg = {
-        "Message": "AddCard",
-        "Card": this.card
-      }
-      this.$bus.$emit("send", msg)
+      this.$call("AddCard", { "Card": this.card })
     },
     ipa(event) {
       this.card["Pronunciation"] += event.target.textContent

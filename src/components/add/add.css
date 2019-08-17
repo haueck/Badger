@@ -2,3 +2,30 @@
   width: 300px;
   margin-bottom: 30px;
 }
+.modal-body {
+  padding: 0;
+}
+.tags > div, .tags > button {
+  margin-right: 10px;
+}
+.tag-select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.tag-name, .tag-children {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 12pt;
+  line-height: 1.5;
+}
+.tag-name {
+  flex-grow: 1;
+}
+.tag-children {
+  width: 20%;
+  text-align: center;
+}
+.tag-name:hover, .tag-children:hover {
+  background-color: #eaebec;
+}

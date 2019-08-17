@@ -1,0 +1,10 @@
+.tags {
+  width: 500px;
+  margin: 0 auto;
+}
+.modal-body {
+  cursor: pointer;
+}
+.modal-body:hover {
+  background-color: #f8f9fa;
+}

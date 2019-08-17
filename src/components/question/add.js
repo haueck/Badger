@@ -11,35 +11,28 @@ export default {
       icon: null
     }
   },
-  props: {
-    card: {
-      type: Object,
-      default() {
-        return {
-          "Type": "Question",
-          "Learn": true,
-          "Question": "",
-          "Explanation": "",
-          "Unordered": false,
-          "Answers": [{
-            "Value": "",
-            "Optional": false,
-            "Brackets": false
-          }]
-        }
+  props: [ "card" ],
+  components: { tinymce, alternatives, draggable },
+  mounted () {
+    let defaults = {
+      "Question": "",
+      "Explanation": "",
+      "Unordered": false,
+      "Answers": [{
+        "Value": "",
+        "Optional": false,
+        "Brackets": false
+      }]
+    }
+    for (let key in defaults) {
+      if (!(key in this.card)) {
+        vue.set(this.card, key, defaults[key])
       }
     }
   },
-  components: { tinymce, alternatives, draggable },
-  mounted () {
-  },
   methods: {
     add() {
-      let msg = {
-        "Message": "AddCard",
-        "Card": this.card
-      }
-      this.$bus.$emit("send", msg)
+      this.$call("AddCard", { "Card": this.card })
     },
     addAnswer() {
       let last = this.card["Answers"].length

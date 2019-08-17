@@ -33,14 +33,10 @@ export default {
   },
   methods: {
     sendResult(pass) {
-      this.$bus.$emit("send", {
-        "Message": "Result",
-        "CardId": this.id,
-        "Pass": pass
-      })
+      this.$call("Result", { "CardId": this.id, "Pass": pass })
     },
     getNextCard() {
-      this.$bus.$emit("send", { "Message": "GetNextCard" })
+      this.$call("GetNextCard")
     },
     initCard() {
       vue.set(this.card, "Type", "None")

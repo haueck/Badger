@@ -8,7 +8,7 @@
   },
   "scripts": {
     "static": "./scripts/static.sh",
-    "eslint": "eslint src",
+    "eslint": "eslint --ext=.js,.mjs src",
     "build": "./scripts/build.sh",
     "watch": "webpack --watch",
     "test": "jest --no-cache"
