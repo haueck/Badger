@@ -46,16 +46,20 @@ export default class {
     })
   }
 
-  removeTag(tag) {
+  removeTag(tag, success, status) {
     this.db.collection("Cards").where("Tags", "array-contains", tag).get().then(snapshot => {
+      let promises = []
       snapshot.forEach(doc => {
-        doc.ref.update({ "Tags": firestore.FieldValue.arrayRemove(tag) })
+        promises.push(doc.ref.update({ "Tags": firestore.FieldValue.arrayRemove(tag) }))
+      })
+      return Promise.all(promises).then(() => {
+        return this.db.update({ ["Tags." + tag]: firestore.FieldValue.delete() }).then(() => {
+          success()
+        })
       })
     }).catch(error => {
-        console.error("Error getting cards: ", error)
-    })
-    this.db.update({ ["Tags." + tag]: firestore.FieldValue.delete() }).then(() => {
-      this.account.getUserData(this.ws, this.db)
+      console.error("Failed to remove the tag: ", error)
+      callback("Error", "Failed to remove the tag")
     })
   }
 
