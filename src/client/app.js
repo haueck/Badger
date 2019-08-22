@@ -12,7 +12,7 @@ import "css/main.css"
 import "css/large.css"
 import "css/small.css"
 
-const broker = new vue()
+let broker = new vue()
 Object.defineProperties(vue.prototype, {
   $bus: {
     get() { return broker }
@@ -23,9 +23,9 @@ Object.defineProperties(vue.prototype, {
     }
   },
   $call: {
-    value: (name, payload) => {
+    value: (name, payload, callback) => {
       payload["Message"] = name
-      broker.$emit("Call", payload)
+      broker.$emit("Call", payload, callback)
     }
   }
 })
@@ -52,21 +52,30 @@ window.addEventListener("load", () => {
       this.$bus.$on("UserData", message => {
         this.$store.commit("initialize", message)
       })
-      this.$bus.$on("Error", message => {
-        this.$toast("Error", message["Text"])
+      this.$bus.$on("Status", message => {
+        this.$toast(message["Level"], message["Text"])
       })
       this.ws = new WebSocket("ws://" + location.host)
       this.ws.onopen = () => {
-        this.ws.send(JSON.stringify({ "Message": "GetUserData" }))
-        this.$bus.$on("Call", message => {
+        this.$bus.$on("Call", (message, callback) => {
+          this.$store.commit("createJob", callback)
+          message["JobId"] = this.$store.getters.jobId
           this.ws.send(JSON.stringify(message))
         })
+        this.$call("GetUserData", {})
       }
       this.ws.onmessage = event => {
-        let msg = JSON.parse(event.data)
-        let name = msg["Message"]
-        delete msg["Message"]
-        this.$bus.$emit(name, msg)
+        try {
+          let msg = JSON.parse(event.data)
+          let name = msg["Message"]
+          this.$store.dispatch("completeJob", msg["JobId"])
+          delete msg["Message"]
+          delete msg["JobId"]
+          this.$bus.$emit(name, msg)
+        }
+        catch(error) {
+          console.error("Failed to parse an incoming message: ", error)
+        }
       }
     },
     destroyed() {

@@ -6,15 +6,21 @@ export default class {
     this.db = options.database
   }
 
-  getUserData(ws, user) {
+  getUserData(user, success, failure) {
     user.get().then(doc => {
       if (doc.exists) {
         let data = doc.data()
-        data["Message"] = "UserData"
         delete data["Password"]
         delete data["Salt"]
-        ws.send(JSON.stringify(data))
+        success("UserData", data)
       }
+      else {
+        console.error("Failed to get user data: no such user")
+        failure("Error", "Failed to get user data")
+      }
+    }).catch(error => {
+      console.error("Failed to get user data: ", error)
+      failure("Error", "Failed to get user data")
     })
   }
 

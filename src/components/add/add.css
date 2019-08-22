@@ -2,10 +2,13 @@
   width: 300px;
   margin-bottom: 30px;
 }
-.modal-body {
+.tag-pick .modal-body {
   padding: 0;
 }
 .tags > div, .tags > button {
+  margin-right: 10px;
+}
+.tag-create label {
   margin-right: 10px;
 }
 .tag-select {

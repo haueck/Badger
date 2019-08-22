@@ -1,20 +1,23 @@
 <template>
   <div>
-    <div class="tag border-top border-left border-right" :style="indent" @click="$bus.$emit('show-modal', tag)">
-      <div :class="{ 'text-muted': tags[tag].Inactive }">{{ tag }}</div>
-      <div class="badge badge-pill" :class="[tags[tag].Inactive ? 'badge-secondary' : 'badge-primary']">{{ tags[tag].Count }}</div>
+    <div class="tag border-top border-left border-right" :style="indent" @click="$bus.$emit('show-modal', tag, inactive)">
+      <div :class="{ 'text-muted': muted }">{{ tag }}</div>
+      <div class="badge badge-pill" :class="[muted ? 'badge-secondary' : 'badge-primary']">{{ tags[tag].Count }}</div>
     </div>
-    <tree v-for="child in tags[tag].Children" :tags="tags" :tag="child" :depth="depth + 1"></tree>
+    <tree v-for="child in tags[tag].Children" :tags="tags" :tag="child" :depth="depth + 1" :inactive="muted"></tree>
   </div>
 </template>
 <script>
   export default {
-    props: [ "tags", "tag", "depth" ],
+    props: [ "tags", "tag", "depth", "inactive" ],
     name: "tree",
     computed: {
       indent() {
         let padding = (20 * this.depth) + "px"
         return { "padding-left": padding }
+      },
+      muted() {
+        return this.tags[this.tag].Inactive || this.inactive
       }
     }
   }

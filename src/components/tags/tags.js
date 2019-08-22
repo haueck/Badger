@@ -4,13 +4,14 @@ import tree from "./tree.vue"
 export default {
   data() {
     return {
-      active: "€",
+      inactive: false,
+      current: "€",
       count: 0
     }
   },
   components: { tree },
   mounted() {
-    this.$bus.$on("show-modal", tag => this.show(tag))
+    this.$bus.$on("show-modal", this.show)
     this.menu = $(this.$el).children(".tag-menu")
     this.rename = $(this.$el).children(".tag-rename")
     this.remove = $(this.$el).children(".tag-remove")
@@ -18,18 +19,19 @@ export default {
     this.field.addEventListener("keyup", event => {
       if (event.keyCode === 13) {
         event.preventDefault()
-        this.renameTag(this.active)
-        this.rename.modal("hide")
+        this.renameTag(this.current)
       }
     })
   },
   methods: {
-    show(tag) {
-      this.active = tag
+    show(tag, inactive) {
+      this.inactive = inactive
+      this.current = tag
       this.menu.modal()
     },
     removeTag(tag) {
       this.$call("RemoveTag", { "Tag": tag })
+      this.current = "€"
     },
     confirmRemove(tag) {
       if (this.$store.getters.tags[tag]["Children"].length > 0) {
@@ -55,7 +57,9 @@ export default {
       if (this.field.checkValidity()) {
         if (from != this.field.value) {
           this.$call("RenameTag", { "From": from, "To": this.field.value })
+          this.current = "€"
         }
+        this.rename.modal("hide")
       }
     },
     enableCards(tag) {
