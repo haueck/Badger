@@ -21,7 +21,9 @@
     "@google-cloud/firestore": "*",
     "vue-template-compiler": "*",
     "html-webpack-plugin": "*",
-    "babel-preset-env": "*",
+    "@babel/core": "*",
+    "@babel/preset-env": "*",
+    "@babel/plugin-transform-modules-commonjs": "*",
     "@vue/test-utils": "*",
     "express-session": "*",
     "jest-raw-loader": "*",
@@ -38,7 +40,6 @@
     "css-loader": "*",
     "vue-loader": "*",
     "babel-jest": "*",
-    "babel-core": "*",
     "js-sha512": "*",
     "bootstrap": "*",
     "popper.js": "*",
@@ -96,14 +97,7 @@
   "babel": {
     "env": {
       "test": {
-        "presets": [
-          [
-            "env",
-            {
-              "modules": "commonjs"
-            }
-          ]
-        ]
+        "presets": [ "@babel/preset-env" ]
       }
     }
   },
@@ -117,10 +111,11 @@
     },
     "moduleFileExtensions": [
       "js",
-      "vue"
+      "vue",
+      "mjs"
     ],
     "transform": {
-      "\\.js$": "babel-jest",
+      "\\.m?js$": "babel-jest",
       "\\.vue$": "vue-jest",
       "\\.txt$": "jest-raw-loader"
     },

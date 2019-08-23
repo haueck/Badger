@@ -9,5 +9,5 @@ ADD package.json webpack.config.js ./
 RUN npm install
 RUN npm run build
 RUN npm test
-RUN npm run-script eslint
+#RUN npm run-script eslint
 CMD [ "dumb-init", "node", "src/js/server.js" ]

@@ -1,4 +1,4 @@
-import firestore from "@google-cloud/firestore"
+import { FieldValue } from "@google-cloud/firestore"
 
 export default class {
   constructor(options) {
@@ -7,53 +7,53 @@ export default class {
     this.account = options.account
   }
 
-  check(tag, callback) {
-    if (!tag.match(/^[A-Za-z0-9 ]+$/)) {
-      callback("Error", "The tag contains characters that are not allowed")
-      return false
-    }
-    return true
-  }
-
-  createTag(tag, parent, callback) {
+  check(tag, success, failure) {
     tag = tag.trim()
-    if (!this.check(tag, callback)) {
-      return
+    if (tag.match(/^[A-Za-z0-9 ]+$/)) {
+      success(tag)
     }
-    this.db.update({ ["Tags." + tag]: { "Parent": parent, "Count": 0 } }).then(doc => {
-      callback("Success", "The tag was created")
-    }).catch(error => {
-      console.error("Failed to create the tag: ", error)
-      callback("Error", "Failed to create the tag")
-    })
+    else {
+      failure("The tag contains characters which are not allowed")
+    }
   }
 
-  activateTag(tag, success, failure) {
-    return this.db.update({ ["Tags." + tag + ".Inactive"]: firestore.FieldValue.delete() }).then(() => {
+  create(tag, parent, success, failure) {
+    this.check(tag, (trimmed) => {
+      this.db.update({ ["Tags." + trimmed]: { "Parent": parent, "Count": 0 } }).then(() => {
+        success()
+      }).catch(error => {
+        console.error("Failed to create the tag: ", error)
+        failure("Failed to create the tag")
+      })
+    }, failure)
+  }
+
+  activate(tag, success, failure) {
+    this.db.update({ ["Tags." + tag + ".Inactive"]: FieldValue.delete() }).then(() => {
       success()
     }).catch(error => {
       console.error("Failed to activate the tag ", tag, ": ", error)
-      failure("Error", "Failed to activate the tag")
+      failure("Failed to activate the tag")
     })
   }
 
-  deactivateTag(tag, success, failure) {
+  deactivate(tag, success, failure) {
     this.db.update({ ["Tags." + tag + ".Inactive"]: true }).then(() => {
       success()
     }).catch(error => {
       console.error("Failed to deactivate the tag ", tag, ": ", error)
-      failure("Error", "Failed to deactivate the tag")
+      failure("Failed to deactivate the tag")
     })
   }
 
-  removeTag(tag, success, status) {
+  remove(tag, success, failure) {
     this.db.collection("Cards").where("Tags", "array-contains", tag).get().then(snapshot => {
       let promises = []
       snapshot.forEach(doc => {
-        promises.push(doc.ref.update({ "Tags": firestore.FieldValue.arrayRemove(tag) }))
+        promises.push(doc.ref.update({ "Tags": FieldValue.arrayRemove(tag) }))
       })
       return Promise.all(promises).then(() => {
-        return this.db.update({ ["Tags." + tag]: firestore.FieldValue.delete() }).then(() => {
+        return this.db.update({ ["Tags." + tag]: FieldValue.delete() }).then(() => {
           success()
         })
       })
@@ -76,14 +76,14 @@ export default class {
       }
       this.db.collection("Cards").where("Tags", "array-contains", from).get().then(snapshot => {
         snapshot.forEach(doc => {
-          doc.ref.update({ "Tags": firestore.FieldValue.arrayRemove(from) }).then(() => {
-            doc.ref.update({ "Tags": firestore.FieldValue.arrayUnion(to) })
+          doc.ref.update({ "Tags": FieldValue.arrayRemove(from) }).then(() => {
+            doc.ref.update({ "Tags": FieldValue.arrayUnion(to) })
           })
         })
         let data = tags[from]
         data["Count"] = snapshot.size
         let update = {
-          ["Tags." + from]: firestore.FieldValue.delete(),
+          ["Tags." + from]: FieldValue.delete(),
           ["Tags." + to]: data
         }
         for (let tag in tags) {
@@ -118,7 +118,7 @@ export default class {
     this.db.collection("Cards").where("Tags", "array-contains", tag).where("Disabled", "==", true).get().then(snapshot => {
       let promises = []
       snapshot.forEach(doc => {
-        promises.push(doc.ref.update({ "Disabled": firestore.FieldValue.delete() }))
+        promises.push(doc.ref.update({ "Disabled": FieldValue.delete() }))
       })
       return Promise.all(promises)
     }).then(() => {

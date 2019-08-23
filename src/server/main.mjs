@@ -58,6 +58,8 @@ wss.on("connection", (ws, request) => {
         "Text": text
       }))
     }
+    let success = (text) => { status("Success", text) }
+    let failure = (text) => { status("Error", text) }
     let payload = (name, data) => {
       data["Message"] = name
       data["JobId"] = msg["JobId"]
@@ -70,16 +72,16 @@ wss.on("connection", (ws, request) => {
       configuration()
     }
     else if (msg["Message"] === "CreateTag") {
-      tags.createTag(msg["Tag"], msg["Parent"], status)
+      tags.create(msg["Tag"], msg["Parent"], configuration, failure)
     }
     else if (msg["Message"] === "ActivateTag") {
-      tags.activateTag(msg["Tag"], configuration, status)
+      tags.activate(msg["Tag"], configuration, failure)
     }
     else if (msg["Message"] === "DeactivateTag") {
-      tags.deactivateTag(msg["Tag"], configuration, status)
+      tags.deactivate(msg["Tag"], configuration, failure)
     }
     else if (msg["Message"] === "RemoveTag") {
-      tags.removeTag(msg["Tag"])
+      tags.remove(msg["Tag"], configuration, failure)
     }
     else if (msg["Message"] === "RenameTag") {
       tags.renameTag(msg["From"], msg["To"], status)
