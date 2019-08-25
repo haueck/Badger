@@ -59,7 +59,10 @@ wss.on("connection", (ws, request) => {
       }))
     }
     let success = (text) => { status("Success", text) }
-    let failure = (text) => { status("Error", text) }
+    let failure = (text, params) => {
+      status("Error", text)
+      console.error(text, params)
+    }
     let payload = (name, data) => {
       data["Message"] = name
       data["JobId"] = msg["JobId"]
@@ -84,13 +87,13 @@ wss.on("connection", (ws, request) => {
       tags.remove(msg["Tag"], configuration, failure)
     }
     else if (msg["Message"] === "RenameTag") {
-      tags.renameTag(msg["From"], msg["To"], status)
+      tags.rename(msg["From"], msg["To"], msg["Parent"], configuration, failure)
     }
     else if (msg["Message"] === "DisableCards") {
-      tags.disableCards(msg["Tag"], status)
+      tags.disableCards(msg["Tag"], success, failure)
     }
     else if (msg["Message"] === "EnableCards") {
-      tags.enableCards(msg["Tag"], status)
+      tags.enableCards(msg["Tag"], success, failure)
     }
     else if (msg["Message"] === "AddCard") {
       user.collection("Cards").add(msg["Card"]).then(reference => { console.log(reference.id) })
