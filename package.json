@@ -16,20 +16,20 @@
   "author": "Rafal Kozik",
   "license": "GPL-3.0",
   "devDependencies": {
+    "babel-core": "^7.0.0-bridge.0",
     "@google-cloud/connect-firestore": "*",
     "@fortawesome/fontawesome-free": "*",
     "@google-cloud/firestore": "*",
     "vue-template-compiler": "*",
     "html-webpack-plugin": "*",
-    "@babel/core": "*",
     "@babel/preset-env": "*",
-    "@babel/plugin-transform-modules-commonjs": "*",
     "@vue/test-utils": "*",
     "express-session": "*",
     "jest-raw-loader": "*",
     "expose-loader": "*",
     "style-loader": "*",
     "vuedraggable": "*",
+    "@babel/core": "*",
     "parenthesis": "*",
     "webpack-cli": "*",
     "body-parser": "*",
@@ -97,7 +97,9 @@
   "babel": {
     "env": {
       "test": {
-        "presets": [ "@babel/preset-env" ]
+        "presets": [
+          "@babel/preset-env"
+        ]
       }
     }
   },

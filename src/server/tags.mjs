@@ -16,14 +16,18 @@ export default class {
   }
 
   create(tag, parent, success, failure) {
-    // Exists?!?
-    //let tags = doc.data()["Tags"]
-    //if (to in tags) {
-    //  failure("The tag '" + to + "' already exists")
-    //  return
-    //}
     this.check(tag, (trimmed) => {
-      this.db.update({ ["Tags." + trimmed]: { "Parent": parent, "Count": 0 } }).then(() => {
+      this.db.get().then(doc => {
+        let tags = doc.data()["Tags"]
+        if (trimmed in tags) {
+          throw new Error("The tag already exists")
+        }
+        if (!(parent in tags)) {
+          throw new Error("The parent does not exist")
+        }
+      }).then(() => {
+        return this.db.update({ ["Tags." + trimmed]: { "Parent": parent, "Count": 0 } })
+      }).then(() => {
         success()
       }).catch(error => {
         failure("Failed to create the tag", { tag, parent, error })
@@ -68,15 +72,16 @@ export default class {
       this.db.collection("Cards").where("Tags", "array-contains", from).get().then(snapshot => {
         let promises = []
         snapshot.forEach(doc => {
-          promises.push(doc.ref.update({ "Tags": FieldValue.arrayRemove(from) }).then(() => {
-            doc.ref.update({ "Tags": FieldValue.arrayUnion(to) })
-          }))
+          let promise = doc.ref.update({ "Tags": FieldValue.arrayUnion(to) }).then(() => {
+            return doc.ref.update({ "Tags": FieldValue.arrayRemove(from) })
+          })
+          promises.push(promise)
         })
         promises.push(this.db.update({ ["Tags." + to + ".Count"]: snapshot.size }))
         return Promise.all(promises)
       }).then(() => {
         return this.db.update({ ["Tags." + from]: FieldValue.delete() })
-      }).then({
+      }).then(() => {
         success()
       }).catch(error => {
         failure("Failed to rename the tag", { from, to, parent, error })
