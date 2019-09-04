@@ -56,7 +56,11 @@ export default {
     renameTag(from) {
       if (this.field.checkValidity()) {
         if (from != this.field.value) {
-          this.$call("RenameTag", { "From": from, "To": this.field.value })
+          this.$call("RenameTag", {
+            "From": from,
+            "To": this.field.value,
+            "Parent": this.$store.getters.tags[from]["Parent"]
+          })
           this.current = "€"
         }
         this.rename.modal("hide")

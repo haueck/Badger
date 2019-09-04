@@ -1,4 +1,4 @@
-import { FieldValue } from "@google-cloud/firestore"
+import Firestore from "@google-cloud/firestore"
 
 export default class {
   constructor(options) {
@@ -36,7 +36,7 @@ export default class {
   }
 
   activate(tag, success, failure) {
-    this.db.update({ ["Tags." + tag + ".Inactive"]: FieldValue.delete() }).then(() => {
+    this.db.update({ ["Tags." + tag + ".Inactive"]: Firestore.FieldValue.delete() }).then(() => {
       success()
     }).catch(error => {
       failure("Failed to activate the tag", { tag, error })
@@ -52,14 +52,22 @@ export default class {
   }
 
   remove(tag, success, failure) {
-    this.db.collection("Cards").where("Tags", "array-contains", tag).get().then(snapshot => {
+    this.db.get().then(doc => {
+      let tags = doc.data()["Tags"]
+      for (let name in tags) {
+        if (tags[name]["Parent"] == tag) {
+          throw new Error("The tag is not a leaf")
+        }
+      }
+      return this.db.collection("Cards").where("Tags", "array-contains", tag).get()
+    }).then(snapshot => {
       let promises = []
       snapshot.forEach(doc => {
-        promises.push(doc.ref.update({ "Tags": FieldValue.arrayRemove(tag) }))
+        promises.push(doc.ref.update({ "Tags": Firestore.FieldValue.arrayRemove(tag) }))
       })
       return Promise.all(promises)
     }).then(() => {
-      return this.db.update({ ["Tags." + tag]: FieldValue.delete() })
+      return this.db.update({ ["Tags." + tag]: Firestore.FieldValue.delete() })
     }).then(() => {
       success()
     }).catch(error => {
@@ -72,15 +80,15 @@ export default class {
       this.db.collection("Cards").where("Tags", "array-contains", from).get().then(snapshot => {
         let promises = []
         snapshot.forEach(doc => {
-          let promise = doc.ref.update({ "Tags": FieldValue.arrayUnion(to) }).then(() => {
-            return doc.ref.update({ "Tags": FieldValue.arrayRemove(from) })
+          let promise = doc.ref.update({ "Tags": Firestore.FieldValue.arrayUnion(to) }).then(() => {
+            return doc.ref.update({ "Tags": Firestore.FieldValue.arrayRemove(from) })
           })
           promises.push(promise)
         })
         promises.push(this.db.update({ ["Tags." + to + ".Count"]: snapshot.size }))
         return Promise.all(promises)
       }).then(() => {
-        return this.db.update({ ["Tags." + from]: FieldValue.delete() })
+        return this.db.update({ ["Tags." + from]: Firestore.FieldValue.delete() })
       }).then(() => {
         success()
       }).catch(error => {
@@ -108,7 +116,7 @@ export default class {
     this.db.collection("Cards").where("Tags", "array-contains", tag).where("Disabled", "==", true).get().then(snapshot => {
       let promises = []
       snapshot.forEach(doc => {
-        promises.push(doc.ref.update({ "Disabled": FieldValue.delete() }))
+        promises.push(doc.ref.update({ "Disabled": Firestore.FieldValue.delete() }))
       })
       return Promise.all(promises)
     }).then(() => {

@@ -1,8 +1,6 @@
 import { FieldValue } from "@google-cloud/firestore"
 import Tags from "server/tags.mjs"
 
-// Potestowa z opoznieninami
-
 describe("Tags", () => {
 
   function make(mock) {
@@ -12,6 +10,11 @@ describe("Tags", () => {
           return {
             where() {
               return {
+                where() {
+                  return {
+                    get: mock
+                  }
+                },
                 get: mock
               }
             }
@@ -24,16 +27,20 @@ describe("Tags", () => {
   }
 
   function snapshot(tags) {
-    let list = {}
-    tags.forEach(tag => { list[tag] = true })
+    if (Array.isArray(tags)) {
+      let list = {}
+      tags.forEach(tag => { list[tag] = true })
+      tags = list
+    }
     return {
       data() {
         return {
-          Tags: list
+          Tags: tags
         }
       }
     }
   }
+
   it("properly creates a tag", () => {
     let mock = jest.fn()
     let tags = make(mock)
@@ -157,6 +164,7 @@ describe("Tags", () => {
 
   it("properly removes a tag", () => {
     let mock = jest.fn()
+    mock.mockResolvedValueOnce(snapshot({ "Tag": { "Parent": "Parent" } }))
     mock.mockResolvedValueOnce({
       forEach(callback) {
         callback({ ref: { update: mock } })
@@ -174,17 +182,17 @@ describe("Tags", () => {
     }).catch(error => {
       throw new Error(error)
     }).then(() => {
-      expect(mock.mock.calls.length).toEqual(5)
-      expect(mock.mock.calls[1][0]).toEqual({ "Tags": FieldValue.arrayRemove("Name") })
+      expect(mock.mock.calls.length).toEqual(6)
       expect(mock.mock.calls[2][0]).toEqual({ "Tags": FieldValue.arrayRemove("Name") })
       expect(mock.mock.calls[3][0]).toEqual({ "Tags": FieldValue.arrayRemove("Name") })
-      expect(mock.mock.calls[4][0]).toEqual({ "Tags.Name": FieldValue.delete() })
+      expect(mock.mock.calls[4][0]).toEqual({ "Tags": FieldValue.arrayRemove("Name") })
+      expect(mock.mock.calls[5][0]).toEqual({ "Tags.Name": FieldValue.delete() })
     })
   })
 
-  it("properly handles a select error during tag removal", () => {
+  it("properly handles a non-leaf tag during tag removal", () => {
     let mock = jest.fn()
-    mock.mockRejectedValueOnce()
+    mock.mockResolvedValueOnce(snapshot({ "Tag": { "Parent": "Name" } }))
     let tags = make(mock)
     return new Promise((resolve, reject) => {
       tags.remove("Name", reject, resolve)
@@ -195,8 +203,23 @@ describe("Tags", () => {
     })
   })
 
+  it("properly handles a select error during tag removal", () => {
+    let mock = jest.fn()
+    mock.mockResolvedValueOnce(snapshot([]))
+    mock.mockRejectedValueOnce()
+    let tags = make(mock)
+    return new Promise((resolve, reject) => {
+      tags.remove("Name", reject, resolve)
+    }).catch(error => {
+      throw new Error(error)
+    }).then(() => {
+      expect(mock.mock.calls.length).toEqual(2)
+    })
+  })
+
   it("properly handles an update error during tag removal", () => {
     let mock = jest.fn()
+    mock.mockResolvedValueOnce(snapshot([]))
     mock.mockResolvedValueOnce({
       forEach(callback) {
         callback({ ref: { update: mock } })
@@ -209,12 +232,13 @@ describe("Tags", () => {
     }).catch(error => {
       throw new Error(error)
     }).then(() => {
-      expect(mock.mock.calls.length).toEqual(2)
+      expect(mock.mock.calls.length).toEqual(3)
     })
   })
 
   it("properly handles a delete error during tag removal", () => {
     let mock = jest.fn()
+    mock.mockResolvedValueOnce(snapshot([]))
     mock.mockResolvedValueOnce({
       forEach(callback) {
         callback({ ref: { update: mock } })
@@ -228,9 +252,9 @@ describe("Tags", () => {
     }).catch(error => {
       throw new Error(error)
     }).then(() => {
-      expect(mock.mock.calls.length).toEqual(3)
-      expect(mock.mock.calls[1][0]).toEqual({ "Tags": FieldValue.arrayRemove("Name") })
-      expect(mock.mock.calls[2][0]).toEqual({ "Tags.Name": FieldValue.delete() })
+      expect(mock.mock.calls.length).toEqual(4)
+      expect(mock.mock.calls[2][0]).toEqual({ "Tags": FieldValue.arrayRemove("Name") })
+      expect(mock.mock.calls[3][0]).toEqual({ "Tags.Name": FieldValue.delete() })
     })
   })
 
@@ -442,4 +466,67 @@ describe("Tags", () => {
     })
   })
 
+  it("properly enables cards", () => {
+    let mock = jest.fn()
+    mock.mockResolvedValueOnce({
+      forEach(callback) {
+        callback({ ref: { update: mock } })
+        callback({ ref: { update: mock } })
+        callback({ ref: { update: mock } })
+        callback({ ref: { update: mock } })
+      },
+      size: 4
+    })
+    mock.mockResolvedValueOnce()
+    mock.mockResolvedValueOnce()
+    mock.mockResolvedValueOnce()
+    mock.mockResolvedValueOnce()
+    mock.mockResolvedValueOnce()
+    let tags = make(mock)
+    return new Promise((resolve, reject) => {
+      tags.enableCards("Name", resolve, reject)
+    }).catch(error => {
+      throw new Error(error)
+    }).then(() => {
+      expect(mock.mock.calls.length).toEqual(5)
+      expect(mock.mock.calls[1][0]).toEqual({ "Disabled": FieldValue.delete() })
+      expect(mock.mock.calls[2][0]).toEqual({ "Disabled": FieldValue.delete() })
+      expect(mock.mock.calls[3][0]).toEqual({ "Disabled": FieldValue.delete() })
+      expect(mock.mock.calls[4][0]).toEqual({ "Disabled": FieldValue.delete() })
+    })
+  })
+
+  it("properly handles a select error while enabling cards", () => {
+    let mock = jest.fn()
+    let tags = make(mock)
+    mock.mockRejectedValueOnce()
+    return new Promise((resolve, reject) => {
+      tags.enableCards("Name", reject, resolve)
+    }).catch(error => {
+      throw new Error(error)
+    }).then(() => {
+      expect(mock.mock.calls.length).toEqual(1)
+    })
+  })
+
+  it("properly handles an update error while enabling cards", () => {
+    let mock = jest.fn()
+    let tags = make(mock)
+    mock.mockResolvedValueOnce({
+      forEach(callback) {
+        callback({ ref: { update: mock } })
+      },
+      size: 1
+    })
+    mock.mockRejectedValueOnce()
+    mock.mockResolvedValueOnce()
+    return new Promise((resolve, reject) => {
+      tags.enableCards("Name", reject, resolve)
+    }).catch(error => {
+      throw new Error(error)
+    }).then(() => {
+      expect(mock.mock.calls.length).toEqual(2)
+      expect(mock.mock.calls[1][0]).toEqual({ "Disabled": FieldValue.delete() })
+    })
+  })
 })
