@@ -8,7 +8,7 @@
   },
   "scripts": {
     "static": "./scripts/static.sh",
-    "eslint": "eslint src",
+    "eslint": "eslint --ext=.js,.mjs src",
     "build": "./scripts/build.sh",
     "watch": "webpack --watch",
     "test": "jest --no-cache"
@@ -16,18 +16,20 @@
   "author": "Rafal Kozik",
   "license": "GPL-3.0",
   "devDependencies": {
+    "babel-core": "^7.0.0-bridge.0",
     "@google-cloud/connect-firestore": "*",
     "@fortawesome/fontawesome-free": "*",
     "@google-cloud/firestore": "*",
     "vue-template-compiler": "*",
     "html-webpack-plugin": "*",
-    "babel-preset-env": "*",
+    "@babel/preset-env": "*",
     "@vue/test-utils": "*",
     "express-session": "*",
     "jest-raw-loader": "*",
     "expose-loader": "*",
     "style-loader": "*",
     "vuedraggable": "*",
+    "@babel/core": "*",
     "parenthesis": "*",
     "webpack-cli": "*",
     "body-parser": "*",
@@ -38,7 +40,6 @@
     "css-loader": "*",
     "vue-loader": "*",
     "babel-jest": "*",
-    "babel-core": "*",
     "js-sha512": "*",
     "bootstrap": "*",
     "popper.js": "*",
@@ -97,12 +98,7 @@
     "env": {
       "test": {
         "presets": [
-          [
-            "env",
-            {
-              "modules": "commonjs"
-            }
-          ]
+          "@babel/preset-env"
         ]
       }
     }
@@ -117,10 +113,11 @@
     },
     "moduleFileExtensions": [
       "js",
-      "vue"
+      "vue",
+      "mjs"
     ],
     "transform": {
-      "\\.js$": "babel-jest",
+      "\\.m?js$": "babel-jest",
       "\\.vue$": "vue-jest",
       "\\.txt$": "jest-raw-loader"
     },

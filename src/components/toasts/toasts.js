@@ -26,6 +26,10 @@ export default {
           this.icon = "info-circle"
           this.color = "text-info"
         }
+        else if (this.level == "Success") {
+          this.icon = "check-circle"
+          this.color = "text-success"
+        }
         else {
           this.icon = "question-circle"
           this.color = "text-secondary"

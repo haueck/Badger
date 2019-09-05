@@ -1,0 +1,33 @@
+<div>
+  <modal :closing="true" :title="current" id="modal-tag-menu">
+    <div><!-- Update counter -->Show cards with this tag</div>
+    <div class="border-top">Add cards with this tag to a revision</div>
+    <div class="border-top" data-dismiss="modal" @click="disableCards(current)">Disable all cards with this tag</div>
+    <div class="border-top" data-dismiss="modal" @click="enableCards(current)">Enable all cards with this tag</div>
+    <div class="border-top" data-dismiss="modal" @click="renameModal()">Change the name of this tag</div>
+    <div class="border-top" data-dismiss="modal" @click="confirmRemove(current)">Remove this tag</div>
+    <div class="border-top" data-dismiss="modal" @click="toggleInactive(current)" v-if="!inactive">
+      Make this tag
+      <span v-if="tags[current].Inactive">active again</span>
+      <span v-else>inactive</span>
+    </div>
+  </modal>
+  <modal :closing="true" :title="'Rename ' + current" id="modal-tag-rename">
+    <input type="text" class="form-control" pattern="[0-9A-Za-z ]+" :value="current" required/>
+    <template v-slot:footer>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary" @click="renameTag(current)">Rename</button>
+    </template>
+  </modal>
+  <modal :closing="true" :title="'Remove ' + current" id="modal-tag-remove">
+    <span>This will remove the tag <strong>{{ current }}</strong> from all {{ count }} cards. Continue?</span>
+    <template v-slot:footer>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary" data-dismiss="modal" @click="removeTag(current)">Remove</button>
+    </template>
+  </modal>
+  <div v-if="tags['€'].Children.length == 0">No tags</div>
+  <div v-else class="border-bottom tags">
+    <tree v-for="child in tags['€'].Children" :tags="tags" :tag="child" :depth="1"></tree>
+  </div>
+</div>

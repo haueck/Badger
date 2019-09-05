@@ -4,6 +4,7 @@ import router from "vue-router"
 import learn from "components/learn"
 import add from "components/add"
 import toasts from "components/toasts"
+import tags from "components/tags"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.min.js"
@@ -11,11 +12,20 @@ import "css/main.css"
 import "css/large.css"
 import "css/small.css"
 
-const broker = new vue()
+let broker = new vue()
 Object.defineProperties(vue.prototype, {
   $bus: {
-    get() {
-      return broker
+    get() { return broker }
+  },
+  $toast: {
+    value: (level, msg) => {
+      broker.$emit("Toast", { "Level": level, "Message": msg })
+    }
+  },
+  $call: {
+    value: (name, payload, callback) => {
+      payload["Message"] = name
+      broker.$emit("Call", payload, callback)
     }
   }
 })
@@ -23,6 +33,7 @@ Object.defineProperties(vue.prototype, {
 vue.use(router)
 let routes = [
   { path: "/learn", component: learn },
+  { path: "/tags", component: tags },
   { path: "/add", component: add }
 ]
 
@@ -38,17 +49,32 @@ window.addEventListener("load", () => {
       }
     },
     mounted() {
+      this.$bus.$on("UserData", message => {
+        this.$store.commit("initialize", message)
+      })
+      this.$bus.$on("Status", message => {
+        this.$toast(message["Level"], message["Text"])
+      })
       this.ws = new WebSocket("ws://" + location.host)
       this.ws.onopen = () => {
-        this.$bus.$on("send", (message) => {
+        this.$bus.$on("Call", (message, callback) => {
+          this.$store.commit("createJob", callback)
+          message["JobId"] = this.$store.getters.jobId
           this.ws.send(JSON.stringify(message))
         })
+        this.$call("GetUserData", {})
       }
-      this.ws.onmessage = (event) => {
-        let msg = JSON.parse(event.data)
-        this.$bus.$emit(msg["Message"], msg)
-        if (msg["Message"] === "Error") {
-          console.log("Error")
+      this.ws.onmessage = event => {
+        try {
+          let msg = JSON.parse(event.data)
+          let name = msg["Message"]
+          this.$store.dispatch("completeJob", msg["JobId"])
+          delete msg["Message"]
+          delete msg["JobId"]
+          this.$bus.$emit(name, msg)
+        }
+        catch(error) {
+          console.error("Failed to parse an incoming message: ", error)
         }
       }
     },

@@ -6,6 +6,24 @@ export default class {
     this.db = options.database
   }
 
+  getUserData(user, success, failure) {
+    user.get().then(doc => {
+      if (doc.exists) {
+        let data = doc.data()
+        delete data["Password"]
+        delete data["Salt"]
+        success("UserData", data)
+      }
+      else {
+        console.error("Failed to get user data: no such user")
+        failure("Error", "Failed to get user data")
+      }
+    }).catch(error => {
+      console.error("Failed to get user data: ", error)
+      failure("Error", "Failed to get user data")
+    })
+  }
+
   signIn(req, res) {
     this.db.collection("Users").where("Email", "=", (req.body.email || "None")).get().then(snapshot => {
       if (snapshot.empty) {
@@ -27,6 +45,7 @@ export default class {
         }
       }
     }).catch(error => {
+      console.error(error)
       res.send({
         Success: false,
         Error: true
@@ -55,12 +74,22 @@ export default class {
           Firstname: req.body.firstname,
           Lastname: req.body.lastname,
           Password: sha.sha512(req.body.password + salt),
-          Salt: salt
+          Salt: salt,
+          Revisions: [],
+          DailyTarget: 25,
+          Performance: [],
+          Notes: "",
+          Tags: {
+            "€": {
+              "Parent": false
+            }
+          }
         }
         this.db.collection("Users").add(user).then(doc => {
           req.session.user = doc.id
           res.send({ Success: true })
         }).catch(error => {
+          console.error(error)
           res.send({
             Success: false,
             Error: true
@@ -73,6 +102,7 @@ export default class {
         })
       }
     }).catch(error => {
+      console.error(error)
       res.send({
         Success: false,
         Error: true

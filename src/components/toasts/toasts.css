@@ -5,6 +5,9 @@
   padding: 10px;
   min-width: 200px;
 }
-.toast-header i {
-  margin-right: 5px;
+.toast i {
+  margin-right: 10px;
+}
+.toast-body {
+  padding: 20px;
 }

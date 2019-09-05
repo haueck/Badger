@@ -6,6 +6,7 @@ import ws from "ws"
 import Session from "./session.mjs"
 import Account from "./account.mjs"
 import secrets from "./secrets.mjs"
+import Tags from "./tags.mjs"
 
 const app = express()
 const server = http.createServer(null, app)
@@ -46,9 +47,55 @@ server.on("upgrade", function(request, socket, head) {
 
 wss.on("connection", (ws, request) => {
   let user = db.collection("Users").doc(request.session.user)
+  let tags = new Tags({ database: user, ws, account })
   ws.on("message", message => {
     let msg = JSON.parse(message)
-    if (msg["Message"] === "AddCard") {
+    let status = (level, text) => {
+      ws.send(JSON.stringify({
+        "JobId": msg["JobId"],
+        "Message": "Status",
+        "Level": level,
+        "Text": text
+      }))
+    }
+    let success = (text) => { status("Success", text) }
+    let failure = (text, params) => {
+      status("Error", text)
+      console.error(text, params)
+    }
+    let payload = (name, data) => {
+      data["Message"] = name
+      data["JobId"] = msg["JobId"]
+      ws.send(JSON.stringify(data))
+    }
+    let configuration = () => {
+      account.getUserData(user, payload, status)
+    }
+    if (msg["Message"] === "GetUserData") {
+      configuration()
+    }
+    else if (msg["Message"] === "CreateTag") {
+      tags.create(msg["Tag"], msg["Parent"], configuration, failure)
+    }
+    else if (msg["Message"] === "ActivateTag") {
+      tags.activate(msg["Tag"], configuration, failure)
+    }
+    else if (msg["Message"] === "DeactivateTag") {
+      tags.deactivate(msg["Tag"], configuration, failure)
+    }
+    else if (msg["Message"] === "RemoveTag") {
+      tags.remove(msg["Tag"], configuration, failure)
+    }
+    else if (msg["Message"] === "RenameTag") {
+      tags.rename(msg["From"], msg["To"], msg["Parent"], configuration, failure)
+    }
+    else if (msg["Message"] === "DisableCards") {
+      tags.disableCards(msg["Tag"], success, failure)
+    }
+    else if (msg["Message"] === "EnableCards") {
+      tags.enableCards(msg["Tag"], success, failure)
+    }
+    else if (msg["Message"] === "AddCard") {
       user.collection("Cards").add(msg["Card"]).then(reference => { console.log(reference.id) })
     }
     else if (msg["Message"] === "GetNextCard") {

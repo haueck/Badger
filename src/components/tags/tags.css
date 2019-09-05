@@ -1,0 +1,14 @@
+.tags {
+  width: 500px;
+  margin: 0 auto;
+}
+/deep/ #modal-tag-menu .modal-body {
+  padding: 0;
+}
+#modal-tag-menu .modal-body > div {
+  cursor: pointer;
+  padding: 10px;
+}
+#modal-tag-menu .modal-body > div:hover {
+  background-color: #f8f9fa;
+}

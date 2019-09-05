@@ -1,5 +1,38 @@
 <div>
-  <select v-model="selected" class="form-control card-selection">
+  <modal :closing="true" :title="'Select a tag'" id="modal-add-tag">
+    <div v-if="tags[tag]['Children'].length == 0">No tags yet</div>
+    <div v-for="(name, index) in tags[tag]['Children']" v-if="!tags[name]['Inactive']" :class="{ 'border-top': index != 0 }" class="tag-select">
+      <div class="tag-name" @click="addTags(name)" data-dismiss="modal">{{ name }}</div>
+      <div v-if="tags[name]['Children'].length" class="tag-children fas fa-chevron-right" @click=setParent(name)></div>
+    </div>
+    <template v-slot:footer>
+      <button type="button" class="btn btn-primary" @click="showCreate()">Create a new tag</button>
+      <button type="button" class="btn btn-secondary" v-if="tag != '€'" @click="back()">Back</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </template>
+  </modal>
+  <modal :closing="false" :title="'Select a parent'" id="modal-select-parent">
+    <div v-for="(name, index) in tags[tag]['Children']" v-if="!tags[name]['Inactive']" :class="{ 'border-top': index != 0 }" class="tag-select">
+      <div class="tag-name" @click="selectParent(name)">{{ name }}</div>
+      <div v-if="tags[name]['Children'].length" class="tag-children fas fa-chevron-right" @click=setParent(name)></div>
+    </div>
+    <template v-slot:footer>
+      <button type="button" class="btn btn-primary" @click="switchModals('modal-select-parent', 'modal-create-tag')">Create here</button>
+      <button type="button" class="btn btn-secondary" v-if="tag != '€'" @click=back()>Back</button>
+    </template>
+  </modal>
+  <modal :closing="false" :title="'Create a new tag'" id="modal-create-tag">
+    <div class="form-inline">
+      <label class="text-secondary">{{ path }}</label>
+      <input type="text" class="form-control" pattern="[0-9A-Za-z ]+" required/>
+    </div>
+    <template v-slot:footer>
+      <button type="button" class="btn btn-secondary" @click="cancelCreate()">Close</button>
+      <button type="button" class="btn btn-primary" @click="changeParent()">Change parent</button>
+      <button type="button" class="btn btn-primary" @click="createTag()">Create</button>
+    </template>
+  </modal>
+  <select v-model="card['Type']" class="form-control card-selection">
     <option disabled value="None">Select type</option>
     <option>English</option>
     <option>Question</option>
@@ -7,6 +40,15 @@
     <option>Multiple choice</option>
     <option>Word</option>
   </select>
-  <english v-if="selected == 'English'"></english>
-  <question v-if="selected == 'Question'"></question>
+  <div v-if="card['Type'] != 'None'" class="tags">
+    <div v-for="tag in card['Tags']" class="btn-group">
+      <button type="button" class="btn btn-info" disabled>{{ tag }}</button>
+      <button type="button" class="btn btn-info" @click="removeTag(tag)">
+        <span class="fas fa-times"></span>
+      </button>
+    </div>
+    <button type="button" class="btn btn-primary" @click="showTags()">Add a tag</button>
+  </div>
+  <english v-if="card['Type'] == 'English'" :card="card"></english>
+  <question v-else-if="card['Type'] == 'Question'" :card="card"></question>
 </div>
