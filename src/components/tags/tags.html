@@ -26,7 +26,8 @@
       <button type="button" class="btn btn-primary" data-dismiss="modal" @click="removeTag(current)">Remove</button>
     </template>
   </modal>
-  <div class="border-bottom tags">
+  <div v-if="tags['€'].Children.length == 0">No tags</div>
+  <div v-else class="border-bottom tags">
     <tree v-for="child in tags['€'].Children" :tags="tags" :tag="child" :depth="1"></tree>
   </div>
 </div>

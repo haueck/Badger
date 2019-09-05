@@ -1,5 +1,6 @@
 <div>
   <modal :closing="true" :title="'Select a tag'" id="modal-add-tag">
+    <div v-if="tags[tag]['Children'].length == 0">No tags yet</div>
     <div v-for="(name, index) in tags[tag]['Children']" v-if="!tags[name]['Inactive']" :class="{ 'border-top': index != 0 }" class="tag-select">
       <div class="tag-name" @click="addTags(name)" data-dismiss="modal">{{ name }}</div>
       <div v-if="tags[name]['Children'].length" class="tag-children fas fa-chevron-right" @click=setParent(name)></div>
@@ -39,8 +40,7 @@
     <option>Multiple choice</option>
     <option>Word</option>
   </select>
-  <!--<div v-if="card['Type'] != 'None'" class="tags">-->
-  <div class="tags">
+  <div v-if="card['Type'] != 'None'" class="tags">
     <div v-for="tag in card['Tags']" class="btn-group">
       <button type="button" class="btn btn-info" disabled>{{ tag }}</button>
       <button type="button" class="btn btn-info" @click="removeTag(tag)">
