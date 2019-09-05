@@ -1,5 +1,6 @@
 import vue from "vue"
 import tree from "./tree.vue"
+import modal from "components/modal"
 
 export default {
   data() {
@@ -9,13 +10,10 @@ export default {
       count: 0
     }
   },
-  components: { tree },
+  components: { tree, modal },
   mounted() {
     this.$bus.$on("show-modal", this.show)
-    this.menu = $(this.$el).children(".tag-menu")
-    this.rename = $(this.$el).children(".tag-rename")
-    this.remove = $(this.$el).children(".tag-remove")
-    this.field = this.rename.find("input").get(0)
+    this.field = $("#modal-tag-rename input").get(0)
     this.field.addEventListener("keyup", event => {
       if (event.keyCode === 13) {
         event.preventDefault()
@@ -27,7 +25,7 @@ export default {
     show(tag, inactive) {
       this.inactive = inactive
       this.current = tag
-      this.menu.modal()
+      $("#modal-tag-menu").modal("show")
     },
     removeTag(tag) {
       this.$call("RemoveTag", { "Tag": tag })
@@ -40,18 +38,18 @@ export default {
       }
       this.count = this.$store.getters.tags[tag]["Count"]
       if (this.count > 1) {
-        this.remove.modal()
+        $("#modal-tag-remove").modal("show")
       }
       else {
         this.removeTag(tag)
       }
     },
     renameModal() {
-      this.rename.one("shown.bs.modal", () => {
+      $("#modal-tag-rename").one("shown.bs.modal", () => {
         this.field.focus()
         this.field.select()
       })
-      this.rename.modal()
+      $("#modal-tag-rename").modal("show")
     },
     renameTag(from) {
       if (this.field.checkValidity()) {
@@ -63,7 +61,7 @@ export default {
           })
           this.current = "€"
         }
-        this.rename.modal("hide")
+        $("#modal-tag-rename").modal("hide")
       }
     },
     enableCards(tag) {

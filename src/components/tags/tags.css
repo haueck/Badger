@@ -2,9 +2,13 @@
   width: 500px;
   margin: 0 auto;
 }
-.modal-body {
-  cursor: pointer;
+/deep/ #modal-tag-menu .modal-body {
+  padding: 0;
 }
-.modal-body:hover {
+#modal-tag-menu .modal-body > div {
+  cursor: pointer;
+  padding: 10px;
+}
+#modal-tag-menu .modal-body > div:hover {
   background-color: #f8f9fa;
 }

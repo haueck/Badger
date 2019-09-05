@@ -23,7 +23,7 @@
     props: [ "title", "closing" ],
     mounted() {
       let options = {
-        "show": true
+        "show": false
       }
       if (!this.closing) {
         options["backdrop"] = "static"

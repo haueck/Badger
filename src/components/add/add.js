@@ -17,10 +17,7 @@ export default {
   },
   components: { question, english, modal },
   mounted() {
-    //this.modals.tag = $(this.$el).children("#modal-add-tag")
-    this.create = $(this.$el).children(".tag-create")
-    this.parent = $(this.$el).children(".parent-pick")
-    this.field = this.create.find("input").get(0)
+    this.field = $("#modal-create-tag input").get(0)
     this.field.addEventListener("keyup", event => {
       if (event.keyCode === 13) {
         event.preventDefault()
@@ -31,23 +28,23 @@ export default {
   },
   methods: {
     switchModals(hide, show) {
-      hide.modal("hide")
-      show.modal("show")
+      $("#" + hide).modal("hide")
+      $("#" + show).modal("show")
     },
     changeParent() {
       this.setParent("€")
-      this.switchModals(this.create, this.parent)
+      this.switchModals("modal-create-tag", "modal-select-parent")
     },
     selectParent(tag) {
       this.setParent(tag)
-      this.switchModals(this.parent, this.create)
+      this.switchModals("modal-select-parent", "modal-create-tag")
     },
     showTags() {
       this.setParent("€")
-      this.pick.modal()
+      $("#modal-add-tag").modal("show")
     },
     showCreate() {
-      this.create.modal()
+      this.switchModals("modal-add-tag", "modal-create-tag")
       this.field.focus()
       this.field.value = ""
     },
@@ -73,9 +70,13 @@ export default {
         this.card["Tags"].splice(index, 1)
       }
     },
+    cancelCreate() {
+      this.setParent("€")
+      this.switchModals("modal-create-tag", "modal-add-tag")
+    },
     createTag() {
       if (this.field.checkValidity()) {
-        this.create.modal("hide")
+        $("#modal-create-tag").modal("hide")
         let name = this.field.value
         let parent = this.tag
         this.$call("CreateTag", { "Tag": name, "Parent": parent }, () => {

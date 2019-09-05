@@ -1,65 +1,31 @@
 <div>
-  <div class="modal tag-menu" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">{{ current }}</h5>
-          <button type="button" class="close" data-dismiss="modal">
-            <span class="fas fa-times"></span>
-          </button>
-        </div>
-        <div class="modal-body"><!-- Update counter -->Show cards with this tag</div>
-        <div class="modal-body border-top">Add cards with this tag to a revision</div>
-        <div class="modal-body border-top" data-dismiss="modal" @click="disableCards(current)">Disable all cards with this tag</div>
-        <div class="modal-body border-top" data-dismiss="modal" @click="enableCards(current)">Enable all cards with this tag</div>
-        <div class="modal-body border-top" data-dismiss="modal" @click="renameModal()">Change the name of this tag</div>
-        <div class="modal-body border-top" data-dismiss="modal" @click="confirmRemove(current)">Remove this tag</div>
-        <div class="modal-body border-top" data-dismiss="modal" @click="toggleInactive(current)" v-if="!inactive">
-          Make this tag
-          <span v-if="tags[current].Inactive">active again</span>
-          <span v-else>inactive</span>
-        </div>
-      </div>
+  <modal :closing="true" :title="current" id="modal-tag-menu">
+    <div><!-- Update counter -->Show cards with this tag</div>
+    <div class="border-top">Add cards with this tag to a revision</div>
+    <div class="border-top" data-dismiss="modal" @click="disableCards(current)">Disable all cards with this tag</div>
+    <div class="border-top" data-dismiss="modal" @click="enableCards(current)">Enable all cards with this tag</div>
+    <div class="border-top" data-dismiss="modal" @click="renameModal()">Change the name of this tag</div>
+    <div class="border-top" data-dismiss="modal" @click="confirmRemove(current)">Remove this tag</div>
+    <div class="border-top" data-dismiss="modal" @click="toggleInactive(current)" v-if="!inactive">
+      Make this tag
+      <span v-if="tags[current].Inactive">active again</span>
+      <span v-else>inactive</span>
     </div>
-  </div>
-  <div class="modal tag-rename" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Rename {{ current }}</h5>
-          <button type="button" class="close" data-dismiss="modal">
-            <span class="fas fa-times"></span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <input type="text" class="form-control" pattern="[0-9A-Za-z ]+" :value="current" required/>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" @click="renameTag(current)">Rename</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal tag-remove" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Remove {{ current }}</h5>
-          <button type="button" class="close" data-dismiss="modal">
-            <span class="fas fa-times"></span>
-          </button>
-        </div>
-        <div class="modal-body">
-          This will remove the tag <strong>{{ current }}</strong> from all {{ count }} cards. Continue?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" @click="removeTag(current)">Remove</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  </modal>
+  <modal :closing="true" :title="'Rename ' + current" id="modal-tag-rename">
+    <input type="text" class="form-control" pattern="[0-9A-Za-z ]+" :value="current" required/>
+    <template v-slot:footer>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary" @click="renameTag(current)">Rename</button>
+    </template>
+  </modal>
+  <modal :closing="true" :title="'Remove ' + current" id="modal-tag-remove">
+    <span>This will remove the tag <strong>{{ current }}</strong> from all {{ count }} cards. Continue?</span>
+    <template v-slot:footer>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary" data-dismiss="modal" @click="removeTag(current)">Remove</button>
+    </template>
+  </modal>
   <div class="border-bottom tags">
     <tree v-for="child in tags['€'].Children" :tags="tags" :tag="child" :depth="1"></tree>
   </div>
