@@ -8,7 +8,7 @@
 #modal-create-tag label {
   margin-right: 10px;
 }
-.tags > div, .tags > button {
+.tag {
   margin-right: 10px;
 }
 .tag-select {

@@ -9,7 +9,7 @@ export default {
   components: { alternatives },
   mixins: [ concealing ],
   props: [ "card" ],
-  mounted () {
+  created() {
     let defaults = {
       "Word": "",
       "PartOfSpeech": "Noun",
@@ -32,9 +32,6 @@ export default {
     }
   },
   methods: {
-    add() {
-      this.$call("AddCard", { "Card": this.card })
-    },
     ipa(event) {
       this.card["Pronunciation"] += event.target.textContent
       event.stopPropagation()

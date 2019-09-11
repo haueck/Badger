@@ -28,6 +28,6 @@
   </modal>
   <div v-if="tags['€'].Children.length == 0">No tags</div>
   <div v-else class="border-bottom tags">
-    <tree v-for="child in tags['€'].Children" :tags="tags" :tag="child" :depth="1"></tree>
+    <tree v-for="(child, index) in tags['€']['Children']" :tags="tags" :tag="child" :depth="1" :key="index"></tree>
   </div>
 </div>

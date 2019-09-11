@@ -1,21 +1,34 @@
 import question from "components/question/add.vue"
 import english from "components/english/add.vue"
 import modal from "components/modal"
+import vue from "vue"
 
 export default {
   data() {
     return {
-      selected: "None",
-      modals: {},
       tag: "€",
-      card: {
-        "Type": "None",
-        "Tags": [],
-        "Learn": true
-      },
+      card: {}
+    }
+  },
+  props: {
+    editing: {
+      type: Object,
+      default: null
+    },
+    id: {
+      type: String,
+      default: null
     }
   },
   components: { question, english, modal },
+  created() {
+    if (this.editing) {
+      vue.set(this, "card", this.editing)
+    }
+    else {
+      this.resetCard("", [])
+    }
+  },
   mounted() {
     this.field = $("#modal-create-tag input").get(0)
     this.field.addEventListener("keyup", event => {
@@ -27,6 +40,42 @@ export default {
     })
   },
   methods: {
+    typeChanged(type) {
+      this.resetCard(type, this.card["Tags"])
+    },
+    resetCard(type, tags) {
+      vue.set(this, "card", {
+        "Type": type,
+        "Tags": tags,
+        "Learn": true
+      })
+    },
+    createCard() {
+      let type = this.card["Type"]
+      let tags = this.card["Tags"]
+      this.$call("CreateCard", { "Card": this.card }, response => {
+        if (response["Level"] == "Success") {
+          this.resetCard(type, tags)
+        }
+      })
+    },
+    updateCard() {
+      this.$call("UpdateCard", {
+        "Card": this.card,
+        "CardId": this.id
+      })
+    },
+    confirmRemove() {
+      $("#modal-card-remove").modal("show")
+    },
+    removeCard() {
+      $("#modal-card-remove").modal("hide")
+      this.$call("RemoveCard", { "CardId": this.id }, response => {
+        if (response["Level"] == "Success") {
+          this.$router.push("/tags")
+        }
+      })
+    },
     switchModals(hide, show) {
       $("#" + hide).modal("hide")
       $("#" + show).modal("show")
@@ -99,6 +148,9 @@ export default {
         current = this.$store.getters.tags[current]["Parent"]
       }
       return path.join(" ")
+    },
+    currentComponent() {
+      return this.card["Type"].toLowerCase()
     }
   }
 }

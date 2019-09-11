@@ -37,18 +37,21 @@ export default new vuex.Store({
     }
   },
   actions: {
-    completeJob(context, id) {
+    completeJob(context, msg) {
+      let id = msg["JobId"]
       if (!id) {
         console.error("JobId is not defined")
       }
       else if (!(id in context.state.jobs)) {
         console.error("There is no job with JobId=", id)
       }
-      let callback = context.state.jobs[id]["Callback"]
-      if (callback) {
-        callback()
+      else {
+        let callback = context.state.jobs[id]["Callback"]
+        if (callback) {
+          callback(msg)
+        }
+        context.commit("removeJob", id)
       }
-      context.commit("removeJob", id)
     }
   },
   getters: {

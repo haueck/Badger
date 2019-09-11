@@ -366,7 +366,7 @@ describe("Tags", () => {
     mock.mockResolvedValueOnce(snapshot([ "From", "Parent" ]))
     mock.mockResolvedValueOnce()
     mock.mockResolvedValueOnce({
-      forEach(callback) { },
+      forEach() { },
       size: 0
     })
     mock.mockRejectedValueOnce()

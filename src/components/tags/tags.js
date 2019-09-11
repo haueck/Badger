@@ -1,4 +1,3 @@
-import vue from "vue"
 import tree from "./tree.vue"
 import modal from "components/modal"
 

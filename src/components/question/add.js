@@ -13,7 +13,7 @@ export default {
   },
   props: [ "card" ],
   components: { tinymce, alternatives, draggable },
-  mounted () {
+  created() {
     let defaults = {
       "Question": "",
       "Explanation": "",
@@ -31,9 +31,6 @@ export default {
     }
   },
   methods: {
-    add() {
-      this.$call("AddCard", { "Card": this.card })
-    },
     addAnswer() {
       let last = this.card["Answers"].length
       this.card["Answers"].push({

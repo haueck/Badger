@@ -4,7 +4,7 @@
       <div :class="{ 'text-muted': muted }">{{ tag }}</div>
       <div class="badge badge-pill" :class="[muted ? 'badge-secondary' : 'badge-primary']">{{ tags[tag].Count }}</div>
     </div>
-    <tree v-for="child in tags[tag].Children" :tags="tags" :tag="child" :depth="depth + 1" :inactive="muted"></tree>
+    <tree v-for="(child, index) in tags[tag]['Children']" :tags="tags" :tag="child" :depth="depth + 1" :inactive="muted" :key="index"></tree>
   </div>
 </template>
 <script>

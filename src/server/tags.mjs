@@ -108,7 +108,7 @@ export default class {
     }).then(() => {
       success("Disabled all cards")
     }).catch(error => {
-      failure("Failed to disable cards")
+      failure("Failed to disable cards", { tag, error })
     })
   }
 
@@ -122,7 +122,7 @@ export default class {
     }).then(() => {
       success("Enabled all cards")
     }).catch(error => {
-      failure("Failed to enable cards")
+      failure("Failed to enable cards", { tag, error })
     })
   }
 

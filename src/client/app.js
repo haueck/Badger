@@ -3,6 +3,7 @@ import store from "store"
 import router from "vue-router"
 import learn from "components/learn"
 import add from "components/add"
+import edit from "components/edit"
 import toasts from "components/toasts"
 import tags from "components/tags"
 import "@fortawesome/fontawesome-free/css/all.min.css"
@@ -34,7 +35,8 @@ vue.use(router)
 let routes = [
   { path: "/learn", component: learn },
   { path: "/tags", component: tags },
-  { path: "/add", component: add }
+  { path: "/add", component: add },
+  { path: "/edit/:id", component: edit }
 ]
 
 window.addEventListener("load", () => {
@@ -68,7 +70,7 @@ window.addEventListener("load", () => {
         try {
           let msg = JSON.parse(event.data)
           let name = msg["Message"]
-          this.$store.dispatch("completeJob", msg["JobId"])
+          this.$store.dispatch("completeJob", msg)
           delete msg["Message"]
           delete msg["JobId"]
           this.$bus.$emit(name, msg)

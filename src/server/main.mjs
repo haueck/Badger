@@ -7,6 +7,7 @@ import Session from "./session.mjs"
 import Account from "./account.mjs"
 import secrets from "./secrets.mjs"
 import Tags from "./tags.mjs"
+import Cards from "./cards.mjs"
 
 const app = express()
 const server = http.createServer(null, app)
@@ -47,7 +48,8 @@ server.on("upgrade", function(request, socket, head) {
 
 wss.on("connection", (ws, request) => {
   let user = db.collection("Users").doc(request.session.user)
-  let tags = new Tags({ database: user, ws, account })
+  let tags = new Tags({ database: user })
+  let cards = new Cards({ database: user })
   ws.on("message", message => {
     let msg = JSON.parse(message)
     let status = (level, text) => {
@@ -95,8 +97,17 @@ wss.on("connection", (ws, request) => {
     else if (msg["Message"] === "EnableCards") {
       tags.enableCards(msg["Tag"], success, failure)
     }
-    else if (msg["Message"] === "AddCard") {
-      user.collection("Cards").add(msg["Card"]).then(reference => { console.log(reference.id) })
+    else if (msg["Message"] === "CreateCard") {
+      cards.create(msg["Card"], success, failure)
+    }
+    else if (msg["Message"] === "UpdateCard") {
+      cards.update(msg["CardId"], msg["Card"], success, failure)
+    }
+    else if (msg["Message"] === "RemoveCard") {
+      cards.remove(msg["CardId"], success, failure)
+    }
+    else if (msg["Message"] === "GetCard") {
+      cards.get(msg["CardId"], payload, failure)
     }
     else if (msg["Message"] === "GetNextCard") {
       const query = user.collection("Cards").where("Queue", ">", 0).orderBy("Queue").limit(1)
@@ -119,16 +130,6 @@ wss.on("connection", (ws, request) => {
         }
       }).catch(error => {
           console.error("Error getting documents: ", error)
-      })
-    }
-    else if (msg["Message"] === "GetCard") {
-      const document = user.collection("Cards").doc(msg["CardId"])
-      document.get().then(doc => {
-      if (!doc.exists) {
-          ws.send(JSON.stringify({ "Message": "Error" }))
-        } else {
-          ws.send(JSON.stringify(doc.data()))
-        }
       })
     }
     else if (msg["Message"] === "Result") {
@@ -163,7 +164,7 @@ wss.on("connection", (ws, request) => {
       })
     }
     else {
-      ws.send(JSON.stringify({ "Message": "Error" }))
+      failure("Unknown request")
     }
   })
 })
