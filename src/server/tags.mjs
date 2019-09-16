@@ -98,12 +98,11 @@ export default class {
   }
 
   disableCards(tag, success, failure) {
-    this.db.collection("Cards").where("Tags", "array-contains", tag).get().then(snapshot => {
+    this.db.collection("Cards").where("Tags", "array-contains", tag).where("Disabled", "==", false).get().then(snapshot => {
       let promises = []
       snapshot.forEach(doc => {
         promises.push(doc.ref.update({ "Disabled": true }))
       })
-      promises.push(this.db.update({ ["Tags." + tag + ".Count"]: snapshot.size }))
       return Promise.all(promises)
     }).then(() => {
       success("Disabled all cards")
@@ -116,7 +115,7 @@ export default class {
     this.db.collection("Cards").where("Tags", "array-contains", tag).where("Disabled", "==", true).get().then(snapshot => {
       let promises = []
       snapshot.forEach(doc => {
-        promises.push(doc.ref.update({ "Disabled": Firestore.FieldValue.delete() }))
+        promises.push(doc.ref.update({ "Disabled": false }))
       })
       return Promise.all(promises)
     }).then(() => {

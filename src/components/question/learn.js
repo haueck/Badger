@@ -29,7 +29,7 @@ export default {
         for (let i = 0; i < this.count; i++) {
           for (let j = 0; j < this.count; j++) {
             if (!used[j]) {
-              let feedback = this.compare(this.card["Answers"][j]["Value"], this.answers[i], this.card["Raw"])
+              let feedback = this.compare(this.card["Answers"][j], this.answers[i], this.card["Raw"])
               if (feedback["Pass"]) {
                 this.feedback[i] = feedback
                 used[j] = true
@@ -43,7 +43,7 @@ export default {
           if (!used[i]) {
             for (let j = 0; j < this.count; j++) {
               if (this.feedback[j] == null) {
-                this.feedback[j] = this.compare(this.card["Answers"][i]["Value"], this.answers[j], this.card["Raw"])
+                this.feedback[j] = this.compare(this.card["Answers"][i], this.answers[j], this.card["Raw"])
                 break
               }
             }
@@ -51,7 +51,7 @@ export default {
         }
       } else {
         for (let i = 0; i < this.count; i++) {
-          this.feedback[i] = this.compare(this.card["Answers"][i]["Value"], this.answers[i], this.card["Raw"])
+          this.feedback[i] = this.compare(this.card["Answers"][i], this.answers[i], this.card["Raw"])
           if (this.feedback[i]["Pass"]) {
             correct++
           }

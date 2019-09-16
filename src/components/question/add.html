@@ -8,7 +8,7 @@
        <div v-for="(answer, index) in card['Answers']" class="answer">
          Answer<span class="answer-index"> ({{index + 1}})</span>:<br>
          <div class="input-group">
-           <input class="form-control" v-model="answer['Value']" ref="answer">
+           <input class="form-control" v-model="card['Answers'][index]" ref="answer">
            <div class="input-group-append">
              <span class="input-group-text"><i class="fas fa-bars"></i></span>
            </div>
@@ -29,7 +29,7 @@
      <textarea rows="3" class="form-control" v-model="card['Explanation']"></textarea>
    </div>
    <div>
-     <input type="checkbox"> Don't parse
+     <input type="checkbox" v-model="card['Raw']"> Don't parse
    </div>
    <alternatives></alternatives>
 </div>

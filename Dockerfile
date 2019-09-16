@@ -10,4 +10,4 @@ RUN npm install
 RUN npm run build
 RUN npm test
 RUN npm run-script eslint
-CMD [ "dumb-init", "node", "src/js/server.js" ]
+CMD [ "dumb-init", "node", "--experimental-modules", "src/server/main.mjs" ]

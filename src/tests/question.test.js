@@ -55,7 +55,7 @@ describe("Question", () => {
   it("properly handles a successful attempt", () => {
     verify({
       "Question": "1+1?",
-      "Answers": [{ "Value": "2" }],
+      "Answers": [ "2" ],
       "Input": [ 2 ],
       "Expected": [{
         "Correct": [ "2" ]
@@ -67,7 +67,7 @@ describe("Question", () => {
   it("properly handles a successful attempt", () => {
     verify({
       "Question": "Empty",
-      "Answers": [{ "Value": "" }],
+      "Answers": [ "" ],
       "Input": [ "" ],
       "Expected": [ { "Correct": [ "" ] } ],
       "Pass": true
@@ -77,7 +77,7 @@ describe("Question", () => {
   it("properly handles an unsuccessful attempt", () => {
     verify({
       "Question": "1+1?",
-      "Answers": [{ "Value": "2" }],
+      "Answers": ["2" ],
       "Input": [ 3 ],
       "Expected": [{
         "Possible": [ "2" ],
@@ -90,7 +90,7 @@ describe("Question", () => {
   it("properly handles an unsuccessful attempt", () => {
     verify({
       "Question": "1+1?",
-      "Answers": [{ "Value": "2" }],
+      "Answers": [ "2" ],
       "Input": [ "" ],
       "Expected": [{
         "Possible": [ "2" ],
@@ -103,7 +103,7 @@ describe("Question", () => {
   it("properly handles answers with brackets", () => {
     verify({
       "Question": "What is you favorite equation?",
-      "Answers": [{ "Value": "sin(x) + 1/2" }],
+      "Answers": [ "sin(x) + 1/2" ],
       "Input": [ "sin(x) + 1/2" ],
       "Raw": true,
       "Expected": [{
@@ -116,7 +116,7 @@ describe("Question", () => {
   it("properly handles optional answer", () => {
     verify({
       "Question": "1+1?",
-      "Answers": [{ "Value": "(2)" }],
+      "Answers": [ "(2)" ],
       "Input": [ "2" ],
       "Expected": [{
         "Correct": [ "2" ],
@@ -129,7 +129,7 @@ describe("Question", () => {
   it("properly handles optional answer", () => {
     verify({
       "Question": "1+1?",
-      "Answers": [{ "Value": "(2)" }],
+      "Answers": [ "(2)" ],
       "Input": [ "" ],
       "Expected": [{
         "Correct": [ "" ],
@@ -142,7 +142,7 @@ describe("Question", () => {
   it("properly handles simple alternatives", () => {
     verify({
       "Question": "What is he doing?",
-      "Answers": [{ "Value": "He is always/continually interrupting me" }],
+      "Answers": [ "He is always/continually interrupting me" ],
       "Input": [ "He is continually interrupting me" ],
       "Expected": [{
         "Correct": [ "he is continually interrupting me" ],
@@ -155,7 +155,7 @@ describe("Question", () => {
   it("properly handles simple alternatives", () => {
     verify({
       "Question": "What is he doing?",
-      "Answers": [{ "Value": "He is always/continually interrupting me" }],
+      "Answers": [ "He is always/continually interrupting me" ],
       "Input": [ "He is always interrupting me" ],
       "Expected": [{
         "Correct": [ "he is always interrupting me" ],
@@ -168,7 +168,7 @@ describe("Question", () => {
   it("properly handles simple alternatives", () => {
     verify({
       "Question": "What is he doing?",
-      "Answers": [{ "Value": "He is always/continually interrupting me" }],
+      "Answers": [ "He is always/continually interrupting me" ],
       "Input": [ "He is continually/always interrupting me" ],
       "Expected": [{
         "Correct": [ "he is always interrupting me", "he is continually interrupting me" ]
@@ -180,7 +180,7 @@ describe("Question", () => {
   it("properly handles simple alternatives", () => {
     verify({
       "Question": "What is he doing?",
-      "Answers": [{ "Value": "He is always/continually interrupting me" }],
+      "Answers": [ "He is always/continually interrupting me" ],
       "Input": [ "He is always/always interrupting me" ],
       "Expected": [{
         "Correct": [ "he is always interrupting me" ],
@@ -193,7 +193,7 @@ describe("Question", () => {
   it("properly handles simple alternatives", () => {
     verify({
       "Question": "What is he doing?",
-      "Answers": [{ "Value": "He is always/continually interrupting me" }],
+      "Answers": [ "He is always/continually interrupting me" ],
       "Input": [ "He is neverly interrupting me" ],
       "Expected": [{
         "Possible": [ "he is always interrupting me", "he is continually interrupting me" ],
@@ -206,7 +206,7 @@ describe("Question", () => {
   it("properly handles simple alternatives", () => {
     verify({
       "Question": "What is he doing?",
-      "Answers": [{ "Value": "He is always/continually interrupting me" }],
+      "Answers": [ "He is always/continually interrupting me" ],
       "Input": [ "He is always/continualy interrupting me" ],
       "Expected": [{
         "Correct": [ "he is always interrupting me" ],
@@ -220,7 +220,7 @@ describe("Question", () => {
   it("properly handles complex alternatives", () => {
     verify({
       "Question": "To choose somebody/something from a group for special attention?",
-      "Answers": [{ "Value": "single sb/sth out ((for sth)/(as sb/sth))" }],
+      "Answers": [ "single sb/sth out ((for sth)/(as sb/sth))" ],
       "Input": [ "single sth out for sth" ],
       "Expected": [{
         "Correct": [ "single sth out for sth" ],
@@ -233,7 +233,7 @@ describe("Question", () => {
   it("properly handles complex alternatives", () => {
     verify({
       "Question": "To choose somebody/something from a group for special attention?",
-      "Answers": [{ "Value": "single sb/sth out ((for sth)/(as sb/sth))" }],
+      "Answers": [ "single sb/sth out ((for sth)/(as sb/sth))" ],
       "Input": [ "single sb out (as sb)" ],
       "Expected": [{
         "Correct": [ "single sb out", "single sb out as sb" ],
@@ -246,7 +246,7 @@ describe("Question", () => {
   it("properly handles complex alternatives", () => {
     verify({
       "Question": "To choose somebody/something from a group for special attention?",
-      "Answers": [{ "Value": "single sb/sth out ((for sth)/(as sb/sth))" }],
+      "Answers": [ "single sb/sth out ((for sth)/(as sb/sth))" ],
       "Input": [ "single sb/sth out ((for sth)/(as sb/sth))" ],
       "Expected": [{
         "Correct": [ "single sb out", "single sb out as sb", "single sth out", "single sth out for sth", "single sb out as sth", "single sth out as sth", "single sth out as sb", "single sb out for sth" ]
@@ -258,7 +258,7 @@ describe("Question", () => {
   it("properly handles complex alternatives", () => {
     verify({
       "Question": "To choose somebody/something from a group for special attention?",
-      "Answers": [{ "Value": "single sb/sth out ((for sth)/(as sb/sth))" }],
+      "Answers": [ "single sb/sth out ((for sth)/(as sb/sth))" ],
       "Input": [ "single sb/sth out ((for sb)/(as sb/sth))" ],
       "Expected": [{
         "Correct": [ "single sb out", "single sb out as sb", "single sth out", "single sb out as sth", "single sth out as sth", "single sth out as sb" ],
@@ -272,7 +272,7 @@ describe("Question", () => {
   it("properly handles contractions", () => {
     verify({
       "Question": "Who is leaving?",
-      "Answers": [{ "Value": "I'm leaving" }],
+      "Answers": [ "I'm leaving" ],
       "Input": [ "I am leaving" ],
       "Expected": [{
         "Correct": [ "i am leaving" ]
@@ -284,7 +284,7 @@ describe("Question", () => {
   it("properly handles contractions", () => {
     verify({
       "Question": "Who is leaving?",
-      "Answers": [{ "Value": "I'm leaving" }],
+      "Answers": [ "I'm leaving" ],
       "Input": [ "I'm leaving" ],
       "Expected": [{
         "Correct": [ "i'm leaving" ]
@@ -296,7 +296,7 @@ describe("Question", () => {
   it("properly handles contractions", () => {
     verify({
       "Question": "Who is leaving?",
-      "Answers": [{ "Value": "I'm (leaving)" }],
+      "Answers": [ "I'm (leaving)" ],
       "Input": [ "I am" ],
       "Expected": [{
         "Correct": [ "i am" ],
@@ -309,7 +309,7 @@ describe("Question", () => {
   it("properly handles multiple answers", () => {
     verify({
       "Question": "Who are they?",
-      "Answers": [ { "Value": "(Francis) Scott (Key) Fitzgerald" }, { "Value": "Umberto Eco"} ],
+      "Answers": [ "(Francis) Scott (Key) Fitzgerald", "Umberto Eco" ],
       "Input": [ "Scott Key Fitzgerald", "Umberto Eco" ],
       "Expected": [{
         "Correct": [ "scott key fitzgerald" ],
@@ -324,7 +324,7 @@ describe("Question", () => {
   it("properly handles multiple answers", () => {
     verify({
       "Question": "Who are they?",
-      "Answers": [ { "Value": "(Francis) Scott (Key) Fitzgerald" }, { "Value": "Umberto Eco"} ],
+      "Answers": [ "(Francis) Scott (Key) Fitzgerald", "Umberto Eco" ],
       "Input": [ "Scott (Brian) Fitzgerald", "Umberto Eco" ],
       "Expected": [{
         "Correct": [ "scott fitzgerald" ],
@@ -342,13 +342,13 @@ describe("Question", () => {
       "Unordered": true,
       "Question": "What are the highest mountains on each continent?",
       "Answers": [
-        { "Value": "Kilimanjaro" },
-        { "Value": "Vinson Massif" },
-        { "Value": "Carstensz Pyramid" },
-        { "Value": "(Mount Everest)/Czomolungma" },
-        { "Value": "Elbrus" },
-        { "Value": "Aconcagua" },
-        { "Value": "Mount McKinley" }
+        "Kilimanjaro",
+        "Vinson Massif",
+        "Carstensz Pyramid",
+        "(Mount Everest)/Czomolungma",
+        "Elbrus",
+        "Aconcagua",
+        "Mount McKinley"
       ],
       "Input": [ "Czomolungma", "Elbrus", "Kilimanjaro", "Carstensz Pyramid", "Mount McKinley", "Vinson Massif", "Aconcagua" ],
       "Expected": [
@@ -371,7 +371,7 @@ describe("Question", () => {
     verify({
       "Unordered": true,
       "Question": "First 2 digits?",
-      "Answers": [ { "Value": "0" }, { "Value": "1" } ],
+      "Answers": [ "0", "1" ],
       "Input": [ "1", "2" ],
       "Expected": [
         { "Correct": [ "1" ] },
@@ -385,7 +385,7 @@ describe("Question", () => {
     verify({
       "Unordered": true,
       "Question": "First 2 digits?",
-      "Answers": [ { "Value": "0" }, { "Value": "1" } ],
+      "Answers": [ "0", "1" ],
       "Input": [ "1", "1" ],
       "Expected": [
         { "Correct": [ "1" ] },
@@ -399,7 +399,7 @@ describe("Question", () => {
     verify({
       "Unordered": true,
       "Question": "First 2 digits?",
-      "Answers": [ { "Value": "0" }, { "Value": "1" } ],
+      "Answers": [ "0", "1" ],
       "Input": [ "6", "7" ],
       "Expected": [
         { "Wrong": [ "6" ], "Possible": [ "0" ] },

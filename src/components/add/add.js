@@ -47,7 +47,7 @@ export default {
       vue.set(this, "card", {
         "Type": type,
         "Tags": tags,
-        "Learn": true
+        "Disabled": false
       })
     },
     createCard() {
@@ -55,7 +55,10 @@ export default {
       let tags = this.card["Tags"]
       this.$call("CreateCard", { "Card": this.card }, response => {
         if (response["Level"] == "Success") {
-          this.resetCard(type, tags)
+          this.resetCard("", [])
+          vue.nextTick(() => {
+            this.resetCard(type, tags)
+          })
         }
       })
     },

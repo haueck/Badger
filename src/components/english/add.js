@@ -4,7 +4,9 @@ import alternatives from "components/alternatives"
 
 export default {
   data () {
-    return { }
+    return {
+      examples: []
+    }
   },
   components: { alternatives },
   mixins: [ concealing ],
@@ -12,11 +14,11 @@ export default {
   created() {
     let defaults = {
       "Word": "",
+      "Definition": "",
       "PartOfSpeech": "Noun",
       "Pronunciation" : "",
       "UseOfPrepositions" : "",
       "Examples": [ "" ],
-      "FullExamples": [ "" ],
       "Related": [],
       "PhrasalVerb": false,
       "Idiom": false,
@@ -29,6 +31,9 @@ export default {
       if (!(key in this.card)) {
         vue.set(this.card, key, defaults[key])
       }
+    }
+    for (let i = 0; i < this.card["Examples"].length; ++i) {
+      vue.set(this.examples, i, this.concealWords(this.card["Examples"][i], this.words()))
     }
   },
   methods: {
@@ -50,7 +55,7 @@ export default {
     addExample() {
       let last = this.card["Examples"].length
       this.card["Examples"].push("")
-      this.card["FullExamples"].push("")
+      this.examples.push("")
       vue.nextTick(() => {
         this.$refs.example[last].focus()
       })
@@ -61,14 +66,14 @@ export default {
       return this.prepareWords(list)
     },
     replaceExample(index) {
-      this.card["FullExamples"][index] = this.card["Examples"][index]
-      vue.set(this.card["Examples"], index, this.concealWords(this.card["Examples"][index], this.words()))
+      this.card["Examples"][index] = this.examples[index]
+      vue.set(this.examples, index, this.concealWords(this.examples[index], this.words()))
     },
     restoreExample(index) {
-      vue.set(this.card["Examples"], index, this.card["FullExamples"][index])
+      vue.set(this.examples, index, this.card["Examples"][index])
     },
     updateExamples() {
-      for (let i = 0; i < this.card["Examples"].length; ++i) {
+      for (let i = 0; i < this.examples.length; ++i) {
         this.restoreExample(i)
         this.replaceExample(i)
       }

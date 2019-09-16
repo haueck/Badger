@@ -6,11 +6,10 @@ export default {
   components: { question, english },
   data() {
     return {
-      card: {}
+      card: {
+        "Type": ""
+      }
     }
-  },
-  beforeMount() {
-    this.initCard()
   },
   mounted() {
     this.$bus.$on("NextCard", message => {
@@ -18,7 +17,7 @@ export default {
       this.id = message["CardId"]
     })
     this.$bus.$on("GetNextCard", () => {
-      this.initCard()
+      vue.set(this.card, "Type", "")
       this.getNextCard()
     })
     this.$bus.$on("Graded", pass => {
@@ -36,10 +35,16 @@ export default {
       this.$call("Result", { "CardId": this.id, "Pass": pass })
     },
     getNextCard() {
-      this.$call("GetNextCard")
+      this.$call("GetNextCard", {})
+    }
+  },
+  computed: {
+    currentComponent() {
+      return this.card["Type"].toLowerCase()
     },
-    initCard() {
-      vue.set(this.card, "Type", "None")
+    lastHit() {
+      let date = new Date(1000 * this.card["LastHit"]["_seconds"])
+      return date.toString()
     }
   }
 }

@@ -15,14 +15,11 @@ export default {
   components: { tinymce, alternatives, draggable },
   created() {
     let defaults = {
-      "Question": "",
       "Explanation": "",
       "Unordered": false,
-      "Answers": [{
-        "Value": "",
-        "Optional": false,
-        "Brackets": false
-      }]
+      "Question": "",
+      "Answers": [ "" ],
+      "Raw": false
     }
     for (let key in defaults) {
       if (!(key in this.card)) {
@@ -33,11 +30,7 @@ export default {
   methods: {
     addAnswer() {
       let last = this.card["Answers"].length
-      this.card["Answers"].push({
-        "Value": "",
-        "Optional": false,
-        "Brackets": false
-      })
+      this.card["Answers"].push("")
       vue.nextTick(() => {
         this.$refs.answer[last].focus()
       })

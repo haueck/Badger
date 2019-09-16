@@ -131,19 +131,15 @@ describe("English", () => {
         card: {
           "Type": "English",
           "Word": "embark",
-          "PartOfSpeech": "Noun",
-          "Related": [],
-          "Examples": [ "Passengers with cars must embark first" ],
-          "FullExamples": [ "" ]
+          "Examples": [ "Passengers with cars must embark first" ]
         },
       },
       mocks: {
         $bus: {}
       }
     })
-    wrapper.vm.replaceExample(0)
-    expect(wrapper.vm.card["Examples"][0]).toBe("Passengers with cars must ~ first")
-    expect(wrapper.vm.card["FullExamples"][0]).toBe("Passengers with cars must embark first")
+    expect(wrapper.vm.examples[0]).toBe("Passengers with cars must ~ first")
+    expect(wrapper.vm.card["Examples"][0]).toBe("Passengers with cars must embark first")
   })
 
   it("properly conceals a complex phrase", () => {
@@ -152,20 +148,15 @@ describe("English", () => {
         card: {
           "Type": "English",
           "Word": "run (the risk (of sth/(doing sth)))/risks",
-          "PartOfSpeech": "Verb",
-          "Related": [],
-          "Examples": [ "We don't want to run the risk of losing their business", "Investment is all about running risks" ],
-          "FullExamples": [ "" ]
+          "Examples": [ "We don't want to run the risk of losing their business", "Investment is all about running risks" ]
         },
       },
       mocks: {
         $bus: {}
       }
     })
-    wrapper.vm.replaceExample(0)
-    wrapper.vm.replaceExample(1)
-    expect(wrapper.vm.card["Examples"][0]).toBe("We don't want to ~ ~ ~ ~ losing their business")
-    expect(wrapper.vm.card["Examples"][1]).toBe("Investment is all about ~ing ~s")
+    expect(wrapper.vm.examples[0]).toBe("We don't want to ~ ~ ~ ~ losing their business")
+    expect(wrapper.vm.examples[1]).toBe("Investment is all about ~ing ~s")
   })
 
   it("properly conceals a related word", () => {
@@ -174,24 +165,20 @@ describe("English", () => {
         card: {
           "Type": "English",
           "Word": "underground",
-          "PartOfSpeech": "Noun",
           "Related": [{
             "Word": "subway",
             "Description": "NAmE",
             "Visibility": "Hide"
           }],
-          "Examples": [ "The New York subway", "The London Underground" ],
-          "FullExamples": [ "" ]
+          "Examples": [ "The New York subway", "The London Underground" ]
         },
       },
       mocks: {
         $bus: {}
       }
     })
-    wrapper.vm.replaceExample(0)
-    wrapper.vm.replaceExample(1)
-    expect(wrapper.vm.card["Examples"][0]).toBe("The New York ~")
-    expect(wrapper.vm.card["Examples"][1]).toBe("The London ~")
+    expect(wrapper.vm.examples[0]).toBe("The New York ~")
+    expect(wrapper.vm.examples[1]).toBe("The London ~")
   })
 
   it("properly conceals after an update", () => {
@@ -200,28 +187,26 @@ describe("English", () => {
         card: {
           "Type": "English",
           "Word": "underground",
-          "PartOfSpeech": "Noun",
           "Related": [{
             "Word": "suway",
             "Description": "NAmE",
             "Visibility": "Hide"
           }],
-          "Examples": [ "The New York subway", "The London Underground" ],
-          "FullExamples": [ "" ]
+          "Examples": [ "The New York subway", "The London Underground" ]
         },
       },
       mocks: {
         $bus: {}
       }
     })
-    wrapper.vm.replaceExample(0)
-    wrapper.vm.replaceExample(1)
-    expect(wrapper.vm.card["Examples"][0]).toBe("The New York subway")
-    expect(wrapper.vm.card["Examples"][1]).toBe("The London ~")
+    expect(wrapper.vm.examples[0]).toBe("The New York subway")
+    expect(wrapper.vm.examples[1]).toBe("The London ~")
     wrapper.vm.card["Related"][0]["Word"] = "subway"
     wrapper.vm.relatedChanged(0)
-    expect(wrapper.vm.card["Examples"][0]).toBe("The New York ~")
-    expect(wrapper.vm.card["Examples"][1]).toBe("The London ~")
+    expect(wrapper.vm.card["Examples"][0]).toBe("The New York subway")
+    expect(wrapper.vm.card["Examples"][1]).toBe("The London Underground")
+    expect(wrapper.vm.examples[0]).toBe("The New York ~")
+    expect(wrapper.vm.examples[1]).toBe("The London ~")
   })
 
 })

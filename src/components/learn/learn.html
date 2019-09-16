@@ -1,9 +1,11 @@
 <div>
-  <!--Progress: 2 out of 10
-      Correct answers: 7 (last on 2018-11-15 07:23:03)-->
-  <question v-if="card['Type'] === 'Question'" v-bind:card="card"></question>
-  <english v-else-if="card['Type'] === 'English'" v-bind:card="card"></english>
+  <div v-if="card['Type']">
+    <p>Progress: 2 out of 10</p>
+    <p>Correct answers: {{ card['Successes'] }} (last on {{ lastHit }})</p>
+    <p v-if="card['Tags'].length">Tags: {{ card['Tags'].join(', ') }}</p>
+    <component :is="currentComponent" :card="card"></component>
+    <button v-if="card['Graded']" v-on:click="$bus.$emit('GetNextCard')" class="btn btn-primary" ref="next">Next one!</button>
+    <!-- Edit button and schedule dropdown if correct and correct count > 4 -->
+  </div>
   <div v-else>Waiting...</div>
-  <button v-if="card['Graded']" v-on:click="$bus.$emit('GetNextCard')" class="btn btn-primary" ref="next">Next one!</button>
-  <!-- Edit button and schedule dropdown if correct and correct count > 4 -->
 </div>

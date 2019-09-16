@@ -66,9 +66,9 @@
     Definition:<br/>
     <textarea rows="3" class="form-control" v-model="card['Definition']"></textarea>
   </div>
-  <div v-for="(example, index) in card['Examples']">
+  <div v-for="(example, index) in examples">
     Example:<br/>
-    <textarea rows="3" class="form-control" v-model="card['Examples'][index]" ref="example" @blur="replaceExample(index)" @focus="restoreExample(index)" placeholder="Leave empty to ignore"></textarea>
+    <textarea rows="3" class="form-control" v-model="examples[index]" ref="example" @blur="replaceExample(index)" @focus="restoreExample(index)" placeholder="Leave empty to ignore"></textarea>
   </div>
   <div>
     <button class="btn btn-outline-secondary" @click="addExample">Add an example</button>

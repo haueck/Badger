@@ -394,18 +394,16 @@ describe("Tags", () => {
     mock.mockResolvedValueOnce()
     mock.mockResolvedValueOnce()
     mock.mockResolvedValueOnce()
-    mock.mockResolvedValueOnce()
     let tags = make(mock)
     return new Promise((resolve, reject) => {
       tags.disableCards("Name", resolve, reject)
     }).catch(error => {
       throw new Error(error)
     }).then(() => {
-      expect(mock.mock.calls.length).toEqual(5)
+      expect(mock.mock.calls.length).toEqual(4)
       expect(mock.mock.calls[1][0]).toEqual({ "Disabled": true })
       expect(mock.mock.calls[2][0]).toEqual({ "Disabled": true })
       expect(mock.mock.calls[3][0]).toEqual({ "Disabled": true })
-      expect(mock.mock.calls[4][0]).toEqual({ "Tags.Name.Count": 3 })
     })
   })
 
@@ -431,38 +429,14 @@ describe("Tags", () => {
       size: 1
     })
     mock.mockRejectedValueOnce()
-    mock.mockResolvedValueOnce()
     let tags = make(mock)
     return new Promise((resolve, reject) => {
       tags.disableCards("Name", reject, resolve)
     }).catch(error => {
       throw new Error(error)
     }).then(() => {
-      expect(mock.mock.calls.length).toEqual(3)
+      expect(mock.mock.calls.length).toEqual(2)
       expect(mock.mock.calls[1][0]).toEqual({ "Disabled": true })
-      expect(mock.mock.calls[2][0]).toEqual({ "Tags.Name.Count": 1 })
-    })
-  })
-
-  it("properly handles a counter update error while disabling cards", () => {
-    let mock = jest.fn()
-    mock.mockResolvedValueOnce({
-      forEach(callback) {
-        callback({ ref: { update: mock } })
-      },
-      size: 1
-    })
-    mock.mockResolvedValueOnce()
-    mock.mockRejectedValueOnce()
-    let tags = make(mock)
-    return new Promise((resolve, reject) => {
-      tags.disableCards("Name", reject, resolve)
-    }).catch(error => {
-      throw new Error(error)
-    }).then(() => {
-      expect(mock.mock.calls.length).toEqual(3)
-      expect(mock.mock.calls[1][0]).toEqual({ "Disabled": true })
-      expect(mock.mock.calls[2][0]).toEqual({ "Tags.Name.Count": 1 })
     })
   })
 
@@ -489,10 +463,10 @@ describe("Tags", () => {
       throw new Error(error)
     }).then(() => {
       expect(mock.mock.calls.length).toEqual(5)
-      expect(mock.mock.calls[1][0]).toEqual({ "Disabled": FieldValue.delete() })
-      expect(mock.mock.calls[2][0]).toEqual({ "Disabled": FieldValue.delete() })
-      expect(mock.mock.calls[3][0]).toEqual({ "Disabled": FieldValue.delete() })
-      expect(mock.mock.calls[4][0]).toEqual({ "Disabled": FieldValue.delete() })
+      expect(mock.mock.calls[1][0]).toEqual({ "Disabled": false })
+      expect(mock.mock.calls[2][0]).toEqual({ "Disabled": false })
+      expect(mock.mock.calls[3][0]).toEqual({ "Disabled": false })
+      expect(mock.mock.calls[4][0]).toEqual({ "Disabled": false })
     })
   })
 
@@ -526,7 +500,7 @@ describe("Tags", () => {
       throw new Error(error)
     }).then(() => {
       expect(mock.mock.calls.length).toEqual(2)
-      expect(mock.mock.calls[1][0]).toEqual({ "Disabled": FieldValue.delete() })
+      expect(mock.mock.calls[1][0]).toEqual({ "Disabled": false })
     })
   })
 })

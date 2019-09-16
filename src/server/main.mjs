@@ -1,8 +1,8 @@
-import firestore from "@google-cloud/firestore"
 import express from "express"
 import parser from "body-parser"
 import http from "http"
 import ws from "ws"
+import Firestore from "@google-cloud/firestore"
 import Session from "./session.mjs"
 import Account from "./account.mjs"
 import secrets from "./secrets.mjs"
@@ -12,7 +12,7 @@ import Cards from "./cards.mjs"
 const app = express()
 const server = http.createServer(null, app)
 const wss = new ws.Server({ noServer: true })
-const db = new firestore({ projectId: secrets["ProjectId"]})
+const db = new Firestore({ projectId: secrets["ProjectId"]})
 let session = new Session({ database: db })
 let account = new Account({ database: db })
 
@@ -110,26 +110,26 @@ wss.on("connection", (ws, request) => {
       cards.get(msg["CardId"], payload, failure)
     }
     else if (msg["Message"] === "GetNextCard") {
-      const query = user.collection("Cards").where("Queue", ">", 0).orderBy("Queue").limit(1)
-      query.get().then(snapshot => {
+      user.collection("Cards").where("Queue", ">", 0).where("Disabled", "==", false).orderBy("Queue").limit(1).get().then(snapshot => {
         if (snapshot.empty) {
-          ws.send(JSON.stringify({ "Message": "Error" }))
+          failure("Nothing to learn")
         } else {
           let doc = snapshot.docs[0]
-          ws.send(JSON.stringify({
-            "Message": "NextCard",
+          payload("NextCard", {
             "Card": doc.data(),
             "CardId": doc.id
-          }))
+          })
+          let today = new Date()
           let tomorrow  = new Date()
-          tomorrow.setDate(tomorrow.getDate() + 1)
+          tomorrow.setDate(today.getDate() + 1)
           doc.ref.update({
-            "Queue": firestore.FieldValue.delete(),
-            "AvailableFrom": tomorrow
+            "Queue": Firestore.FieldValue.delete(),
+            "AvailableFrom": tomorrow,
+            "LastHit": today
           })
         }
       }).catch(error => {
-          console.error("Error getting documents: ", error)
+          failure("Failed to get the next card", { error })
       })
     }
     else if (msg["Message"] === "Result") {
@@ -153,7 +153,7 @@ wss.on("connection", (ws, request) => {
           let available  = new Date()
           available.setDate(available.getDate() + hiatus[successes])
           card.update({
-            "Hits": firestore.FieldValue.increment(1),
+            "Hits": Firestore.FieldValue.increment(1),
             "Successes": successes,
             "AvailableFrom": available
           })
