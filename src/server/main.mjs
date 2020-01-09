@@ -1,6 +1,8 @@
 import express from "express"
 import parser from "body-parser"
+import https from "https"
 import http from "http"
+import fs from "fs"
 import ws from "ws"
 import Firestore from "@google-cloud/firestore"
 import Session from "./session.mjs"
@@ -8,9 +10,14 @@ import Account from "./account.mjs"
 import secrets from "./secrets.mjs"
 import Tags from "./tags.mjs"
 import Cards from "./cards.mjs"
+import Search from "./search.mjs"
 
+let certificates = {
+  key: fs.readFileSync("/badger/certificates/privkey.pem"),
+  cert: fs.readFileSync("/badger/certificates/fullchain.pem"),
+}
 const app = express()
-const server = http.createServer(null, app)
+const server = https.createServer(certificates, app)
 const wss = new ws.Server({ noServer: true })
 const db = new Firestore({ projectId: secrets["ProjectId"]})
 let session = new Session({ database: db })
@@ -50,6 +57,10 @@ wss.on("connection", (ws, request) => {
   let user = db.collection("Users").doc(request.session.user)
   let tags = new Tags({ database: user })
   let cards = new Cards({ database: user })
+  let search = new Search({
+    database: user,
+    user: request.session.user
+  })
   ws.on("message", message => {
     let msg = JSON.parse(message)
     let status = (level, text) => {
@@ -75,6 +86,9 @@ wss.on("connection", (ws, request) => {
     }
     if (msg["Message"] === "GetUserData") {
       configuration()
+    }
+    else if (msg["Message"] === "Search") {
+      search.search(msg["Query"], payload, failure)
     }
     else if (msg["Message"] === "CreateTag") {
       tags.create(msg["Tag"], msg["Parent"], configuration, failure)
@@ -170,4 +184,8 @@ wss.on("connection", (ws, request) => {
 })
 
 console.log("Starting...")
-server.listen(80)
+server.listen(443)
+http.createServer((req, res) => {
+  res.writeHead(301, { "Location": "https://" + req.headers['host'] })
+  res.end()
+}).listen(80)

@@ -17,6 +17,10 @@
   align-items: center;
 }
 
+.topnav a:hover {
+  color: white;
+}
+
 .topnav-logo {
   margin-left: 15px;
   padding: 5px;
@@ -34,18 +38,17 @@
 }
 
 .topnav-search {
-  width: 400px;
-  margin-right: 15px;
-}
-
-.topnav-search button {
-  cursor: pointer;
+  padding: 5px;
+  color: #9d9d9d;
+  font-size: 14pt;
+  text-decoration: none;
+  margin-right: 10px;
 }
 
 .topnav-account, .topnav-account:hover {
   padding: 5px;
   color: #9d9d9d;
-  font-size: 12pt;
+  font-size: 14pt;
   text-decoration: none;
   margin-right: 10px;
 }

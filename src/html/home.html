@@ -22,17 +22,9 @@
         </router-link>
         <router-link to="/" class="topnav-badger">Badger</router-link>
         <div class="topnav-space"></div>
-        <form action="/" class="topnav-search">
-          <input type="hidden" name="Action" value="SimpleSearch">
-          <div class="input-group">
-            <input type="text" name="Search" class="form-control" placeholder="Search..." value="">
-            <div class="input-group-append">
-              <button type="submit" class="input-group-text">
-                <i class="fas fa-search"></i>
-              </button>
-            </div>
-          </div>
-        </form>
+        <router-link to="/search" class="topnav-search">
+          <i class="fas fa-search"></i>
+        </router-link>
         <router-link to="/" class="topnav-account">Rafał</router-link>
         <a href="/signout" class="topnav-logout">
           <i class="fas fa-sign-out-alt"></i>

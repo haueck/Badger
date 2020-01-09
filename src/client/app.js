@@ -6,6 +6,7 @@ import add from "components/add"
 import edit from "components/edit"
 import toasts from "components/toasts"
 import tags from "components/tags"
+import search from "components/search"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.min.js"
@@ -36,7 +37,8 @@ let routes = [
   { path: "/learn", component: learn },
   { path: "/tags", component: tags },
   { path: "/add", component: add },
-  { path: "/edit/:id", component: edit }
+  { path: "/edit/:id", component: edit },
+  { path: "/search", component: search },
 ]
 
 window.addEventListener("load", () => {
@@ -57,7 +59,7 @@ window.addEventListener("load", () => {
       this.$bus.$on("Status", message => {
         this.$toast(message["Level"], message["Text"])
       })
-      this.ws = new WebSocket("ws://" + location.host)
+      this.ws = new WebSocket("wss://" + location.host)
       this.ws.onopen = () => {
         this.$bus.$on("Call", (message, callback) => {
           this.$store.commit("createJob", callback)

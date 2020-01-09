@@ -53,6 +53,7 @@
     "prismjs": "*",
     "jquery": "*",
     "eslint": "*",
+    "axios": "*",
     "vuex": "*",
     "jest": "*",
     "vue": "*",
@@ -114,7 +115,8 @@
     "moduleFileExtensions": [
       "js",
       "vue",
-      "mjs"
+      "mjs",
+      "json"
     ],
     "transform": {
       "\\.m?js$": "babel-jest",
