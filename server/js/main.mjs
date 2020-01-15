@@ -23,7 +23,7 @@ const db = new Firestore({ projectId: secrets["ProjectId"]})
 let session = new Session({ database: db })
 let account = new Account({ database: db })
 
-app.use(express.static("public"))
+app.use(express.static("/badger/dist"))
 app.use(parser.urlencoded({ extended: true }))
 app.use(session.parser)
 app.post("/signin", account.signIn.bind(account))
@@ -31,10 +31,10 @@ app.post("/signup", account.signUp.bind(account))
 app.get("/signout", account.signOut.bind(account))
 app.get("/", (req, res) => {
   if (req.session.user) {
-    res.sendFile("/badger/public/html/home.html")
+    res.sendFile("/badger/dist/html/home.html")
   }
   else {
-    res.sendFile("/badger/public/html/welcome.html")
+    res.sendFile("/badger/dist/html/welcome.html")
   }
 })
 
@@ -186,6 +186,6 @@ wss.on("connection", (ws, request) => {
 console.log("Starting...")
 server.listen(443)
 http.createServer((req, res) => {
-  res.writeHead(301, { "Location": "https://" + req.headers['host'] })
+  res.writeHead(301, { "Location": "https://" + req.headers["host"] })
   res.end()
 }).listen(80)

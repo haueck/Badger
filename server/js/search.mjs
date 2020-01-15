@@ -1,4 +1,4 @@
-import Axios from "axios"
+//import Axios from "axios"
 
 export default class {
   constructor(options) {
@@ -6,6 +6,7 @@ export default class {
     this.user = options.user.replace(/[^a-zA-Z0-9]/g, "")
   }
 
+/*
   search(query, success, failure) {
     Axios.post("http://172.17.0.2:8080/search", {
       Offset: 0,
@@ -28,5 +29,5 @@ export default class {
       failure("Failed to fetched search results", error)
     })
   }
-
+*/
 }

@@ -1,5 +1,8 @@
-node_modules/
-package-lock.json
+client/dist/
+client/node_modules/
+client/package-lock.json
+server/node_modules/
+server/certificates
+server/package-lock.json
 credentials.json
-certificates
-public/
+

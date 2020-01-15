@@ -7,9 +7,8 @@
     "url": "https://github.com/haueck/Badger.git"
   },
   "scripts": {
-    "static": "./scripts/static.sh",
-    "eslint": "eslint --ext=.js,.mjs src",
-    "build": "./scripts/build.sh",
+    "eslint": "eslint js components tests",
+    "build": "webpack",
     "watch": "webpack --watch",
     "test": "jest --no-cache"
   },
@@ -17,14 +16,12 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "babel-core": "^7.0.0-bridge.0",
-    "@google-cloud/connect-firestore": "*",
+    "copy-webpack-plugin": "*",
     "@fortawesome/fontawesome-free": "*",
-    "@google-cloud/firestore": "*",
     "vue-template-compiler": "*",
     "html-webpack-plugin": "*",
     "@babel/preset-env": "*",
     "@vue/test-utils": "*",
-    "express-session": "*",
     "jest-raw-loader": "*",
     "expose-loader": "*",
     "style-loader": "*",
@@ -40,7 +37,6 @@
     "css-loader": "*",
     "vue-loader": "*",
     "babel-jest": "*",
-    "js-sha512": "*",
     "bootstrap": "*",
     "popper.js": "*",
     "jquery-ui": "*",
@@ -48,16 +44,40 @@
     "vue-cli": "*",
     "tinymce": "*",
     "natural": "*",
-    "express": "*",
     "webpack": "*",
     "prismjs": "*",
     "jquery": "*",
     "eslint": "*",
-    "axios": "*",
     "vuex": "*",
     "jest": "*",
-    "vue": "*",
-    "ws": "*"
+    "vue": "*"
+  },
+  "jest": {
+    "moduleDirectories": [
+      "node_modules",
+      "."
+    ],
+    "moduleNameMapper": {
+      "^vue$": "vue/dist/vue.common.js"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "vue",
+      "mjs",
+      "json"
+    ],
+    "transform": {
+      "\\.m?js$": "babel-jest",
+      "\\.vue$": "vue-jest",
+      "\\.txt$": "jest-raw-loader"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/.+\\.js$",
+      "/node_modules/.+\\.vue$"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
@@ -103,32 +123,5 @@
         ]
       }
     }
-  },
-  "jest": {
-    "moduleDirectories": [
-      "node_modules",
-      "src"
-    ],
-    "moduleNameMapper": {
-      "^vue$": "vue/dist/vue.common.js"
-    },
-    "moduleFileExtensions": [
-      "js",
-      "vue",
-      "mjs",
-      "json"
-    ],
-    "transform": {
-      "\\.m?js$": "babel-jest",
-      "\\.vue$": "vue-jest",
-      "\\.txt$": "jest-raw-loader"
-    },
-    "transformIgnorePatterns": [
-      "/node_modules/.+\\.js$",
-      "/node_modules/.+\\.vue$"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ]
   }
 }

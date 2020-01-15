@@ -1,0 +1,93 @@
+{
+  "name": "Badger",
+  "version": "0.0.1",
+  "description": "Badger",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/haueck/Badger.git"
+  },
+  "scripts": {
+    "eslint": "eslint --ext=.mjs,.js js tests",
+    "test": "jest --no-cache"
+  },
+  "author": "Rafal Kozik",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "@google-cloud/connect-firestore": "*",
+    "@google-cloud/firestore": "*",
+    "@babel/preset-env": "*",
+    "express-session": "*",
+    "@babel/core": "*",
+    "babel-jest": "*",
+    "js-sha512": "*",
+    "express": "*",
+    "eslint": "*",
+    "axios": "*",
+    "jest": "*",
+    "ws": "*"
+  },
+  "jest": {
+    "moduleDirectories": [
+      "node_modules",
+      "js"
+    ],
+    "moduleFileExtensions": [
+      "js", "mjs", "json"
+    ],
+    "transform": {
+      "\\.m?js$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/.+\\.js$",
+      "/node_modules/.+\\.vue$"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 9,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-console": "off",
+      "no-invalid-regexp": "off",
+      "no-var": "warn",
+      "semi": [
+        "warn",
+        "never"
+      ],
+      "quotes": [
+        "warn",
+        "double"
+      ],
+      "camelcase": [
+        "warn",
+        {
+          "properties": "always"
+        }
+      ],
+      "object-shorthand": [
+        "warn",
+        "methods"
+      ]
+    },
+    "env": {
+      "browser": true,
+      "jquery": true,
+      "es6": true,
+      "jest": true
+    }
+  },
+  "babel": {
+    "env": {
+      "test": {
+        "presets": [
+          "@babel/preset-env"
+        ]
+      }
+    }
+  }
+}

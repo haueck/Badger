@@ -1,5 +1,5 @@
 import { FieldValue } from "@google-cloud/firestore"
-import Tags from "server/tags.mjs"
+import Tags from "tags.mjs"
 
 describe("Tags", () => {
 

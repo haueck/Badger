@@ -1,16 +1,18 @@
 let webpack = require("webpack")
 let path = require("path")
 let HtmlWebpackPlugin = require('html-webpack-plugin')
+let CopyPlugin = require('copy-webpack-plugin');
 const { VueLoaderPlugin } = require("vue-loader")
+
 
 module.exports = {
   mode: "development",
   entry: {
-    app: "./src/client/app.js",
-    welcome: "./src/client/welcome.js"
+    app: "./js/app.js",
+    welcome: "./js/welcome.js"
   },
   output: {
-    path: __dirname + "/public/js",
+    path: __dirname + "/dist/js",
     publicPath: "/js/",
     filename: "[name].js"
   },
@@ -43,7 +45,7 @@ module.exports = {
       vue: "vue/dist/vue.js"
     },
     extensions: [".js", ".vue"],
-    modules: [ "node_modules", path.resolve(__dirname, "src/client") , path.resolve(__dirname, "src") ],
+    modules: [ "node_modules", path.resolve(__dirname, "js"), path.resolve(__dirname) ],
   },
   plugins: [
     new webpack.ProvidePlugin({
@@ -55,6 +57,13 @@ module.exports = {
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
       title: 'Caching'
-    })
+    }),
+    new CopyPlugin([
+      { from: path.resolve(__dirname, "css"), to: "../css" },
+      { from: path.resolve(__dirname, "html"), to: "../html" },
+      { from: path.resolve(__dirname, "images"), to: "../images" },
+      { from: path.resolve(__dirname, "images/favicons/favicon.ico"), to: ".." },
+      { from: path.resolve(__dirname, "node_modules/tinymce/skins"), to: "../css/tinymce" }
+    ])
   ]
 }
