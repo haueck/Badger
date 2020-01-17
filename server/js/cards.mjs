@@ -3,53 +3,17 @@ import Firestore from "@google-cloud/firestore"
 export default class {
   constructor(options) {
     this.db = options.database
-  }
-
-  validate(data, success, failure) {
-    let card = {}
-    let fields = [ "Type", "Tags", "Disabled" ]
-    if (data["Type"] == "English") {
-      fields.push("Word")
-      fields.push("Definition")
-      fields.push("PartOfSpeech")
-      fields.push("Pronunciation")
-      fields.push("UseOfPrepositions")
-      fields.push("Examples")
-      fields.push("Related")
-      fields.push("PhrasalVerb")
-      fields.push("Idiom")
-      fields.push("Formal")
-      fields.push("Informal")
-      fields.push("Approval")
-      fields.push("Derogatory")
-    }
-    else if (data["Type"] == "Question") {
-      fields.push("Explanation")
-      fields.push("Unordered")
-      fields.push("Question")
-      fields.push("Answers")
-      fields.push("Raw")
-    }
-    else {
-      failure("Unknown card type", { data })
-      return
-    }
-    for (let field of fields) {
-      if (!(field in data)) {
-        failure("Missing field: " + field, { data })
-        return
-      }
-      else {
-        card[field] = data[field]
-      }
-    }
-    success(card)
+    this.search = options.search
   }
 
   get(id, success, failure) {
     this.db.collection("Cards").doc(id).get().then(doc => {
       if (doc.exists) {
-        success("EditCard", doc.data())
+        let card = doc.data()
+        for (let field of [ "Date", "Hits", "Successes", "AvailableFrom", "LastHit", "Queue" ]) {
+          delete card[field]
+        }
+        success("EditCard", card)
       } else {
         failure("The card does not exist", { id })
       }
@@ -58,36 +22,45 @@ export default class {
     })
   }
 
-  create(data, success, failure) {
-    this.validate(data, (card) => {
-      let today = new Date()
-      let tomorrow  = new Date()
-      tomorrow.setDate(today.getDate() + 1)
-      card["Date"] = today
-      card["Hits"] = 0
-      card["Successes"] = 0
-      card["AvailableFrom"] = tomorrow
-      this.db.collection("Cards").add(card).then(() => {
-        return this.tags([], card["Tags"])
-      }).then(() => {
-        success("The card was successfully created")
-      }).catch(error => {
-        failure("Failed to create the card", { error })
+  create(card, success, failure) {
+    let today = new Date()
+    let tomorrow  = new Date()
+    let text = card["SearchPhrases"]
+    delete card["SearchPhrases"]
+    tomorrow.setDate(today.getDate() + 1)
+    card["Date"] = today
+    card["Hits"] = 0
+    card["Successes"] = 0
+    card["AvailableFrom"] = tomorrow
+    this.db.collection("Cards").add(card).then(doc => {
+      card["CardId"] = doc.id
+      return this.tags([], card["Tags"])
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        this.search.index(card["CardId"], card["Tags"], text, resolve, reject)
       })
-    }, failure)
+    }).then(() => {
+      success("The card was successfully created")
+    }).catch(error => {
+      failure("Failed to create the card", { error })
+    })
   }
 
-  update(id, data, success, failure) {
-    this.validate(data, (card) => {
-      this.get(id, (_, old) => {
-        this.db.collection("Cards").doc(id).update(card).then(() => {
-          return this.tags(old["Tags"], card["Tags"])
-        }).then(() => {
-          success("The card was successfully updated")
-        }).catch(error => {
-          failure("Failed to updated the card", { id, error })
+  update(id, card, success, failure) {
+    this.get(id, (_, old) => {
+      let text = card["SearchPhrases"]
+      delete card["SearchPhrases"]
+      this.db.collection("Cards").doc(id).set(card, { merge: true }).then(() => {
+        return this.tags(old["Tags"], card["Tags"])
+      }).then(() => {
+        return new Promise((resolve, reject) => {
+          this.search.index(id, card["Tags"], text, resolve, reject)
         })
-      }, failure)
+      }).then(() => {
+        success("The card was successfully updated")
+      }).catch(error => {
+        failure("Failed to updated the card", { id, error })
+      })
     }, failure)
   }
 

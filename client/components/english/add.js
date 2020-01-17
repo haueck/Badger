@@ -35,8 +35,32 @@ export default {
     for (let i = 0; i < this.card["Examples"].length; ++i) {
       vue.set(this.examples, i, this.concealWords(this.card["Examples"][i], this.words()))
     }
+    this.$bus.$on("FinalizeCard", this.finalizeCard)
   },
   methods: {
+    finalizeCard() {
+      let regex = new RegExp(/\w/)
+      for (let i = 0; i < this.card["Examples"].length;) {
+        if (this.card["Examples"][i].match(regex)) {
+          ++i
+        }
+        else {
+          this.card["Examples"].splice(i, 1)
+          this.examples.splice(i, 1)
+        }
+      }
+      for (let i = 0; i < this.card["Related"].length;) {
+        if (this.card["Related"][i]["Word"].match(regex)) {
+          ++i
+        }
+        else {
+          this.card["Related"].splice(i, 1)
+        }
+      }
+      let texts = [ this.card["Word"], this.card["Definition"] ].concat(this.card["Examples"]).concat(this.card["Related"].map(r => r["Word"]))
+      vue.set(this.card, "SearchPhrases", texts)
+      this.$parent.saveCard()
+    },
     ipa(event) {
       this.card["Pronunciation"] += event.target.textContent
       event.stopPropagation()
@@ -83,5 +107,8 @@ export default {
         this.updateExamples()
       }
     }
+  },
+  destroyed() {
+    this.$bus.$off("FinalizeCard")
   }
 }

@@ -56,10 +56,13 @@ server.on("upgrade", function(request, socket, head) {
 wss.on("connection", (ws, request) => {
   let user = db.collection("Users").doc(request.session.user)
   let tags = new Tags({ database: user })
-  let cards = new Cards({ database: user })
   let search = new Search({
     database: user,
     user: request.session.user
+  })
+  let cards = new Cards({
+      database: user,
+      search: search
   })
   ws.on("message", message => {
     let msg = JSON.parse(message)

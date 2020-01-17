@@ -1,0 +1,13 @@
+<div>
+  <div>
+    Question:<br/>
+    <textarea rows="3" class="form-control" v-model="card['Question']"></textarea>
+  </div>
+  <div>
+    Type:<br/>
+    <select class="form-control" v-model="card['Variation']">
+      <option value="SingleResponse" selected>One correct</option>
+      <option value="MultipleResponse">Zero or more correct</option>
+    </select>
+  </div>
+</div>

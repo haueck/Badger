@@ -1,0 +1,9 @@
+.search {
+  width: 50%;
+}
+.result {
+  border-bottom: 1px solid #000;
+}
+.card-actions {
+  display: flex;
+}

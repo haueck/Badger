@@ -41,10 +41,10 @@
   </modal>
   <select v-if="!editing" class="form-control card-selection" @change="typeChanged($event.target.value)">
     <option disabled selected>Select type</option>
-    <option>English</option>
-    <option>Question</option>
-    <option>Reminder</option>
-    <option>Multiple Choice</option>
+    <option value="English">English</option>
+    <option value="Question">Question</option>
+    <option value="Reminder">Reminder</option>
+    <option value="MultipleChoice">Multiple Choice</option>
   </select>
   <div v-if="card['Type']">
     <div>
@@ -58,11 +58,11 @@
     </div>
     <component :is="currentComponent" :card="card"></component>
     <div v-if="editing">
-      <button class="btn btn-primary" @click="updateCard()">Update</button>
+      <button class="btn btn-primary" @click="finalizeCard()">Update</button>
       <button class="btn btn-danger" @click="confirmRemove()">Delete</button>
     </div>
     <div v-else>
-      <button class="btn btn-primary" @click="createCard()">Create</button>
+      <button class="btn btn-primary" @click="finalizeCard()">Create</button>
     </div>
   </div>
 </div>

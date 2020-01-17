@@ -1,5 +1,8 @@
+import multiplechoice from "components/multiplechoice/add.vue"
 import question from "components/question/add.vue"
+import reminder from "components/reminder/add.vue"
 import english from "components/english/add.vue"
+import xsl from "components/add/dehtmlize.xsl"
 import modal from "components/modal"
 import vue from "vue"
 
@@ -20,7 +23,7 @@ export default {
       default: null
     }
   },
-  components: { question, english, modal },
+  components: { question, reminder, english, multiplechoice, modal },
   created() {
     if (this.editing) {
       vue.set(this, "card", this.editing)
@@ -50,23 +53,28 @@ export default {
         "Disabled": false
       })
     },
-    createCard() {
-      let type = this.card["Type"]
-      let tags = this.card["Tags"]
-      this.$call("CreateCard", { "Card": this.card }, response => {
-        if (response["Level"] == "Success") {
-          this.resetCard("", [])
-          vue.nextTick(() => {
-            this.resetCard(type, tags)
-          })
-        }
-      })
+    finalizeCard() {
+        this.$bus.$emit("FinalizeCard")
     },
-    updateCard() {
-      this.$call("UpdateCard", {
-        "Card": this.card,
-        "CardId": this.id
-      })
+    saveCard() {
+      if (this.editing) {
+        this.$call("UpdateCard", {
+          "Card": this.card,
+          "CardId": this.id
+        })
+      }
+      else {
+        let type = this.card["Type"]
+        let tags = this.card["Tags"]
+        this.$call("CreateCard", { "Card": this.card }, response => {
+          if (response["Level"] == "Success") {
+            this.resetCard("", [])
+            vue.nextTick(() => {
+              this.resetCard(type, tags)
+            })
+          }
+        })
+      }
     },
     confirmRemove() {
       $("#modal-card-remove").modal("show")
@@ -136,6 +144,15 @@ export default {
           this.addTags(parent)
         })
       }
+    },
+    dehtmlize(fragment) {
+      let xhtml = "<html>" + fragment + "</html>"
+      let regex = new RegExp(/\w/)
+      let xslt = new XSLTProcessor()
+      let parser = new DOMParser()
+      xslt.importStylesheet(parser.parseFromString(xsl, "text/xml"))
+      let output = xslt.transformToFragment(parser.parseFromString(xhtml, "text/xml"), document).firstChild.nodeValue
+      return JSON.parse(output).filter(text => text.match(regex))
     }
   },
   computed: {

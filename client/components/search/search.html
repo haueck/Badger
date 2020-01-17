@@ -1,10 +1,36 @@
 <div>
-  <div class="input-group topnav-search">
+  <div class="input-group search mx-auto">
     <input class="form-control" placeholder="Search..." v-model="query" v-on:keyup.enter="search()" ref="search">
     <div class="input-group-append">
       <button class="input-group-text" @click="search()">
         <i class="fas fa-search"></i>
       </button>
     </div>
+  </div>
+  <div v-for="card in results" class="result pb-2 mt-4">
+    <div class="card-actions mb-2">
+      <div>
+        <router-link :to="'/edit/' + card['CardId']" tag="button" class="btn btn-primary">
+          <i class="fas fa-pen"></i> Edit
+        </router-link>
+      </div>
+      <div class="ml-3">
+        <select class="custom-select">
+          <option>Select a revision</option>
+          <option>Hi</option>
+        </select>
+      </div>
+      <div class="ml-3 py-2">
+        Schedule for:
+      </div>
+      <div class="ml-1">
+        <input type="date" class="form-control">
+      </div>
+    </div>
+    <english v-if="card['Type'] == 'English'" :card="card"></english>
+    <question v-else-if="card['Type'] == 'Question'" :card="card"></question>
+    <reminder v-else-if="card['Type'] == 'Reminder'" :card="card"></reminder>
+    <multiplechoice v-else-if="card['Type'] == 'MultipleChoice'" :card="card"></multiplechoice>
+    <div v-else>Missing</div>
   </div>
 </div>

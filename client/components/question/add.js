@@ -26,8 +26,17 @@ export default {
         vue.set(this.card, key, defaults[key])
       }
     }
+    this.$bus.$on("FinalizeCard", this.finalizeCard)
   },
   methods: {
+    finalizeCard() {
+      let texts = this.$parent.dehtmlize(this.card["Question"]).concat(this.card["Answers"])
+      if (this.card["Explanation"]) {
+          texts.push(this.card["Explanation"])
+      }
+      vue.set(this.card, "SearchPhrases", texts)
+      this.$parent.saveCard()
+    },
     addAnswer() {
       let last = this.card["Answers"].length
       this.card["Answers"].push("")
@@ -59,5 +68,8 @@ export default {
         this.icon.style.backgroundColor = "#ffcccc"
       }
     }
+  },
+  destroyed() {
+    this.$bus.$off("FinalizeCard")
   }
 }

@@ -1,9 +1,11 @@
 import vue from "vue"
 import question from "components/question/learn.vue"
+import reminder from "components/reminder/learn.vue"
 import english from "components/english/learn.vue"
+import multiplechoice from "components/multiplechoice/search.vue"
 
 export default {
-  components: { question, english },
+  components: { question, english, reminder, multiplechoice },
   data() {
     return {
       card: {

@@ -5,7 +5,8 @@ import { mount } from "@vue/test-utils"
 function verify(testcase) {
   let $bus = {
     pass: undefined,
-    $emit(signal, pass) { this.pass = pass }
+    $emit(signal, pass) { this.pass = pass },
+    $on() {}
   }
   const wrapper = mount(learn, {
     propsData: {
@@ -135,7 +136,7 @@ describe("English", () => {
         },
       },
       mocks: {
-        $bus: {}
+        $bus: { $on() {} }
       }
     })
     expect(wrapper.vm.examples[0]).toBe("Passengers with cars must ~ first")
@@ -152,7 +153,7 @@ describe("English", () => {
         },
       },
       mocks: {
-        $bus: {}
+        $bus: { $on() {} }
       }
     })
     expect(wrapper.vm.examples[0]).toBe("We don't want to ~ ~ ~ ~ losing their business")
@@ -174,7 +175,7 @@ describe("English", () => {
         },
       },
       mocks: {
-        $bus: {}
+        $bus: { $on() {} }
       }
     })
     expect(wrapper.vm.examples[0]).toBe("The New York ~")
@@ -196,7 +197,7 @@ describe("English", () => {
         },
       },
       mocks: {
-        $bus: {}
+        $bus: { $on() {} }
       }
     })
     expect(wrapper.vm.examples[0]).toBe("The New York subway")

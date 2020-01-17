@@ -1,7 +1,18 @@
 FROM node:12-buster-slim
 
-ADD client /client
-ADD server /server
+ADD client/components /client/components
+ADD client/plugins /client/plugins
+ADD client/images /client/images
+ADD client/tests /client/tests
+ADD client/html /client/html
+ADD client/css /client/css
+ADD client/js /client/js
+ADD client/webpack.config.js /client/
+ADD client/package.json /client/
+ADD server/certificates /server/certificates
+ADD server/tests /server/tests
+ADD server/js /server/js
+ADD server/package.json /server/
 WORKDIR /client
 RUN npm install
 RUN npm run-script eslint
@@ -21,3 +32,4 @@ COPY --from=0 /server/node_modules /badger/node_modules
 COPY --from=0 /server/certificates /badger/certificates
 COPY --from=0 /server/js /badger/js
 CMD [ "dumb-init", "node", "--experimental-modules", "js/main.mjs" ]
+

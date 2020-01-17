@@ -7,6 +7,7 @@
     "url": "https://github.com/haueck/Badger.git"
   },
   "scripts": {
+    "local": "nodemon --experimental-modules /badger/server/js/main.mjs",
     "eslint": "eslint --ext=.mjs,.js js tests",
     "test": "jest --no-cache"
   },
@@ -20,6 +21,7 @@
     "@babel/core": "*",
     "babel-jest": "*",
     "js-sha512": "*",
+    "nodemon": "*",
     "express": "*",
     "eslint": "*",
     "axios": "*",
@@ -32,7 +34,9 @@
       "js"
     ],
     "moduleFileExtensions": [
-      "js", "mjs", "json"
+      "js",
+      "mjs",
+      "json"
     ],
     "transform": {
       "\\.m?js$": "babel-jest"

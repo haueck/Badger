@@ -2,7 +2,7 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_sinks.h>
 #include <cpprest/http_listener.h>
-#include "BadgerSearch.hpp"
+#include "SearchService.hpp"
 
 int main() {
     auto logger = spdlog::stdout_logger_mt("logger");
@@ -11,8 +11,8 @@ int main() {
     std::signal(SIGINT, [](int){});
     std::signal(SIGTERM, [](int){});
     try {
-        spdlog::info("Starting Badger Search");
-        BadgerSearch service;
+        spdlog::info("Starting Search Service");
+        SearchService service;
         web::http::experimental::listener::http_listener listener("http://0.0.0.0:8080");
         listener.support(web::http::methods::GET, [&service](web::http::http_request request) { service.task(std::move(request)); });
         listener.support(web::http::methods::POST, [&service](web::http::http_request request) { service.task(std::move(request)); });
@@ -20,9 +20,9 @@ int main() {
         pause();
         listener.close().wait();
     } catch (std::exception& e) {
-        spdlog::critical("Badger Search crashed: {}", e.what());
+        spdlog::critical("Search Service crashed: {}", e.what());
         return 1;
     }
-    spdlog::info("Closing Badger Search");
+    spdlog::info("Closing Search Service");
 }
 

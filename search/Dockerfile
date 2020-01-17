@@ -2,9 +2,10 @@ FROM ubuntu:bionic
 
 ADD / /badger-search
 ADD https://github.com/gabime/spdlog/archive/v1.4.2.tar.gz /
-RUN apt-get update && apt-get install -y build-essential cmake libcpprest-dev libxapian-dev
-RUN tar -xzf /v1.4.2.tar.gz && mkdir /spdlog-1.4.2/build && cd /spdlog-1.4.2/build && cmake .. && make install
-RUN cd `mktemp -d` && cmake /badger-search && make install -j 4
+RUN apt-get update && apt-get install -y build-essential cmake libcpprest-dev libxapian-dev libgtest-dev
+RUN tar -xzf /v1.4.2.tar.gz && cd `mktemp -d` && cmake /spdlog-1.4.2 && make -j 2 install
+RUN cd `mktemp -d` && cmake /usr/src/googletest/googletest && make -j 2 install
+RUN cd `mktemp -d` && cmake /badger-search && make -j 2 install && ./search_tests
 
 FROM ubuntu:bionic
 

@@ -35,7 +35,7 @@ module.exports = {
         loader: "url-loader?limit=100000"
       },
       {
-        test: /\.txt$/,
+        test: /\.(txt|xsl|xml)$/,
         use: 'raw-loader'
       }
     ]
