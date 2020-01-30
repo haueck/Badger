@@ -1,3 +1,6 @@
 <div>
-  <div v-html="card['Reminder']"></div>
+  <div class="mb-3">{{ card['Question'] }}</div>
+  <p v-for="answer in card['Answers']" class="mb-2">
+    <input type="checkbox" class="mx-2" disabled v-model="answer['Correct']"> {{ answer['Answer'] }}
+  </p>
 </div>

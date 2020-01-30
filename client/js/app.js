@@ -45,16 +45,21 @@ window.addEventListener("load", () => {
   new vue({
     el: "#application",
     store: store,
-    router: new router({ routes }),
+    router: new router({
+      mode: 'history',
+      routes: routes
+    }),
     components: { toasts },
     data() {
       return {
+          loading: true,
           ws: Object
       }
     },
     mounted() {
       this.$bus.$on("UserData", message => {
         this.$store.commit("initialize", message)
+        this.loading = false
       })
       this.$bus.$on("Status", message => {
         this.$toast(message["Level"], message["Text"])
@@ -80,6 +85,12 @@ window.addEventListener("load", () => {
         catch(error) {
           console.error("Failed to parse an incoming message: ", error)
         }
+      }
+      this.ws.onclose = () => {
+        this.loading = true
+      }
+      this.ws.onerror = error => {
+        this.$toast("Error", "Error:" + error)
       }
     },
     destroyed() {

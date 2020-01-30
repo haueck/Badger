@@ -29,7 +29,7 @@ app.use(session.parser)
 app.post("/signin", account.signIn.bind(account))
 app.post("/signup", account.signUp.bind(account))
 app.get("/signout", account.signOut.bind(account))
-app.get("/", (req, res) => {
+app.get(/\/.*/, (req, res) => {
   if (req.session.user) {
     res.sendFile("/badger/dist/html/home.html")
   }

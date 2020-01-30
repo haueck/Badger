@@ -1,3 +1,20 @@
 <div>
-  <div v-html="card['Reminder']"></div>
+  <div class="mb-3">{{ card['Question'] }}</div>
+  <p v-for="(answer, index) in card['Answers']" class="my-0">
+    <label class="mb-0 py-1">
+      <span v-if="isSingle()">
+        <input type="radio" name="answer" :value="index" class="mx-2" v-model="single"> {{ answer['Answer'] }}
+      </span>
+      <span v-else>
+        <input type="checkbox" class="mx-2" v-model="multiple[index]"> {{ answer['Answer'] }}
+      </span>
+    </label>
+  </p>
+  <div v-if="card['Graded']">
+    <p v-if="card['Pass']">That's right! You rock!</p>
+    <p v-else>Wrong!</p>
+  </div>
+  <div v-else>
+    <button @click="grade" class="btn btn-primary mt-2">Check</button>
+  </div>
 </div>

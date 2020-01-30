@@ -16,51 +16,56 @@
   <body>
     <div id="application">
       <toasts></toasts>
-      <div class="topnav">
-        <router-link to="/" class="topnav-logo">
-          <img src="/images/favicons/favicon-24.png">
-        </router-link>
-        <router-link to="/" class="topnav-badger">Badger</router-link>
-        <div class="topnav-space"></div>
-        <router-link to="/search" class="topnav-search">
-          <i class="fas fa-search"></i>
-        </router-link>
-        <router-link to="/" class="topnav-account">Rafał</router-link>
-        <a href="/signout" class="topnav-logout">
-          <i class="fas fa-sign-out-alt"></i>
-        </a>
+      <div v-if="loading">
+        <img src="/images/loading.gif" class="loading">
       </div>
-      <div class="sidenav">
-        <div class="sidenav-entry">
-          <div></div>
-          <router-link to="/learn">Learn</router-link>
+      <div v-else>
+        <div class="topnav">
+          <router-link to="/" class="topnav-logo">
+            <img src="/images/favicons/favicon-24.png">
+          </router-link>
+          <router-link to="/" class="topnav-badger">Badger</router-link>
+          <div class="topnav-space"></div>
+          <router-link to="/search" class="topnav-search">
+            <i class="fas fa-search"></i>
+          </router-link>
+          <router-link to="/" class="topnav-account">Rafał</router-link>
+          <a href="/signout" class="topnav-logout">
+            <i class="fas fa-sign-out-alt"></i>
+          </a>
         </div>
-        <div class="sidenav-entry sidenav-space">
-          <div></div>
-          <router-link to="/add">Add a new card</router-link>
+        <div class="sidenav">
+          <div class="sidenav-entry">
+            <div></div>
+            <router-link to="/learn">Learn</router-link>
+          </div>
+          <div class="sidenav-entry sidenav-space">
+            <div></div>
+            <router-link to="/add">Add a new card</router-link>
+          </div>
+          <div class="sidenav-entry">
+            <div></div>
+            <router-link to="/planning">Planning</router-link>
+          </div>
+          <div class="sidenav-entry sidenav-space">
+            <div></div>
+            <a href="/sprint.html">Ongoing work</a>
+          </div>
+          <div class="sidenav-entry">
+            <div></div>
+            <a href="/learn.html">Revise</a>
+          </div>
+          <div class="sidenav-entry">
+            <div></div>
+            <router-link to="/tags">Manage tags</router-link>
+          </div>
+          <div class="sidenav-entry">
+            <div></div>
+            <a href="/notes.html">Manage revisions</a>
+          </div>
         </div>
-        <div class="sidenav-entry">
-          <div></div>
-          <router-link to="/planning">Planning</router-link>
-        </div>
-        <div class="sidenav-entry sidenav-space">
-          <div></div>
-          <a href="/sprint.html">Ongoing work</a>
-        </div>
-        <div class="sidenav-entry">
-          <div></div>
-          <a href="/learn.html">Revise</a>
-        </div>
-        <div class="sidenav-entry">
-          <div></div>
-          <router-link to="/tags">Manage tags</router-link>
-        </div>
-        <div class="sidenav-entry">
-          <div></div>
-          <a href="/notes.html">Manage revisions</a>
-        </div>
+        <router-view></router-view>
       </div>
-      <router-view></router-view>
     </div>
   </body>
 </html>

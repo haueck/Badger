@@ -1,6 +1,6 @@
 <div>
   <div class="input-group search mx-auto">
-    <input class="form-control" placeholder="Search..." v-model="query" v-on:keyup.enter="search()" ref="search">
+    <input class="form-control" placeholder="Search..." v-model="query" v-on:keyup.enter="search()" @input="update" ref="search">
     <div class="input-group-append">
       <button class="input-group-text" @click="search()">
         <i class="fas fa-search"></i>

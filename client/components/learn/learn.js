@@ -2,7 +2,7 @@ import vue from "vue"
 import question from "components/question/learn.vue"
 import reminder from "components/reminder/learn.vue"
 import english from "components/english/learn.vue"
-import multiplechoice from "components/multiplechoice/search.vue"
+import multiplechoice from "components/multiplechoice/learn.vue"
 
 export default {
   components: { question, english, reminder, multiplechoice },
@@ -45,8 +45,13 @@ export default {
       return this.card["Type"].toLowerCase()
     },
     lastHit() {
-      let date = new Date(1000 * this.card["LastHit"]["_seconds"])
-      return date.toString()
+      if (this.card["LastHit"]) {
+        let date = new Date(1000 * this.card["LastHit"]["_seconds"])
+        return "(last viewed on " + date.toLocaleString("en-GB") + ")"
+      }
+      else {
+        return ""
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 <div>
   <div v-if="card['Type']">
     <p>Progress: 2 out of 10</p>
-    <p>Correct answers: {{ card['Successes'] }} (last on {{ lastHit }})</p>
+    <p>Correct answers: {{ card['Successes'] }} {{ lastHit }}</p>
     <p v-if="card['Tags'].length">Tags: {{ card['Tags'].join(', ') }}</p>
     <component :is="currentComponent" :card="card"></component>
     <button v-if="card['Graded']" v-on:click="$bus.$emit('GetNextCard')" class="btn btn-primary" ref="next">Next one!</button>

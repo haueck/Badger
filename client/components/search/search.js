@@ -7,7 +7,7 @@ import multiplechoice from "components/multiplechoice/search.vue"
 export default {
   data() {
     return {
-      query: "",
+      query: this.$route.query.query,
       results: []
     }
   },
@@ -16,6 +16,9 @@ export default {
     vue.nextTick(() => {
       this.$refs.search.focus()
     })
+    if (this.query) {
+      this.search()
+    }
   },
   methods: {
     search() {
@@ -25,6 +28,9 @@ export default {
             this.results.push(card)
           }
       })
+    },
+    update() {
+      this.$router.replace({ path: '/search', query: { query: this.query } })
     }
   }
 }
