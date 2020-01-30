@@ -1,11 +1,28 @@
 <div>
   <div v-if="currentComponent">
-    <p>Progress: 2 out of 10</p>
-    <p>Correct answers: {{ card['Successes'] }} {{ lastHit }}</p>
+    <div class="progress mb-2">
+      <div :class="[ progress == 100 ? 'bg-success' : 'bg-info' ]" class="progress-bar progress-bar-striped" :style="{ width: progress + '%' }"></div>
+    </div>
     <p v-if="card['Tags'].length">Tags: {{ card['Tags'].join(', ') }}</p>
     <component :is="currentComponent" :card="card"></component>
-    <button v-if="card['Graded']" v-on:click="$bus.$emit('GetNextCard')" class="btn btn-primary" ref="next">Next one!</button>
-    <!-- Edit button and schedule dropdown if correct and correct count > 4 -->
+    <div v-if="card['Graded']">
+      <div class="mb-5">
+        <button @click="$bus.$emit('GetNextCard')" class="btn btn-primary" ref="next">Next one!</button>
+      </div>
+      <div class="card-actions">
+        <div>
+          <router-link :to="'/edit/' + id" tag="button" class="btn btn-primary">
+            <i class="fas fa-pen"></i> Edit
+          </router-link>
+        </div>
+        <div v-if="card['Successes'] &gt; 4" class="ml-3 py-2">
+          Schedule for:
+        </div>
+        <div v-if="card['Successes'] &gt; 4" class="ml-2">
+          <input type="date" class="form-control">
+        </div>
+      </div>
+    </div>
   </div>
   <div v-else-if="done">Nothing to learn</div>
   <div v-else>Waiting...</div>

@@ -34,6 +34,9 @@ export default new vuex.Store({
     removeJob(state, id) {
       vue.delete(state.jobs, id)
       state.jobCount--
+    },
+    incrementHits(state) {
+      state["Hits"]++
     }
   },
   actions: {
@@ -60,6 +63,12 @@ export default new vuex.Store({
     },
     revisions: state => {
       return state["Revisions"]
+    },
+    hits: state => {
+      return state["Hits"]
+    },
+    dailyTarget: state => {
+      return state["TodaysTarget"]
     },
     jobId: state => {
       return state.jobId

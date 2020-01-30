@@ -15,6 +15,7 @@ export default {
   mounted() {
     this.$bus.$on("NextCard", message => {
       if ("Card" in message) {
+        this.$store.commit("incrementHits")
         vue.set(this, "card", message["Card"])
         this.id = message["CardId"]
       }
@@ -66,6 +67,9 @@ export default {
       else {
         return ""
       }
+    },
+    progress() {
+      return Math.min(100, Math.max(10, 25 * Math.floor(this.$store.getters.hits / this.$store.getters.dailyTarget / 0.25)))
     }
   },
   watch: {

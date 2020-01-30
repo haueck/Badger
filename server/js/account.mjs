@@ -77,7 +77,9 @@ export default class {
           Salt: salt,
           Revisions: {},
           DailyTarget: 25,
-          Performance: [],
+          TodaysTarget: 25,
+          Performance: [0, 0, 0, 0, 0, 0],
+          Hits: 0,
           Notes: "",
           Tags: {
             "€": {
