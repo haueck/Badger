@@ -1,5 +1,5 @@
 <div>
-  <div v-if="card['Type']">
+  <div v-if="currentComponent">
     <p>Progress: 2 out of 10</p>
     <p>Correct answers: {{ card['Successes'] }} {{ lastHit }}</p>
     <p v-if="card['Tags'].length">Tags: {{ card['Tags'].join(', ') }}</p>
@@ -7,5 +7,6 @@
     <button v-if="card['Graded']" v-on:click="$bus.$emit('GetNextCard')" class="btn btn-primary" ref="next">Next one!</button>
     <!-- Edit button and schedule dropdown if correct and correct count > 4 -->
   </div>
+  <div v-else-if="done">Nothing to learn</div>
   <div v-else>Waiting...</div>
 </div>

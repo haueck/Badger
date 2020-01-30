@@ -75,7 +75,7 @@ export default class {
           Lastname: req.body.lastname,
           Password: sha.sha512(req.body.password + salt),
           Salt: salt,
-          Revisions: [],
+          Revisions: {},
           DailyTarget: 25,
           Performance: [],
           Notes: "",

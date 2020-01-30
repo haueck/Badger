@@ -12,19 +12,31 @@ export default {
   components: { tree, modal },
   mounted() {
     this.$bus.$on("show-modal", this.show)
-    this.field = $("#modal-tag-rename input").get(0)
-    this.field.addEventListener("keyup", event => {
-      if (event.keyCode === 13) {
-        event.preventDefault()
-        this.renameTag(this.current)
-      }
-    })
   },
   methods: {
     show(tag, inactive) {
       this.inactive = inactive
       this.current = tag
       $("#modal-tag-menu").modal("show")
+    },
+    showCards(tag) {
+      this.$router.push({
+        path: 'search',
+        query: {
+          query: "tag:\"" + tag + "\""
+        }
+      })
+    },
+    revisionsModal() {
+      $("#modal-tag-revision").modal("show")
+    },
+    addToRevision(tag) {
+      let revision = $("#select-revision option:selected").text()
+      this.$call("AddTagToRevision", {
+        "Tag": tag,
+        "Revision": revision
+      })
+      $("#modal-tag-revision").modal("hide")
     },
     removeTag(tag) {
       this.$call("RemoveTag", { "Tag": tag })
@@ -44,18 +56,22 @@ export default {
       }
     },
     renameModal() {
+      let input = $("#modal-tag-rename input").get(0)
+      input.parentElement.classList.remove("was-validated")
       $("#modal-tag-rename").one("shown.bs.modal", () => {
-        this.field.focus()
-        this.field.select()
+        input.focus()
+        input.select()
       })
       $("#modal-tag-rename").modal("show")
     },
     renameTag(from) {
-      if (this.field.checkValidity()) {
-        if (from != this.field.value) {
+      let input = $("#modal-tag-rename input").get(0)
+      input.parentElement.classList.add("was-validated")
+      if (input.checkValidity()) {
+        if (from != input.value) {
           this.$call("RenameTag", {
             "From": from,
-            "To": this.field.value,
+            "To": input.value,
             "Parent": this.$store.getters.tags[from]["Parent"]
           })
           this.current = "€"
@@ -79,8 +95,14 @@ export default {
     }
   },
   computed: {
+    revisions() {
+      return Object.keys(this.$store.getters.revisions).sort()
+    },
     tags() {
       return this.$store.getters.tags
     }
+  },
+  destroyed() {
+    this.$bus.$off("show-modal")
   }
 }

@@ -58,6 +58,9 @@ export default new vuex.Store({
     tags: state => {
       return state["Tags"]
     },
+    revisions: state => {
+      return state["Revisions"]
+    },
     jobId: state => {
       return state.jobId
     }

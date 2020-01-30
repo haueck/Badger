@@ -1,0 +1,22 @@
+.revisions {
+  width: 500px;
+  margin: 0 auto;
+}
+.revision {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  align-items: center;
+}
+.revision:hover {
+  background-color: #f8f9fa;
+}
+.revision:first-child {
+  border: 1px solid #dedede;
+}
+#modal-revision-menu .modal-body > div {
+  cursor: pointer;
+}
+#modal-revision-menu .modal-body > div:hover {
+  background-color: #f8f9fa;
+}

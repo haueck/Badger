@@ -27,6 +27,9 @@
         <input type="date" class="form-control">
       </div>
     </div>
+    <div class="mb-2">
+      Tags: {{ card['Tags'].join(', ') }}
+    </div>
     <english v-if="card['Type'] == 'English'" :card="card"></english>
     <question v-else-if="card['Type'] == 'Question'" :card="card"></question>
     <reminder v-else-if="card['Type'] == 'Reminder'" :card="card"></reminder>

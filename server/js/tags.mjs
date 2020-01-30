@@ -5,34 +5,23 @@ export default class {
     this.db = options.database
   }
 
-  check(tag, success, failure) {
-    tag = tag.trim()
-    if (tag.match(/^[A-Za-z0-9 ]+$/)) {
-      success(tag)
-    }
-    else {
-      failure("The tag contains characters which are not allowed", { tag })
-    }
-  }
-
   create(tag, parent, success, failure) {
-    this.check(tag, (trimmed) => {
-      this.db.get().then(doc => {
-        let tags = doc.data()["Tags"]
-        if (trimmed in tags) {
-          throw new Error("The tag already exists")
-        }
-        if (!(parent in tags)) {
-          throw new Error("The parent does not exist")
-        }
-      }).then(() => {
-        return this.db.update({ ["Tags." + trimmed]: { "Parent": parent, "Count": 0 } })
-      }).then(() => {
-        success()
-      }).catch(error => {
-        failure("Failed to create the tag", { tag, parent, error })
-      })
-    }, failure)
+    tag = tag.trim()
+    this.db.get().then(doc => {
+      let tags = doc.data()["Tags"]
+      if (tag in tags) {
+        throw new Error("The tag already exists")
+      }
+      if (!(parent in tags)) {
+        throw new Error("The parent does not exist")
+      }
+    }).then(() => {
+      return this.db.update({ ["Tags." + tag]: { "Parent": parent, "Count": 0 } })
+    }).then(() => {
+      success()
+    }).catch(error => {
+      failure("Failed to create the tag", { tag, parent, error })
+    })
   }
 
   activate(tag, success, failure) {
@@ -76,6 +65,7 @@ export default class {
   }
 
   rename(from, to, parent, success, failure) {
+    to = to.trim()
     this.create(to, parent, () => {
       this.db.collection("Cards").where("Tags", "array-contains", from).get().then(snapshot => {
         let promises = []

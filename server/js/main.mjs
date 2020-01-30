@@ -10,7 +10,9 @@ import Account from "./account.mjs"
 import secrets from "./secrets.mjs"
 import Tags from "./tags.mjs"
 import Cards from "./cards.mjs"
+import Learn from "./learn.mjs"
 import Search from "./search.mjs"
+import Revisions from "./revisions.mjs"
 
 let certificates = {
   key: fs.readFileSync("/badger/certificates/privkey.pem"),
@@ -55,7 +57,9 @@ server.on("upgrade", function(request, socket, head) {
 
 wss.on("connection", (ws, request) => {
   let user = db.collection("Users").doc(request.session.user)
+  let revisions = new Revisions({ database: user })
   let tags = new Tags({ database: user })
+  let learn = new Learn({ database: user })
   let search = new Search({
     database: user,
     user: request.session.user
@@ -126,59 +130,28 @@ wss.on("connection", (ws, request) => {
     else if (msg["Message"] === "GetCard") {
       cards.get(msg["CardId"], payload, failure)
     }
-    else if (msg["Message"] === "GetNextCard") {
-      user.collection("Cards").where("Queue", ">", 0).where("Disabled", "==", false).orderBy("Queue").limit(1).get().then(snapshot => {
-        if (snapshot.empty) {
-          failure("Nothing to learn")
-        } else {
-          let doc = snapshot.docs[0]
-          payload("NextCard", {
-            "Card": doc.data(),
-            "CardId": doc.id
-          })
-          let today = new Date()
-          let tomorrow  = new Date()
-          tomorrow.setDate(today.getDate() + 1)
-          doc.ref.update({
-            "Queue": Firestore.FieldValue.delete(),
-            "AvailableFrom": tomorrow,
-            "LastHit": today
-          })
-        }
-      }).catch(error => {
-          failure("Failed to get the next card", { error })
-      })
+    else if (msg["Message"] === "CreateRevision") {
+      revisions.create(msg["Revision"], configuration, failure)
+    }
+    else if (msg["Message"] === "RemoveRevision") {
+      revisions.remove(msg["Revision"], configuration, failure)
+    }
+    else if (msg["Message"] === "RenameRevision") {
+      revisions.rename(msg["From"], msg["To"], configuration, failure)
+    }
+    else if (msg["Message"] === "AddTagToRevision") {
+      revisions.addTag(msg["Tag"], msg["Revision"], configuration, failure)
+    }
+    else if (msg["Message"] === "Learn") {
+        console.log("LEARN")
+      learn.next(payload, failure)
+    }
+    else if (msg["Message"] === "Revise") {
+        console.log("REVISE")
+      learn.revise(msg["Revision"], payload, failure)
     }
     else if (msg["Message"] === "Result") {
-      let card = user.collection("Cards").doc(msg["CardId"])
-      card.get().then(doc => {
-        if (doc.exists) {
-          let successes = doc.data()["Successes"]
-          if (msg["Pass"]) {
-            successes = Math.min(successes + 1, 7)
-          }
-          let hiatus = {
-            0: 1,
-            1: 2,
-            2: 3,
-            3: 5,
-            4: 9,
-            5: 21,
-            6: 21,
-            7: 21
-          }
-          let available  = new Date()
-          available.setDate(available.getDate() + hiatus[successes])
-          card.update({
-            "Hits": Firestore.FieldValue.increment(1),
-            "Successes": successes,
-            "AvailableFrom": available
-          })
-        }
-        else {
-          ws.send(JSON.stringify({ "Message": "Error" }))
-        }
-      })
+      learn.result(msg["CardId"], msg["Pass"], configuration, failure)
     }
     else {
       failure("Unknown request")

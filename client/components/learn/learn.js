@@ -8,18 +8,22 @@ export default {
   components: { question, english, reminder, multiplechoice },
   data() {
     return {
-      card: {
-        "Type": ""
-      }
+      done: false,
+      card: null
     }
   },
   mounted() {
     this.$bus.$on("NextCard", message => {
-      vue.set(this, "card", message["Card"])
-      this.id = message["CardId"]
+      if ("Card" in message) {
+        vue.set(this, "card", message["Card"])
+        this.id = message["CardId"]
+      }
+      else {
+        vue.set(this, "done", true)
+      }
     })
     this.$bus.$on("GetNextCard", () => {
-      vue.set(this.card, "Type", "")
+      vue.set(this, "card", null)
       this.getNextCard()
     })
     this.$bus.$on("Graded", pass => {
@@ -37,15 +41,25 @@ export default {
       this.$call("Result", { "CardId": this.id, "Pass": pass })
     },
     getNextCard() {
-      this.$call("GetNextCard", {})
+      if (this.$route.query.revision) {
+        this.$call("Revise", { "Revision": this.$route.query.revision })
+      }
+      else {
+        this.$call("Learn", {})
+      }
     }
   },
   computed: {
     currentComponent() {
-      return this.card["Type"].toLowerCase()
+      if (this.card) {
+        return this.card["Type"].toLowerCase()
+      }
+      else {
+        return null
+      }
     },
     lastHit() {
-      if (this.card["LastHit"]) {
+      if (this.card && this.card["LastHit"]) {
         let date = new Date(1000 * this.card["LastHit"]["_seconds"])
         return "(last viewed on " + date.toLocaleString("en-GB") + ")"
       }
@@ -53,5 +67,15 @@ export default {
         return ""
       }
     }
+  },
+  watch: {
+    $route() {
+      this.$bus.$emit("GetNextCard")
+    }
+  },
+  destroyed() {
+    this.$bus.$off("NextCard")
+    this.$bus.$off("GetNextCard")
+    this.$bus.$off("Graded")
   }
 }

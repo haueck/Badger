@@ -30,6 +30,7 @@ export default class {
     tomorrow.setDate(today.getDate() + 1)
     card["Date"] = today
     card["Hits"] = 0
+    card["Revision"] = ""
     card["Successes"] = 0
     card["AvailableFrom"] = tomorrow
     this.db.collection("Cards").add(card).then(doc => {

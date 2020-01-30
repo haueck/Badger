@@ -32,16 +32,6 @@ export default {
       this.resetCard("", [])
     }
   },
-  mounted() {
-    this.field = $("#modal-create-tag input").get(0)
-    this.field.addEventListener("keyup", event => {
-      if (event.keyCode === 13) {
-        event.preventDefault()
-        this.field.blur()
-        this.createTag()
-      }
-    })
-  },
   methods: {
     typeChanged(type) {
       this.resetCard(type, this.card["Tags"])
@@ -104,9 +94,13 @@ export default {
       $("#modal-add-tag").modal("show")
     },
     showCreate() {
+      let input = $("#modal-create-tag input").get(0)
+      input.parentElement.classList.remove("was-validated")
+      $("#modal-create-tag").one("shown.bs.modal", () => {
+        input.value = ""
+        input.focus()
+      })
       this.switchModals("modal-add-tag", "modal-create-tag")
-      this.field.focus()
-      this.field.value = ""
     },
     setParent(tag) {
       this.tag = tag
@@ -135,9 +129,11 @@ export default {
       this.switchModals("modal-create-tag", "modal-add-tag")
     },
     createTag() {
-      if (this.field.checkValidity()) {
+      let input = $("#modal-create-tag input").get(0)
+      input.parentElement.classList.add("was-validated")
+      if (input.checkValidity()) {
         $("#modal-create-tag").modal("hide")
-        let name = this.field.value
+        let name = input.value
         let parent = this.tag
         this.$call("CreateTag", { "Tag": name, "Parent": parent }, () => {
           this.card["Tags"].push(name)

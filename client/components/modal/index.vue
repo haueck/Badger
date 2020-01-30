@@ -8,7 +8,7 @@
             <span class="fas fa-times"></span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body p-0">
           <slot></slot>
         </div>
         <div class="modal-footer">

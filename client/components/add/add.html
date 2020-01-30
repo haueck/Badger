@@ -2,8 +2,8 @@
   <modal :closing="true" :title="'Select a tag'" id="modal-add-tag">
     <div v-if="tags[tag]['Children'].length == 0">No tags yet</div>
     <div v-for="(name, index) in tags[tag]['Children']" v-if="!tags[name]['Inactive']" :class="{ 'border-top': index != 0 }" class="tag-select">
-      <div class="tag-name" @click="addTags(name)" data-dismiss="modal">{{ name }}</div>
-      <div v-if="tags[name]['Children'].length" class="tag-children fas fa-chevron-right" @click=setParent(name)></div>
+      <div class="tag-name p-3" @click="addTags(name)" data-dismiss="modal">{{ name }}</div>
+      <div v-if="tags[name]['Children'].length" class="tag-children p-3 fas fa-chevron-right" @click=setParent(name)></div>
     </div>
     <template v-slot:footer>
       <button type="button" class="btn btn-primary" @click="showCreate()">Create a new tag</button>
@@ -13,8 +13,8 @@
   </modal>
   <modal :closing="false" :title="'Select a parent'" id="modal-select-parent">
     <div v-for="(name, index) in tags[tag]['Children']" v-if="!tags[name]['Inactive']" :class="{ 'border-top': index != 0 }" class="tag-select">
-      <div class="tag-name" @click="selectParent(name)">{{ name }}</div>
-      <div v-if="tags[name]['Children'].length" class="tag-children fas fa-chevron-right" @click=setParent(name)></div>
+      <div class="tag-name p-3" @click="selectParent(name)">{{ name }}</div>
+      <div v-if="tags[name]['Children'].length" class="tag-children p-3 fas fa-chevron-right" @click=setParent(name)></div>
     </div>
     <template v-slot:footer>
       <button type="button" class="btn btn-primary" @click="switchModals('modal-select-parent', 'modal-create-tag')">Create here</button>
@@ -22,9 +22,10 @@
     </template>
   </modal>
   <modal :closing="false" :title="'Create a new tag'" id="modal-create-tag">
-    <div class="form-inline">
-      <label class="text-secondary">{{ path }}</label>
-      <input type="text" class="form-control" pattern="[0-9A-Za-z ]+" required/>
+    <div class="form-inline p-3">
+      <label class="text-secondary mr-2">{{ path }}</label>
+      <input type="text" class="form-control" @keyup.enter="createTag" pattern="^[^~\*\/\[\]\.]+$" placeholder="Tag name" required/>
+      <div class="invalid-feedback">The name must not be empty and must not contain .~*/[]</div>
     </div>
     <template v-slot:footer>
       <button type="button" class="btn btn-secondary" @click="cancelCreate()">Close</button>
@@ -48,7 +49,7 @@
   </select>
   <div v-if="card['Type']">
     <div>
-      <div v-for="tag in card['Tags']" class="btn-group tag">
+      <div v-for="tag in card['Tags']" class="btn-group mr-2">
         <button type="button" class="btn btn-info" disabled>{{ tag }}</button>
         <button type="button" class="btn btn-info" @click="removeTag(tag)">
           <span class="fas fa-times"></span>

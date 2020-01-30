@@ -2,22 +2,12 @@
   width: 300px;
   margin-bottom: 30px;
 }
-/deep/ #modal-add-tag .modal-body {
-  padding: 0;
-}
-#modal-create-tag label {
-  margin-right: 10px;
-}
-.tag {
-  margin-right: 10px;
-}
 .tag-select {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .tag-name, .tag-children {
-  padding: 10px;
   cursor: pointer;
   font-size: 12pt;
   line-height: 1.5;

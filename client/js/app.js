@@ -7,6 +7,7 @@ import edit from "components/edit"
 import toasts from "components/toasts"
 import tags from "components/tags"
 import search from "components/search"
+import revisions from "components/revisions"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.min.js"
@@ -34,11 +35,13 @@ Object.defineProperties(vue.prototype, {
 
 vue.use(router)
 let routes = [
+  { path: "/revise", component: learn },
   { path: "/learn", component: learn },
   { path: "/tags", component: tags },
   { path: "/add", component: add },
   { path: "/edit/:id", component: edit },
   { path: "/search", component: search },
+  { path: "/revisions", component: revisions },
 ]
 
 window.addEventListener("load", () => {
