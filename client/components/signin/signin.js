@@ -4,60 +4,38 @@ export default {
       error: false,
       working: false,
       emailExists: false,
-      invalidInput: false,
       invalidCredentials: false
     }
   },
   mounted() {
-    let iterator = document.evaluate("//input", document)
-    let node = iterator.iterateNext()
-    while (node) {
-      node.addEventListener("invalid", event => {
-        if (event.target.validity.valueMissing) {
-          event.target.setCustomValidity("This field is required")
-        }
-      })
-      node.addEventListener("change", event => {
-        event.target.setCustomValidity("")
-        event.target.checkValidity()
-      })
-      node.addEventListener("keyup", event => {
-        if (event.keyCode === 13) {
-          event.preventDefault()
-          event.target.blur()
-          event.target.form.button.click()
-        }
-      })
-      node = iterator.iterateNext()
-    }
-    $("a[data-toggle='tab']").on("shown.bs.tab", () => { this.initialize() })
+    $("a[data-toggle='tab']").on("shown.bs.tab", this.initialize)
   },
   methods: {
+    validate(event, url) {
+      event.preventDefault()
+      event.stopPropagation()
+      let form = event.target
+      if (form.checkValidity()) {
+        form.classList.remove("was-validated")
+        this.submit(form, url)
+      }
+      else {
+        form.classList.add("was-validated")
+      }
+    },
     initialize() {
       this.error = false
       this.working = false
       this.emailExists = false
-      this.invalidInput = false
       this.invalidCredentials = false
     },
-    check(form) {
-      let valid = true
-      for (let element of form.elements) {
-        valid = element.checkValidity() && valid
-      }
-      return valid
-    },
-    submit(event, url) {
+    submit(form, url) {
       if (this.working) {
         return
       }
       this.initialize()
-      if (!this.check(event.target.form)) {
-        this.invalidInput = true
-        return
-      }
       this.working = true
-      let formData = new FormData(event.target.form)
+      let formData = new FormData(form)
       let xhr = new XMLHttpRequest()
       xhr.open("POST", url)
       xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
@@ -75,7 +53,6 @@ export default {
             else {
               this.error = response["Error"]
               this.emailExists = response["EmailExists"]
-              this.invalidInput = response["InvalidInput"]
               this.invalidCredentials = response["InvalidCredentials"]
             }
           }
@@ -91,5 +68,8 @@ export default {
       }
       xhr.send(pairs.join("&"))
     }
+  },
+  destroyed() {
+    $("a[data-toggle='tab']").off("shown.bs.tab")
   }
 }

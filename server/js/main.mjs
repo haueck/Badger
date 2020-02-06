@@ -143,11 +143,9 @@ wss.on("connection", (ws, request) => {
       revisions.addTag(msg["Tag"], msg["Revision"], configuration, failure)
     }
     else if (msg["Message"] === "Learn") {
-        console.log("LEARN")
       learn.next(payload, failure)
     }
     else if (msg["Message"] === "Revise") {
-        console.log("REVISE")
       learn.revise(msg["Revision"], payload, failure)
     }
     else if (msg["Message"] === "Result") {

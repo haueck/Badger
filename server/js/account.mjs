@@ -62,7 +62,7 @@ export default class {
     if (!valid) {
       res.send({
         Success: false,
-        InvalidInput: true
+        Error: true
       })
       return
     }
@@ -114,6 +114,8 @@ export default class {
 
   signOut(req, res) {
     delete req.session.user
-    res.redirect("/")
+    req.session.save(() => {
+      res.redirect("/")
+    })
   }
 }
