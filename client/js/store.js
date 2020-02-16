@@ -40,6 +40,12 @@ export default new vuex.Store({
     },
     incrementHits(state) {
       state["Hits"]++
+    },
+    lastCard(state, type) {
+      state["LastCard"] = type
+    },
+    lastTags(state, tags) {
+      state["LastTags"] = tags
     }
   },
   actions: {
@@ -64,6 +70,12 @@ export default new vuex.Store({
   getters: {
     tags: state => {
       return state["Tags"]
+    },
+    lastCard: state => {
+      return state["LastCard"]
+    },
+    lastTags: state => {
+      return state["LastTags"]
     },
     revisions: state => {
       return state["Revisions"]

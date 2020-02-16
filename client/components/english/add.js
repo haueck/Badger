@@ -109,6 +109,6 @@ export default {
     }
   },
   destroyed() {
-    this.$bus.$off("FinalizeCard")
+    this.$bus.$off("FinalizeCard", this.finalizeCard)
   }
 }

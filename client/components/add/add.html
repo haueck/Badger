@@ -40,13 +40,20 @@
       <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
     </template>
   </modal>
-  <select v-if="!editing" class="form-control card-selection" @change="typeChanged($event.target.value)">
-    <option disabled selected>Select type</option>
-    <option value="English">English</option>
-    <option value="Question">Question</option>
-    <option value="Reminder">Reminder</option>
-    <option value="MultipleChoice">Multiple Choice</option>
-  </select>
+  <ul v-if="!editing" class="nav nav-pills mb-3">
+    <li class="nav-item">
+      <span class="nav-link mr-2" :class="{ active: card['Type'] == 'English' }" @click="changeType('English')">English</span>
+    </li>
+    <li class="nav-item">
+      <span class="nav-link mr-2" :class="{ active: card['Type'] == 'Question' }" @click="changeType('Question')">Question</span>
+    </li>
+    <li class="nav-item">
+      <span class="nav-link mr-2" :class="{ active: card['Type'] == 'Reminder' }" @click="changeType('Reminder')">Reminder</span>
+    </li>
+    <li class="nav-item">
+      <span class="nav-link" :class="{ active: card['Type'] == 'MultipleChoice' }" @click="changeType('MultipleChoice')">Multiple Choice</span>
+    </li>
+  </ul>
   <div v-if="card['Type']">
     <div>
       <div v-for="tag in card['Tags']" class="btn-group mr-2">

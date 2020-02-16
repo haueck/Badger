@@ -41,6 +41,11 @@ export default class {
         this.search.index(card["CardId"], card["Tags"], text, resolve, reject)
       })
     }).then(() => {
+      return this.db.update({
+        LastCard: card["Type"],
+        LastTags: card["Tags"]
+      })
+    }).then(() => {
       success("The card was successfully created")
     }).catch(error => {
       failure("Failed to create the card", { error })

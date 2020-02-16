@@ -29,12 +29,14 @@ export default {
       vue.set(this, "card", this.editing)
     }
     else {
-      this.resetCard("", [])
+      this.resetCard(this.$store.getters.lastCard, this.$store.getters.lastTags)
     }
   },
   methods: {
-    typeChanged(type) {
-      this.resetCard(type, this.card["Tags"])
+    changeType(type) {
+      if (this.card["Type"] != type) {
+        this.resetCard(type, this.card["Tags"])
+      }
     },
     resetCard(type, tags) {
       vue.set(this, "card", {
@@ -44,7 +46,7 @@ export default {
       })
     },
     finalizeCard() {
-        this.$bus.$emit("FinalizeCard")
+      this.$bus.$emit("FinalizeCard")
     },
     saveCard() {
       if (this.editing) {
@@ -56,13 +58,13 @@ export default {
       else {
         let type = this.card["Type"]
         let tags = this.card["Tags"]
-        this.$call("CreateCard", { "Card": this.card }, response => {
-          if (response["Level"] == "Success") {
-            this.resetCard("", [])
-            vue.nextTick(() => {
-              this.resetCard(type, tags)
-            })
-          }
+        this.$call("CreateCard", { "Card": this.card }, () => {
+          this.$store.commit("lastCard", type)
+          this.$store.commit("lastTags", tags)
+          this.resetCard("", [])
+          vue.nextTick(() => {
+            this.resetCard(type, tags)
+          })
         })
       }
     },
@@ -71,10 +73,8 @@ export default {
     },
     removeCard() {
       $("#modal-card-remove").modal("hide")
-      this.$call("RemoveCard", { "CardId": this.id }, response => {
-        if (response["Level"] == "Success") {
-          this.$router.push("/tags")
-        }
+      this.$call("RemoveCard", { "CardId": this.id }, () => {
+        this.$router.push("/tags")
       })
     },
     switchModals(hide, show) {

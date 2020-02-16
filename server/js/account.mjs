@@ -81,6 +81,8 @@ export default class {
           Performance: [0, 0, 0, 0, 0, 0],
           Hits: 0,
           Notes: "",
+          LastCard: "",
+          LastTags: [],
           Tags: {
             "€": {
               "Parent": false
