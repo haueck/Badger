@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     revisions() {
-      return Object.keys(this.$store.getters.revisions).sort()
+      return Object.keys(this.$store.getters.user("Revisions")).sort()
     }
   }
 }

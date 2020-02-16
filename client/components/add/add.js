@@ -29,7 +29,7 @@ export default {
       vue.set(this, "card", this.editing)
     }
     else {
-      this.resetCard(this.$store.getters.lastCard, this.$store.getters.lastTags)
+      this.resetCard(this.$store.getters.user("LastCard"), this.$store.getters.user("LastTags"))
     }
   },
   methods: {
@@ -106,7 +106,7 @@ export default {
       this.tag = tag
     },
     back() {
-      this.tag = this.$store.getters.tags[this.tag]["Parent"]
+      this.tag = this.$store.getters.user("Tags")[this.tag]["Parent"]
     },
     addTags(tag) {
       if (tag == "€") {
@@ -116,7 +116,7 @@ export default {
         return
       }
       this.card["Tags"].push(tag)
-      this.addTags(this.$store.getters.tags[tag]["Parent"])
+      this.addTags(this.$store.getters.user("Tags")[tag]["Parent"])
     },
     removeTag(tag) {
       let index = this.card["Tags"].indexOf(tag)
@@ -153,7 +153,7 @@ export default {
   },
   computed: {
     tags() {
-      return this.$store.getters.tags
+      return this.$store.getters.user("Tags")
     },
     path() {
       let current = this.tag
@@ -161,7 +161,7 @@ export default {
       while (current != "€") {
         path.unshift(current)
         path.unshift("/")
-        current = this.$store.getters.tags[current]["Parent"]
+        current = this.$store.getters.user("Tags")[current]["Parent"]
       }
       return path.join(" ")
     },

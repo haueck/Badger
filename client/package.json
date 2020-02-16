@@ -50,7 +50,8 @@
     "eslint": "*",
     "vuex": "*",
     "jest": "*",
-    "vue": "*"
+    "vue": "*",
+    "md5": "*"
   },
   "jest": {
     "moduleDirectories": [

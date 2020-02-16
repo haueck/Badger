@@ -1,0 +1,68 @@
+:focus {
+  outline: none;
+}
+
+.topnav {
+  background-color: #3e444d;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: stretch;
+}
+
+.center {
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.left, .right {
+  flex: 1 1 0px;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  align-items: center;
+}
+
+.right {
+  justify-content: flex-end;
+}
+
+.center a:not(.active) {
+  color: #9d9d9d;
+}
+
+.center a:not(.active):hover {
+  border-color: transparent;
+  text-decoration: none;
+  color: white;
+}
+
+.search, .status {
+  color: #9d9d9d;
+  font-size: 16pt;
+}
+
+.search:hover {
+  text-decoration: none;
+  color: white;
+}
+
+.account {
+  background-image: url('/images/circle.png');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.account img {
+  border-radius: 50%;
+}
+
+.account > img {
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  width: 250px;
+  text-align: center;
+}

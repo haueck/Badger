@@ -68,23 +68,8 @@ export default new vuex.Store({
     }
   },
   getters: {
-    tags: state => {
-      return state["Tags"]
-    },
-    lastCard: state => {
-      return state["LastCard"]
-    },
-    lastTags: state => {
-      return state["LastTags"]
-    },
-    revisions: state => {
-      return state["Revisions"]
-    },
-    hits: state => {
-      return state["Hits"]
-    },
-    dailyTarget: state => {
-      return state["TodaysTarget"]
+    user: state => key => {
+      return state[key]
     },
     jobId: state => {
       return state.jobId

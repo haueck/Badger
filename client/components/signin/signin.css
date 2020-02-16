@@ -1,0 +1,14 @@
+.welcome {
+  max-width: 700px;
+}
+.description {
+  font-size: 20pt;
+  text-align: center;
+}
+.author {
+  font-size: 12pt;
+  text-align: center;
+}
+.author a {
+  text-decoration: underline;
+}

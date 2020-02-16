@@ -69,7 +69,7 @@ export default {
       }
     },
     progress() {
-      return Math.min(100, Math.max(10, 25 * Math.floor(this.$store.getters.hits / this.$store.getters.dailyTarget / 0.25)))
+      return Math.min(100, Math.max(10, 25 * Math.floor(this.$store.getters.user("Hits") / this.$store.getters.user("TodaysTarget") / 0.25)))
     }
   },
   watch: {

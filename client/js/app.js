@@ -8,6 +8,7 @@ import toasts from "components/toasts"
 import tags from "components/tags"
 import search from "components/search"
 import revisions from "components/revisions"
+import topnav from "components/topnav"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.min.js"
@@ -52,7 +53,7 @@ window.addEventListener("load", () => {
       mode: 'history',
       routes: routes
     }),
-    components: { toasts },
+    components: { toasts, topnav },
     data() {
       return {
           loading: true,
@@ -96,11 +97,6 @@ window.addEventListener("load", () => {
       }
       this.ws.onerror = error => {
         this.$toast("Error", "Error:" + error)
-      }
-    },
-    computed: {
-      jobCount() {
-        return this.$store.getters.jobCount
       }
     },
     destroyed() {

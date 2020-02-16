@@ -43,11 +43,11 @@ export default {
       this.current = "€"
     },
     confirmRemove(tag) {
-      if (this.$store.getters.tags[tag]["Children"].length > 0) {
+      if (this.$store.getters.user("Tags")[tag]["Children"].length > 0) {
         this.$toast("Error", "Can't remove a tag with sub-tags")
         return
       }
-      this.count = this.$store.getters.tags[tag]["Count"]
+      this.count = this.$store.getters.user("Tags")[tag]["Count"]
       if (this.count > 1) {
         $("#modal-tag-remove").modal("show")
       }
@@ -72,7 +72,7 @@ export default {
           this.$call("RenameTag", {
             "From": from,
             "To": input.value,
-            "Parent": this.$store.getters.tags[from]["Parent"]
+            "Parent": this.$store.getters.user("Tags")[from]["Parent"]
           })
           this.current = "€"
         }
@@ -86,7 +86,7 @@ export default {
       this.$call("DisableCards", { "Tag": tag })
     },
     toggleInactive(tag) {
-      if (this.$store.getters.tags[tag]["Inactive"]) {
+      if (this.$store.getters.user("Tags")[tag]["Inactive"]) {
         this.$call("ActivateTag", { "Tag": tag })
       }
       else {
@@ -96,10 +96,10 @@ export default {
   },
   computed: {
     revisions() {
-      return Object.keys(this.$store.getters.revisions).sort()
+      return Object.keys(this.$store.getters.user("Revisions")).sort()
     },
     tags() {
-      return this.$store.getters.tags
+      return this.$store.getters.user("Tags")
     }
   },
   destroyed() {
