@@ -26,9 +26,9 @@ Object.defineProperties(vue.prototype, {
     }
   },
   $call: {
-    value: (name, payload, callback) => {
+    value: (name, payload, success, failure) => {
       payload["Message"] = name
-      broker.$emit("Call", payload, callback)
+      broker.$emit("Call", payload, success, failure)
     }
   }
 })
@@ -69,8 +69,8 @@ window.addEventListener("load", () => {
       })
       this.ws = new WebSocket("wss://" + location.host)
       this.ws.onopen = () => {
-        this.$bus.$on("Call", (message, callback) => {
-          this.$store.commit("createJob", callback)
+        this.$bus.$on("Call", (message, success, failure) => {
+          this.$store.commit("createJob", { success, failure })
           message["JobId"] = this.$store.getters.jobId
           this.ws.send(JSON.stringify(message))
         })
@@ -83,6 +83,7 @@ window.addEventListener("load", () => {
           this.$store.dispatch("completeJob", msg)
           delete msg["Message"]
           delete msg["JobId"]
+          delete msg["Success"]
           this.$bus.$emit(name, msg)
         }
         catch(error) {
@@ -90,10 +91,16 @@ window.addEventListener("load", () => {
         }
       }
       this.ws.onclose = () => {
+        this.$bus.$off("Call")
         this.loading = true
       }
       this.ws.onerror = error => {
         this.$toast("Error", "Error:" + error)
+      }
+    },
+    computed: {
+      jobCount() {
+        return this.$store.getters.jobCount
       }
     },
     destroyed() {

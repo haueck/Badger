@@ -56,6 +56,13 @@ body {
   margin-right: 10px;
 }
 
+.topnav-status {
+  padding: 5px;
+  color: #9d9d9d;
+  font-size: 14pt;
+  margin-right: 10px;
+}
+
 .topnav-account, .topnav-account:hover {
   padding: 5px;
   color: #9d9d9d;

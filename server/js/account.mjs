@@ -16,11 +16,11 @@ export default class {
       }
       else {
         console.error("Failed to get user data: no such user")
-        failure("Error", "Failed to get user data")
+        failure("Failed to get user data")
       }
     }).catch(error => {
       console.error("Failed to get user data: ", error)
-      failure("Error", "Failed to get user data")
+      failure("Failed to get user data")
     })
   }
 

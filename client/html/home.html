@@ -16,8 +16,8 @@
   <body>
     <div id="application">
       <toasts></toasts>
-      <div v-if="loading">
-        <img src="/images/loading.gif" class="loading">
+      <div v-if="loading" class="loading">
+        <i class="fas fa-yin-yang fa-spin fa-5x"></i>
       </div>
       <div v-else>
         <div class="topnav">
@@ -26,6 +26,9 @@
           </router-link>
           <router-link to="/" class="topnav-badger">Badger</router-link>
           <div class="topnav-space"></div>
+          <div v-if="jobCount &gt; 0" class="topnav-status">
+            <i class="fas fa-spinner fa-spin"></i>
+          </div>
           <router-link to="/search" class="topnav-search">
             <i class="fas fa-search"></i>
           </router-link>

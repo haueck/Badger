@@ -70,26 +70,28 @@ wss.on("connection", (ws, request) => {
   })
   ws.on("message", message => {
     let msg = JSON.parse(message)
-    let status = (level, text) => {
+    let status = (level, text, success) => {
       ws.send(JSON.stringify({
+        "Success": success,
         "JobId": msg["JobId"],
         "Message": "Status",
         "Level": level,
         "Text": text
       }))
     }
-    let success = (text) => { status("Success", text) }
+    let success = (text) => { status("Success", text, true) }
     let failure = (text, params) => {
-      status("Error", text)
+      status("Error", text, false)
       console.error(text, params)
     }
     let payload = (name, data) => {
       data["Message"] = name
       data["JobId"] = msg["JobId"]
+      data["Success"] = true
       ws.send(JSON.stringify(data))
     }
     let configuration = () => {
-      account.getUserData(user, payload, status)
+      account.getUserData(user, payload, failure)
     }
     if (msg["Message"] === "GetUserData") {
       configuration()

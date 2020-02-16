@@ -26,10 +26,13 @@ export default new vuex.Store({
         }
       }
     },
-    createJob(state, callback) {
+    createJob(state, callbacks) {
       state.jobId++
       state.jobCount++
-      vue.set(state.jobs, state.jobId, { "Callback": callback })
+      vue.set(state.jobs, state.jobId, {
+        "Success": callbacks.success,
+        "Failure": callbacks.failure
+      })
     },
     removeJob(state, id) {
       vue.delete(state.jobs, id)
@@ -49,7 +52,8 @@ export default new vuex.Store({
         console.error("There is no job with JobId=", id)
       }
       else {
-        let callback = context.state.jobs[id]["Callback"]
+        let name = msg["Success"] ? "Success" : "Failure"
+        let callback = context.state.jobs[id][name]
         if (callback) {
           callback(msg)
         }
@@ -72,6 +76,9 @@ export default new vuex.Store({
     },
     jobId: state => {
       return state.jobId
+    },
+    jobCount: state => {
+      return state.jobCount
     }
   }
 })
