@@ -61,6 +61,7 @@ web::json::value Search::search(const web::json::value& json) {
        documents.emplace_back(it.get_document().get_value(0));
     }
     web::json::value results;
+    results["Matches"] = mset.get_matches_estimated();
     results["Results"] = web::json::value::array(documents);
     spdlog::info("User {} searched for {}", user, querystring);
     return results;

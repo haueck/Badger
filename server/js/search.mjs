@@ -21,14 +21,21 @@ export default class {
     })
   }
 
-  search(query, success, failure) {
+  search(query, page, success, failure) {
+    let offset = 0
+    let pagesize = 25
+    let results = {}
+    if (String(page).match(/^\d+$/) && page > 0) {
+      offset = pagesize * (page - 1)
+    }
     Axios.post("http://badger_search:8080/search", {
-      Offset: 0,
-      Pagesize: 10,
       User: this.user,
-      Query: query
+      Query: query,
+      Offset: offset,
+      Pagesize: pagesize
     }).then(response => {
       let promises = []
+      results["Pages"] = Math.ceil(response.data["Matches"] / pagesize)
       for (let id of response.data["Results"]) {
         let promise = this.db.collection("Cards").doc(id).get().then(doc => {
           if (doc.exists) {
@@ -45,7 +52,8 @@ export default class {
       }
       return Promise.all(promises)
     }).then(docs => {
-      success("SearchResults", { Results: docs })
+      results["Results"] = docs
+      success("SearchResults", results)
     }).catch((error) => {
       failure("Failed to fetch the search results", error)
     })

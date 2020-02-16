@@ -86,4 +86,12 @@ export default class {
       failure("Failed to add the tag to the revision", { tag, revision, error })
     })
   }
+
+  addCard(card, revision, success, failure) {
+    this.db.collection("Cards").doc(card).update({ Revision: revision }).then(() => {
+      success("Revision has been changed")
+    }).catch(error => {
+      failure("Failed to add the card to the revision", { card, revision })
+    })
+  }
 }

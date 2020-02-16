@@ -7,3 +7,9 @@
 .card-actions {
   display: flex;
 }
+.pagination {
+  justify-content: center;
+}
+.page-link {
+  cursor: pointer;
+}

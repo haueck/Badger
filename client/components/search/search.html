@@ -14,10 +14,10 @@
           <i class="fas fa-pen"></i> Edit
         </router-link>
       </div>
-      <div class="ml-3">
-        <select class="custom-select">
-          <option>Select a revision</option>
-          <option>Hi</option>
+      <div v-if="revisions.length" class="ml-3">
+        <select class="custom-select" @change="changeRevision(card['CardId'], $event.target.value)">
+          <option value="">Add to a revision</option>
+          <option v-for="revision in revisions" :value="revision" :selected="revision == card['Revision']">{{ revision }}</option>
         </select>
       </div>
       <div class="ml-3 py-2">
@@ -36,4 +36,10 @@
     <multiplechoice v-else-if="card['Type'] == 'MultipleChoice'" :card="card"></multiplechoice>
     <div v-else>Missing</div>
   </div>
+  <div v-if="empty" class="mt-4 text-center">There are no cards matching your query</div>
+  <ul v-if="pages &gt; 1" class="pagination mt-4">
+    <li v-for="p in pages" class="page-item" :class="{ active: p == page }" @click="changePage(p)">
+      <span class="page-link">{{ p }}</span>
+    </li>
+  </ul>
 </div>

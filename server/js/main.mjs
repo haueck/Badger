@@ -97,7 +97,7 @@ wss.on("connection", (ws, request) => {
       configuration()
     }
     else if (msg["Message"] === "Search") {
-      search.search(msg["Query"], payload, failure)
+      search.search(msg["Query"], msg["Page"], payload, failure)
     }
     else if (msg["Message"] === "CreateTag") {
       tags.create(msg["Tag"], msg["Parent"], configuration, failure)
@@ -143,6 +143,9 @@ wss.on("connection", (ws, request) => {
     }
     else if (msg["Message"] === "AddTagToRevision") {
       revisions.addTag(msg["Tag"], msg["Revision"], configuration, failure)
+    }
+    else if (msg["Message"] === "AddCardToRevision") {
+      revisions.addCard(msg["Card"], msg["Revision"], success, failure)
     }
     else if (msg["Message"] === "Learn") {
       learn.next(payload, failure)
