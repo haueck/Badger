@@ -1,8 +1,4 @@
 <div class="welcome mx-auto mt-4">
-  <div class="description text-dark">Badger is a study tool based on flashcards</div>
-  <div class="author text-secondary mt-2 mb-5">
-    Created by <a href="https://github.com/haueck" target="_blank" class="text-secondary">Rafał Kozik</a>
-  </div>
   <nav>
     <div class="nav nav-tabs">
       <a class="nav-item nav-link active" :data-toggle="working ? 'none' : 'tab'" href="#nav-sign-in">Sign in</a>
@@ -80,5 +76,9 @@
       <div class="pl-3 pb-3" v-else-if="emailExists">Email already exists</div>
       <div class="pl-3 pb-3" v-else-if="error">There was a problem</div>
     </div>
+  </div>
+  <div class="description text-dark mt-5">Badger is a study tool based on flashcards</div>
+  <div class="author text-secondary mt-2 mb-5">
+    Created by <a href="https://github.com/haueck" target="_blank" class="text-secondary">Rafał Kozik</a>
   </div>
 </div>

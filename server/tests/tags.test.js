@@ -96,18 +96,6 @@ describe("Tags", () => {
     })
   })
 
-  it("properly handles an invalid tag name while creating a tag", () => {
-    let mock = jest.fn()
-    let tags = make(mock)
-    return new Promise((resolve, reject) => {
-      tags.create("Name$", "Parent", reject, resolve)
-    }).catch((error) => {
-      throw new Error("Unexpected success " + (error || ""))
-    }).then(() => {
-      expect(mock.mock.calls.length).toEqual(0)
-    })
-  })
-
   it("properly activates a tag", () => {
     let mock = jest.fn()
     let tags = make(mock)

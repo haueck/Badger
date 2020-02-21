@@ -8,6 +8,7 @@ import toasts from "components/toasts"
 import tags from "components/tags"
 import search from "components/search"
 import revisions from "components/revisions"
+import account from "components/account"
 import topnav from "components/topnav"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -43,6 +44,7 @@ let routes = [
   { path: "/edit/:id", component: edit },
   { path: "/search", component: search },
   { path: "/revisions", component: revisions },
+  { path: "/account", component: account }
 ]
 
 window.addEventListener("load", () => {
@@ -50,7 +52,7 @@ window.addEventListener("load", () => {
     el: "#application",
     store: store,
     router: new router({
-      mode: 'history',
+      mode: "history",
       routes: routes
     }),
     components: { toasts, topnav },

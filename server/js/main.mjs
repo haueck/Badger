@@ -96,6 +96,15 @@ wss.on("connection", (ws, request) => {
     if (msg["Message"] === "GetUserData") {
       configuration()
     }
+    else if (msg["Message"] === "GetTimezones") {
+      account.getTimezones(payload, failure)
+    }
+    else if (msg["Message"] === "UpdateAccount") {
+      account.update(user, msg, configuration, failure)
+    }
+    else if (msg["Message"] === "ChangePassword") {
+      account.password(user, msg["Password"], configuration, failure)
+    }
     else if (msg["Message"] === "Search") {
       search.search(msg["Query"], msg["Page"], payload, failure)
     }

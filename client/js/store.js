@@ -7,7 +7,8 @@ export default new vuex.Store({
   state: {
     jobs: {},
     jobId: 0,
-    jobCount: 0
+    jobCount: 0,
+    timezones: []
   },
   mutations: {
     initialize(state, data) {
@@ -46,6 +47,9 @@ export default new vuex.Store({
     },
     lastTags(state, tags) {
       state["LastTags"] = tags
+    },
+    setTimezones(state, timezones) {
+      state.timezones = timezones
     }
   },
   actions: {
@@ -76,6 +80,9 @@ export default new vuex.Store({
     },
     jobCount: state => {
       return state.jobCount
+    },
+    timezones: state => {
+      return state.timezones
     }
   }
 })

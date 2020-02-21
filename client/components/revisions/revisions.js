@@ -16,7 +16,7 @@ export default {
     revise() {
       if (this.revisions[this.current] > 0) {
         this.$router.push({
-          path: 'revise',
+          path: "revise",
           query: {
             revision: this.current
           }

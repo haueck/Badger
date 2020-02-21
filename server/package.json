@@ -17,6 +17,7 @@
     "@google-cloud/connect-firestore": "*",
     "@google-cloud/firestore": "*",
     "@babel/preset-env": "*",
+    "moment-timezone": "*",
     "express-session": "*",
     "@babel/core": "*",
     "babel-jest": "*",

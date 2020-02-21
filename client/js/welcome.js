@@ -19,7 +19,7 @@ window.addEventListener("load", () => {
   new vue({
     el: "#application",
     router: new router({
-      mode: 'history',
+      mode: "history",
       routes: routes
     }),
     data() {

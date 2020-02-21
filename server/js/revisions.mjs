@@ -91,7 +91,7 @@ export default class {
     this.db.collection("Cards").doc(card).update({ Revision: revision }).then(() => {
       success("Revision has been changed")
     }).catch(error => {
-      failure("Failed to add the card to the revision", { card, revision })
+      failure("Failed to add the card to the revision", { card, revision, error })
     })
   }
 }

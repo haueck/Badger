@@ -1,5 +1,6 @@
 import sha from "js-sha512"
 import crypto from "crypto"
+import moment from "moment-timezone"
 
 export default class {
   constructor(options) {
@@ -15,12 +16,47 @@ export default class {
         success("UserData", data)
       }
       else {
-        console.error("Failed to get user data: no such user")
         failure("Failed to get user data")
       }
     }).catch(error => {
-      console.error("Failed to get user data: ", error)
-      failure("Failed to get user data")
+      failure("Failed to get user data", { error })
+    })
+  }
+
+  getTimezones(success) {
+    success("Timezones", { Timezones: moment.tz.names() })
+  }
+
+  update(user, msg, success, failure) {
+    let bonus = Math.round(msg["DailyTarget"] * (0.2 * Math.random() - 0.1))
+    user.update({
+      Firstname: msg["Firstname"],
+      Lastname: msg["Lastname"],
+      Email: msg["Email"],
+      Timezone: msg["Timezone"],
+      DailyTarget: Number(msg["DailyTarget"]),
+      TodaysTarget: Number(msg["DailyTarget"]) + bonus
+    }).then(() => {
+      success()
+    }).catch(error => {
+      failure("Failed to update your account", error)
+    })
+  }
+
+  password(user, password, success, failure) {
+    user.get().then(doc => {
+      if (doc.exists) {
+        return user.update({
+          Password: sha.sha512(password + doc.data()["Salt"])
+        })
+      }
+      else {
+        throw new Error("Failed to get user data")
+      }
+    }).then(() => {
+      success()
+    }).catch(error => {
+      failure("Failed to get user data", { error })
     })
   }
 
@@ -78,9 +114,8 @@ export default class {
           Revisions: {},
           DailyTarget: 25,
           TodaysTarget: 25,
-          Performance: [0, 0, 0, 0, 0, 0],
+          Performance: [ 0, 0, 0, 0, 0, 0 ],
           Hits: 0,
-          Notes: "",
           LastCard: "",
           LastTags: [],
           Tags: {

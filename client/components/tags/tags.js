@@ -21,7 +21,7 @@ export default {
     },
     showCards(tag) {
       this.$router.push({
-        path: 'search',
+        path: "search",
         query: {
           query: "tag:\"" + tag + "\""
         }

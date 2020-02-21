@@ -43,7 +43,7 @@ export default {
       })
     },
     update() {
-      this.$router.replace({ path: '/search', query: { query: this.query, page: this.page } })
+      this.$router.replace({ path: "/search", query: { query: this.query, page: this.page } })
     },
     changePage(page) {
       if (page != this.page) {
