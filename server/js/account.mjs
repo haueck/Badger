@@ -1,6 +1,9 @@
 import sha from "js-sha512"
 import crypto from "crypto"
 import moment from "moment-timezone"
+import secrets from "./secrets.mjs"
+import sendgrid from "@sendgrid/mail"
+import Firestore from "@google-cloud/firestore"
 
 export default class {
   constructor(options) {
@@ -43,7 +46,7 @@ export default class {
     })
   }
 
-  password(user, password, success, failure) {
+  changePassword(user, password, success, failure) {
     user.get().then(doc => {
       if (doc.exists) {
         return user.update({
@@ -57,6 +60,53 @@ export default class {
       success()
     }).catch(error => {
       failure("Failed to get user data", { error })
+    })
+  }
+
+  resetPasswordLink(req, res) {
+    this.db.collection("Users").where("Email", "=", (req.body.email || "None")).get().then(snapshot => {
+      if (!snapshot.empty) {
+        let token = sha.sha512(req.body.email + Math.random())
+        let html = "<p>Hey there,</p><p>Someone requested a new password for your Badger account: "
+        html += "<a href=\"https://boldh.com/reset-password-form/" + token + "\">reset link</a></p><p>Have fun!</p>"
+        sendgrid.setApiKey(secrets["Sendgrid"])
+        return sendgrid.send({
+          to: req.body.email,
+          from: "passwords@badger-sett.com",
+          subject: "Choose a new password for Badger",
+          html: html
+        }).then(() => {
+          return snapshot.docs[0].ref.update({ Token: token })
+        })
+      }
+    }).then(() => {
+      res.send({ Success: true })
+    }).catch(error => {
+      console.warn("Failed to generate a reset link", error)
+      res.send({
+        Success: false,
+        Error: true
+      })
+    })
+  }
+
+  resetPassword(req, res) {
+    this.db.collection("Users").where("Token", "=", (req.body.token || "None")).get().then(snapshot => {
+      if (!snapshot.empty) {
+        return snapshot.docs[0].ref.update({
+          Password: sha.sha512(req.body.password + snapshot.docs[0].data()["Salt"]),
+          Token: Firestore.FieldValue.delete()
+        }).then(() => {
+          res.send({ Success: true })
+        })
+      }
+      else {
+        console.warn("Reset token not found: " + req.body.token)
+        res.send({ Success: false })
+      }
+    }).catch(error => {
+      console.warn("Failed to reset a password", error)
+      res.send({ Success: false })
     })
   }
 

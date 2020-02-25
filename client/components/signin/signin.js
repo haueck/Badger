@@ -3,6 +3,7 @@ export default {
     return {
       error: false,
       working: false,
+      linkSent: false,
       emailExists: false,
       invalidCredentials: false
     }
@@ -26,6 +27,7 @@ export default {
     initialize() {
       this.error = false
       this.working = false
+      this.linkSent = false
       this.emailExists = false
       this.invalidCredentials = false
     },
@@ -47,8 +49,12 @@ export default {
             }
             let response = JSON.parse(xhr.responseText)
             if (response["Success"]) {
-              window.location.replace("/")
-              return
+              if (url == "/reset-password-link") {
+                this.linkSent = true
+              }
+              else {
+                window.location.replace("/")
+              }
             }
             else {
               this.error = response["Error"]

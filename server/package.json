@@ -19,6 +19,7 @@
     "@babel/preset-env": "*",
     "moment-timezone": "*",
     "express-session": "*",
+    "@sendgrid/mail": "*",
     "@babel/core": "*",
     "babel-jest": "*",
     "js-sha512": "*",

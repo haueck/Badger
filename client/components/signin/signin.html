@@ -8,7 +8,7 @@
   </nav>
   <div class="tab-content">
     <div class="tab-pane fade show active border-left border-right p-3" id="nav-sign-in">
-      <form @submit="validate($event, '/signin')" novalidate>
+      <form @submit="validate($event, '/sign-in')" novalidate>
         <div class="form-group mb-3">
           <div>E-mail</div>
           <input type="email" name="email" class="form-control" placeholder="E-mail" required/>
@@ -25,7 +25,7 @@
       </form>
     </div>
     <div class="tab-pane fade border-left border-right p-3" id="nav-sign-up">
-      <form @submit="validate($event, '/signup')" novalidate>
+      <form @submit="validate($event, '/sign-up')" novalidate>
         <div class="form-group mb-3">
           <div>Firstname</div>
           <input type="text" name="firstname" class="form-control" placeholder="Firstname" required/>
@@ -57,7 +57,7 @@
       </form>
     </div>
     <div class="tab-pane fade border-left border-right p-3" id="nav-password">
-      <form @submit="validate($event, '/password')" novalidate>
+      <form @submit="validate($event, '/reset-password-link')" novalidate>
         <div class="form-group mb-3">
           <div>E-mail</div>
           <input type="email" name="email" class="form-control" placeholder="E-mail" required/>
@@ -75,6 +75,7 @@
       <div class="pl-3 pb-3" v-else-if="invalidCredentials">Incorrect email or password</div>
       <div class="pl-3 pb-3" v-else-if="emailExists">Email already exists</div>
       <div class="pl-3 pb-3" v-else-if="error">There was a problem</div>
+      <div class="pl-3 pb-3" v-else-if="linkSent">Reset link has been sent</div>
     </div>
   </div>
   <div class="description text-dark mt-5">Badger is a study tool based on flashcards</div>

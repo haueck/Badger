@@ -28,9 +28,11 @@ let account = new Account({ database: db })
 app.use(express.static("/badger/dist"))
 app.use(parser.urlencoded({ extended: true }))
 app.use(session.parser)
-app.post("/signin", account.signIn.bind(account))
-app.post("/signup", account.signUp.bind(account))
-app.get("/signout", account.signOut.bind(account))
+app.post("/sign-in", account.signIn.bind(account))
+app.post("/sign-up", account.signUp.bind(account))
+app.post("/reset-password-link", account.resetPasswordLink.bind(account))
+app.post("/reset-password", account.resetPassword.bind(account))
+app.get("/sign-out", account.signOut.bind(account))
 app.get(/\/.*/, (req, res) => {
   if (req.session.user) {
     res.sendFile("/badger/dist/html/home.html")
@@ -103,7 +105,7 @@ wss.on("connection", (ws, request) => {
       account.update(user, msg, configuration, failure)
     }
     else if (msg["Message"] === "ChangePassword") {
-      account.password(user, msg["Password"], configuration, failure)
+      account.changePassword(user, msg["Password"], configuration, failure)
     }
     else if (msg["Message"] === "Search") {
       search.search(msg["Query"], msg["Page"], payload, failure)
