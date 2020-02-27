@@ -1,4 +1,5 @@
 import Firestore from "@google-cloud/firestore"
+import moment from "moment-timezone"
 
 export default class {
   constructor(options) {
@@ -6,12 +7,68 @@ export default class {
   }
 
   next(success, failure) {
-    let card = {}
-    this.db.collection("Cards").where("Queue", ">", 0).where("Disabled", "==", false).orderBy("Queue").limit(1).get().then(snapshot => {
-      if (!snapshot.empty) {
+    this.scheduled().then(card => {
+      if (card) {
+        success("NextCard", card)
+      }
+      else {
+        this.queue().then(card => {
+          if (card) {
+            success("NextCard", card)
+          }
+          else {
+            failure("Failed to get a next card")
+          }
+        })
+      }
+    })
+  }
+
+  scheduled() {
+    return this.db.get().then(doc => {
+      if (doc.exists) {
+        let timezone = doc.data()["Timezone"]
+        let date = moment.tz(timezone).format("YYYY-MM-DD")
+        return this.db.collection("Cards").where("ScheduledFor", "<=", date).orderBy("ScheduledFor").limit(1).get().then(snapshot => {
+          if (!snapshot.empty) {
+            let doc = snapshot.docs[0]
+            let card = {
+              "Card": doc.data(),
+              "CardId": doc.id
+            }
+            let today = new Date()
+            let tomorrow  = new Date()
+            tomorrow.setDate(today.getDate() + 1)
+            return doc.ref.update({
+              "ScheduledFor": Firestore.FieldValue.delete(),
+              "Queue": Firestore.FieldValue.delete(),
+              "AvailableFrom": tomorrow,
+              "LastHit": today
+            }).then(() => {
+              return card
+            })
+          }
+        })
+      }
+      else {
+        console.warn("Failed to get user data", error)
+      }
+    }).catch(error => {
+      console.warn("Failed to get a scheduled card", error)
+    })
+  }
+
+  queue() {
+    return this.db.collection("Cards").where("Queue", ">", 0).where("Disabled", "==", false).orderBy("Queue").limit(1).get().then(snapshot => {
+      if (snapshot.empty) {
+        return {}
+      }
+      else {
         let doc = snapshot.docs[0]
-        card["Card"] = doc.data()
-        card["CardId"] = doc.id
+        let card = {
+          "Card": doc.data(),
+          "CardId": doc.id
+        }
         let today = new Date()
         let tomorrow  = new Date()
         tomorrow.setDate(today.getDate() + 1)
@@ -19,12 +76,12 @@ export default class {
           "Queue": Firestore.FieldValue.delete(),
           "AvailableFrom": tomorrow,
           "LastHit": today
+        }).then(() => {
+          return card
         })
       }
-    }).then(() => {
-      success("NextCard", card)
     }).catch(error => {
-      failure("Failed to get the next card", { error })
+      console.warn("Failed to get a next card", error)
     })
   }
 
@@ -78,6 +135,7 @@ export default class {
       let available = new Date()
       available.setDate(available.getDate() + hiatus[successes])
       return doc.ref.update({
+        "Hits": Firestore.FieldValue.increment(1),
         "Successes": successes,
         "AvailableFrom": available
       })

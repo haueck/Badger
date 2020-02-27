@@ -20,12 +20,6 @@
           <option v-for="revision in revisions" :value="revision" :selected="revision == card['Revision']">{{ revision }}</option>
         </select>
       </div>
-      <div class="ml-3 py-2">
-        Schedule for:
-      </div>
-      <div class="ml-1">
-        <input type="date" class="form-control">
-      </div>
     </div>
     <div class="mb-2">
       Tags: {{ card['Tags'].join(', ') }}

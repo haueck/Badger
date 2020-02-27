@@ -66,6 +66,13 @@
     </div>
     <component :is="currentComponent" :card="card"></component>
     <div v-if="editing">
+      <div>
+        <input type="checkbox" v-model="card['Disabled']"> Disabled
+      </div>
+      <div>
+        Schedule for:
+        <input type="date" v-model="card['ScheduledFor']" class="form-control">
+      </div>
       <button class="btn btn-primary" @click="finalizeCard()">Update</button>
       <button class="btn btn-danger" @click="confirmRemove()">Delete</button>
     </div>

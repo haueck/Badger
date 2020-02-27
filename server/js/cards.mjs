@@ -56,6 +56,7 @@ export default class {
     this.get(id, (_, old) => {
       let text = card["SearchPhrases"]
       delete card["SearchPhrases"]
+      card["ScheduledFor"] = card["ScheduledFor"] || Firestore.FieldValue.delete()
       this.db.collection("Cards").doc(id).set(card, { merge: true }).then(() => {
         return this.tags(old["Tags"], card["Tags"])
       }).then(() => {
