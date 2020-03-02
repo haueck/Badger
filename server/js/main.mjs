@@ -59,17 +59,11 @@ server.on("upgrade", function(request, socket, head) {
 
 wss.on("connection", (ws, request) => {
   let user = db.collection("Users").doc(request.session.user)
-  let revisions = new Revisions({ database: user })
-  let tags = new Tags({ database: user })
-  let learn = new Learn({ database: user })
-  let search = new Search({
-    database: user,
-    user: request.session.user
-  })
-  let cards = new Cards({
-      database: user,
-      search: search
-  })
+  let revisions = new Revisions({ db, user })
+  let tags = new Tags({ db, user })
+  let learn = new Learn({ user })
+  let search = new Search({ user })
+  let cards = new Cards({ db, user, search })
   ws.on("message", message => {
     let msg = JSON.parse(message)
     let status = (level, text, success) => {

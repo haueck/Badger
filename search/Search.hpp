@@ -5,6 +5,7 @@ class Search {
 public:
     Search(const std::string& path);
     void index(const web::json::value& json);
+    void remove(const web::json::value& json);
     web::json::value search(const web::json::value& json);
 
 private:

@@ -42,6 +42,17 @@ void SearchService::worker() {
                 request.reply(http::status_codes::BadRequest);
             }
         }
+        else if (paths.size() == 1 && paths[0] == "remove") {
+            try {
+                auto json = request.extract_json().get();
+                m_search.remove(json);
+                request.reply(http::status_codes::OK);
+            }
+            catch (std::exception& e) {
+                spdlog::error("Failed to remove a card: {}", e.what());
+                request.reply(http::status_codes::BadRequest);
+            }
+        }
         else if (paths.size() == 1 && paths[0] == "search") {
             try {
                 auto json = request.extract_json().get();

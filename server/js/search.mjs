@@ -2,23 +2,26 @@ import Axios from "axios"
 
 export default class {
   constructor(options) {
-    this.db = options.database
     this.user = options.user
+    this.id = options.user.id
   }
 
-  index(id, tags, text, success, failure) {
+  index(id, tags, text) {
     let request = {
-        CardId: id,
-        User: this.user,
-        Tags: tags,
-        Text: text
+      CardId: id,
+      User: this.id,
+      Tags: tags,
+      Text: text
     }
-    Axios.post("http://badger_search:8080/index", request).then(() => {
-      success("The card has been successfully indexed")
-    }).catch(error => {
-      console.error(error)
-      failure("Failed to index card " + id)
-    })
+    return Axios.post("http://badger_search:8080/index", request)
+  }
+
+  remove(id) {
+    let request = {
+      CardId: id,
+      User: this.id
+    }
+    return Axios.post("http://badger_search:8080/remove", request)
   }
 
   search(query, page, success, failure) {
@@ -29,7 +32,7 @@ export default class {
       offset = pagesize * (page - 1)
     }
     Axios.post("http://badger_search:8080/search", {
-      User: this.user,
+      User: this.id,
       Query: query,
       Offset: offset,
       Pagesize: pagesize
@@ -45,7 +48,7 @@ export default class {
           }
           else {
             console.error("Failed to find a card with id " + id)
-            return { Type: "Missing" }
+            return { Missing: true }
           }
         })
         promises.push(promise)

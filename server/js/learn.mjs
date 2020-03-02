@@ -3,7 +3,7 @@ import moment from "moment-timezone"
 
 export default class {
   constructor(options) {
-    this.db = options.database
+    this.user = options.user
   }
 
   next(success, failure) {
@@ -25,11 +25,11 @@ export default class {
   }
 
   scheduled() {
-    return this.db.get().then(doc => {
+    return this.user.get().then(doc => {
       if (doc.exists) {
         let timezone = doc.data()["Timezone"]
         let date = moment.tz(timezone).format("YYYY-MM-DD")
-        return this.db.collection("Cards").where("ScheduledFor", "<=", date).orderBy("ScheduledFor").limit(1).get().then(snapshot => {
+        return this.user.collection("Cards").where("ScheduledFor", "<=", date).orderBy("ScheduledFor").limit(1).get().then(snapshot => {
           if (!snapshot.empty) {
             let doc = snapshot.docs[0]
             let card = {
@@ -59,7 +59,7 @@ export default class {
   }
 
   queue() {
-    return this.db.collection("Cards").where("Queue", ">", 0).where("Disabled", "==", false).orderBy("Queue").limit(1).get().then(snapshot => {
+    return this.user.collection("Cards").where("Queue", ">", 0).where("Disabled", "==", false).orderBy("Queue").limit(1).get().then(snapshot => {
       if (snapshot.empty) {
         return {}
       }
@@ -87,7 +87,7 @@ export default class {
 
   revise(revision, success, failure) {
     let card = {}
-    this.db.collection("Cards").where("Revision", "==", revision).limit(1).get().then(snapshot => {
+    this.user.collection("Cards").where("Revision", "==", revision).limit(1).get().then(snapshot => {
       if (!snapshot.empty) {
         let today = new Date()
         let tomorrow  = new Date()
@@ -104,7 +104,7 @@ export default class {
       }
     }).then(() => {
       if ("Card" in card) {
-        return this.db.update({ [ "Revisions." + revision ]: Firestore.FieldValue.increment(-1) })
+        return this.user.update({ [ "Revisions." + revision ]: Firestore.FieldValue.increment(-1) })
       }
     }).then(() => {
       success("NextCard", card)
@@ -114,7 +114,7 @@ export default class {
   }
 
   result(card, pass, success, failure) {
-    this.db.collection("Cards").doc(card).get().then(doc => {
+    this.user.collection("Cards").doc(card).get().then(doc => {
       if (!doc.exists) {
         throw new Error("The card does not exist")
       }
@@ -140,7 +140,7 @@ export default class {
         "AvailableFrom": available
       })
     }).then(() => {
-      return this.db.update({ "Hits": Firestore.FieldValue.increment(1) })
+      return this.user.update({ "Hits": Firestore.FieldValue.increment(1) })
     }).then(() => {
       success()
     }).catch(error => {

@@ -43,6 +43,18 @@ void Search::index(const web::json::value& json) {
     spdlog::info("Finished indexing card {} for user {}", id, user);
 }
 
+void Search::remove(const web::json::value& json) {
+    auto id = json.at("CardId").as_string();
+    auto docid = m_db.get_metadata(id);
+    if (docid.empty()) {
+        throw std::runtime_error("Document not found: " + id);
+    }
+    else {
+        m_db.delete_document(std::stoul(docid));
+        spdlog::info("Removed card {}", id);
+    }
+}
+
 web::json::value Search::search(const web::json::value& json) {
     Xapian::doccount offset = json.at("Offset").as_integer();
     Xapian::doccount pagesize = json.at("Pagesize").as_integer();
@@ -66,3 +78,4 @@ web::json::value Search::search(const web::json::value& json) {
     spdlog::info("User {} searched for {}", user, querystring);
     return results;
 }
+

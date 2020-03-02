@@ -7,7 +7,7 @@
       </button>
     </div>
   </div>
-  <div v-for="card in results" class="result pb-2 mt-4">
+  <div v-for="card in results" class="result pb-2 mt-4" v-if="!card['Missing']">
     <div class="card-actions mb-2">
       <div>
         <router-link :to="'/edit/' + card['CardId']" tag="button" class="btn btn-primary">
@@ -28,7 +28,6 @@
     <question v-else-if="card['Type'] == 'Question'" :card="card"></question>
     <reminder v-else-if="card['Type'] == 'Reminder'" :card="card"></reminder>
     <multiplechoice v-else-if="card['Type'] == 'MultipleChoice'" :card="card"></multiplechoice>
-    <div v-else>Missing</div>
   </div>
   <div v-if="empty" class="mt-4 text-center">There are no cards matching your query</div>
   <ul v-if="pages &gt; 1" class="pagination mt-4">
