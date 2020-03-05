@@ -1,0 +1,27 @@
+.root {
+  max-width: 700px;
+  margin: 0 auto;
+}
+.header {
+  display: flex;
+  align-items: center;
+}
+.header span {
+  font-size: 16pt;
+}
+.projects .header span {
+  cursor: pointer;
+}
+.projects .header span:hover {
+  text-decoration: underline;
+}
+.sprint .task {
+  cursor: grab;
+}
+.full {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.task + .empty {
+  display: none;
+}

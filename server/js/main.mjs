@@ -12,6 +12,7 @@ import Tags from "./tags.mjs"
 import Cards from "./cards.mjs"
 import Learn from "./learn.mjs"
 import Search from "./search.mjs"
+import Tasks from "./tasks.mjs"
 import Revisions from "./revisions.mjs"
 
 let certificates = {
@@ -64,8 +65,16 @@ wss.on("connection", (ws, request) => {
   let learn = new Learn({ user })
   let search = new Search({ user })
   let cards = new Cards({ db, user, search })
+  let tasks = new Tasks({ db, user })
   ws.on("message", message => {
     let msg = JSON.parse(message)
+    let ack = () => {
+      ws.send(JSON.stringify({
+        "Message": "Ack",
+        "Success": true,
+        "JobId": msg["JobId"]
+      }))
+    }
     let status = (level, text, success) => {
       ws.send(JSON.stringify({
         "Success": success,
@@ -100,6 +109,9 @@ wss.on("connection", (ws, request) => {
     }
     else if (msg["Message"] === "ChangePassword") {
       account.changePassword(user, msg["Password"], configuration, failure)
+    }
+    else if (msg["Message"] === "UpdateProjectCount") {
+      account.updateProjectCount(user, configuration, failure)
     }
     else if (msg["Message"] === "Search") {
       search.search(msg["Query"], msg["Page"], payload, failure)
@@ -160,6 +172,30 @@ wss.on("connection", (ws, request) => {
     }
     else if (msg["Message"] === "Result") {
       learn.result(msg["CardId"], msg["Pass"], configuration, failure)
+    }
+    else if (msg["Message"] === "GetActiveTasks") {
+      tasks.getActive(payload, failure)
+    }
+    else if (msg["Message"] === "GetInactiveTasks") {
+      tasks.getInactive(payload, failure)
+    }
+    else if (msg["Message"] === "CreateProject") {
+      tasks.createProject(msg["Name"], msg["Priority"], msg["Color"], msg["Status"], payload, failure)
+    }
+    else if (msg["Message"] === "CreateTask") {
+      tasks.createTask(msg["Name"], msg["ProjectId"], msg["Description"], msg["Status"], payload, failure)
+    }
+    else if (msg["Message"] === "UpdateProject") {
+      tasks.updateProject(msg["ProjectId"], msg["Name"], msg["Priority"], msg["Color"], msg["Status"], ack, failure)
+    }
+    else if (msg["Message"] === "UpdateTasks") {
+      tasks.updateTasks(msg, ack, failure)
+    }
+    else if (msg["Message"] === "RemoveProject") {
+      tasks.removeProject(msg["ProjectId"], ack, failure)
+    }
+    else if (msg["Message"] === "RemoveTask") {
+      tasks.removeTask(msg["ProjectId"], msg["TaskId"], ack, failure)
     }
     else {
       failure("Unknown request")

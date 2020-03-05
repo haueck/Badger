@@ -28,14 +28,12 @@
     </template>
   </modal>
   <div class="revisions">
-    <div v-for="revision in sorted" @click="menu(revision)" class="revision border-left border-right border-bottom py-3 px-4">
+    <div v-for="revision in sorted" @click="menu(revision)" class="revision border py-3 px-4">
       <div>{{ revision }}</div>
       <div class="badge badge-pill badge-primary">{{ revisions[revision] }}</div>
     </div>
     <div class="mt-4 text-right">
-      <button class="btn btn-primary btn-lg" @click="createModal">
-        <i class="fas fa-plus"></i>
-      </button>
+      <button class="btn btn-primary" @click="createModal">Create a revision</button>
     </div>
   </div>
 </div>

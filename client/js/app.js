@@ -9,6 +9,8 @@ import tags from "components/tags"
 import search from "components/search"
 import revisions from "components/revisions"
 import account from "components/account"
+import planning from "components/planning"
+import tasks from "components/tasks"
 import topnav from "components/topnav"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -44,7 +46,9 @@ let routes = [
   { path: "/edit/:id", component: edit },
   { path: "/search", component: search },
   { path: "/revisions", component: revisions },
-  { path: "/account", component: account }
+  { path: "/account", component: account },
+  { path: "/planning", component: planning },
+  { path: "/tasks", component: tasks }
 ]
 
 window.addEventListener("load", () => {

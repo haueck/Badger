@@ -11,8 +11,8 @@
 .revision:hover {
   background-color: #f8f9fa;
 }
-.revision:first-child {
-  border: 1px solid #dedede;
+.revision + .revision {
+  border-top-width: 0 !important;
 }
 #modal-revision-menu .modal-body > div {
   cursor: pointer;
