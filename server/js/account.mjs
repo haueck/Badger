@@ -14,8 +14,10 @@ export default class {
     user.get().then(doc => {
       if (doc.exists) {
         let data = doc.data()
+        let progress = 25 * Math.floor(data["Hits"] / data["TodaysTarget"] / 0.25)
         delete data["Password"]
         delete data["Salt"]
+        data["TodaysProgress"] = data["Hits"] == 0 ? 0 : Math.min(100, Math.max(10, progress))
         success("UserData", data)
       }
       else {

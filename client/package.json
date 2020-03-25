@@ -40,6 +40,7 @@
     "bootstrap": "*",
     "popper.js": "*",
     "jquery-ui": "*",
+    "chart.js": "^3.0.0-alpha",
     "vue-jest": "*",
     "vue-cli": "*",
     "tinymce": "*",

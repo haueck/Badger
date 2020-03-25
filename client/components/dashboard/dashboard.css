@@ -1,0 +1,6 @@
+.col {
+  padding: 0 10px;
+}
+.col > * {
+  margin-bottom: 20px;
+}

@@ -12,6 +12,7 @@ import account from "components/account"
 import planning from "components/planning"
 import tasks from "components/tasks"
 import topnav from "components/topnav"
+import dashboard from "components/dashboard"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.min.js"
@@ -39,6 +40,7 @@ Object.defineProperties(vue.prototype, {
 
 vue.use(router)
 let routes = [
+  { path: "/", component: dashboard },
   { path: "/revise", component: learn },
   { path: "/learn", component: learn },
   { path: "/tags", component: tags },

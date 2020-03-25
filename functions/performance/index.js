@@ -36,7 +36,7 @@ function updateUsers(midnights) {
         let bonus = Math.round(user["DailyTarget"] * (0.2 * Math.random() - 0.1))
         let stats = user["Performance"]
         stats.pop()
-        stats.unshift(user["Hits"])
+        stats.unshift(Math.min(100, Math.ceil(user["Hits"] / user["TodaysTarget"])))
         promises2.push(doc.ref.update({
           "TodaysTarget": user["DailyTarget"] + bonus,
           "Performance": stats,
