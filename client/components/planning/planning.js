@@ -21,15 +21,16 @@ export default {
   components: { modal, draggable, task },
   created() {
     this.init()
-    this.$bus.$on("EditTask", tid => this.editTaskModal(tid))
-    this.$bus.$on("Tasks", tasks => {
-      tasks["Data"].forEach(project => this.projects.push(project))
-      this.sort()
-      this.prepareSprint()
-    })
+    this.$bus.$on("EditTask", this.editTaskModal)
+    this.$bus.$on("Tasks", this.populate)
     this.$call("GetActiveTasks", {})
   },
   methods: {
+    populate(tasks) {
+      tasks["Data"].forEach(project => this.projects.push(project))
+      this.sort()
+      this.prepareSprint()
+    },
     init() {
       vue.set(this.forms.project, "id", "")
       vue.set(this.forms.project, "name", "")
@@ -308,5 +309,9 @@ export default {
     hidden() {
       return this.$store.getters.user("Projects") != this.projects.length
     }
+  },
+  destroyed() {
+    this.$bus.$off("EditTask", this.editTaskModal)
+    this.$bus.$off("Tasks", this.populate)
   }
 }

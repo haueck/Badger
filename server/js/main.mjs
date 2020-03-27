@@ -13,6 +13,7 @@ import Cards from "./cards.mjs"
 import Learn from "./learn.mjs"
 import Search from "./search.mjs"
 import Tasks from "./tasks.mjs"
+import Todos from "./todos.mjs"
 import Revisions from "./revisions.mjs"
 
 let certificates = {
@@ -66,6 +67,7 @@ wss.on("connection", (ws, request) => {
   let search = new Search({ user })
   let cards = new Cards({ db, user, search })
   let tasks = new Tasks({ db, user })
+  let todos = new Todos({ db, user })
   ws.on("message", message => {
     let msg = JSON.parse(message)
     let ack = () => {
@@ -112,6 +114,27 @@ wss.on("connection", (ws, request) => {
     }
     else if (msg["Message"] === "UpdateProjectCount") {
       account.updateProjectCount(user, configuration, failure)
+    }
+    else if (msg["Message"] === "GetTodos") {
+      todos.get(payload, failure)
+    }
+    else if (msg["Message"] === "CreateTodo") {
+      todos.create(msg["Todo"], configuration, failure)
+    }
+    else if (msg["Message"] === "ScheduleTodo") {
+      todos.schedule(msg["Todo"], msg["Date"], success, failure)
+    }
+    else if (msg["Message"] === "FinishedTodo") {
+      todos.finished(msg["Todo"], configuration, failure)
+    }
+    else if (msg["Message"] === "UpdateTodo") {
+      todos.update(msg["TodoId"], msg["Todo"], payload, failure)
+    }
+    else if (msg["Message"] === "RemoveTodo") {
+      todos.remove(msg["TodoId"], payload, failure)
+    }
+    else if (msg["Message"] === "RescheduleTodo") {
+      todos.reschedule(msg["TodoId"], msg["Date"], payload, failure)
     }
     else if (msg["Message"] === "Search") {
       search.search(msg["Query"], msg["Page"], payload, failure)

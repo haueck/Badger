@@ -1,5 +1,5 @@
 <div class="root">
-  <modal :closing="true" :title="'Create a new project'" id="modal-project-create">
+  <modal :title="'Create a new project'" id="modal-project-create">
     <div class="p-4">
       <div class="form-group mb-3">
         <div>Project name</div>
@@ -23,7 +23,7 @@
       <button type="button" class="btn btn-primary" @click="createProject">Create</button>
     </template>
   </modal>
-  <modal :closing="true" :title="'Edit the project'" id="modal-project-edit">
+  <modal :title="'Edit the project'" id="modal-project-edit">
     <div class="p-4">
       <div class="form-group mb-3">
         <div>Project name</div>
@@ -56,7 +56,7 @@
       <button type="button" class="btn btn-primary" @click="updateProject">Save</button>
     </template>
   </modal>
-  <modal :closing="true" :title="'Create a new task'" id="modal-task-create">
+  <modal :title="'Create a new task'" id="modal-task-create">
     <div class="p-4">
       <div class="form-group mb-3">
         <div>Task name</div>
@@ -72,7 +72,7 @@
       <button type="button" class="btn btn-primary" @click="createTask">Create</button>
     </template>
   </modal>
-  <modal :closing="true" :title="'Edit the task'" id="modal-task-edit">
+  <modal :title="'Edit the task'" id="modal-task-edit">
     <div class="p-4">
       <div class="form-group mb-3">
         <div>Task name</div>

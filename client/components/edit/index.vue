@@ -16,6 +16,9 @@
         this.card = message
       })
       this.$call("GetCard", { "CardId": this.$route.params.id })
+    },
+    destroyed() {
+      this.$bus.$off("EditCard")
     }
   }
 </script>

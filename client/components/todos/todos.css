@@ -1,0 +1,29 @@
+.container {
+  max-width: 800px;
+}
+.list-group-item:not(.empty) {
+  display: flex;
+}
+.list-group-item:not(.empty):hover {
+  background-color: #f5f6f7;
+}
+.todo {
+  cursor: pointer;
+}
+.todo:hover {
+  text-decoration: underline;
+}
+.buttons {
+  flex: 1;
+  text-align: right;
+}
+.header {
+  font-size: 16pt;
+  margin-bottom: 10px;
+}
+.list-group {
+  margin-bottom: 15px;
+}
+.list-group-item + .empty {
+  display: none;
+}

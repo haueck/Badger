@@ -1,5 +1,5 @@
 <div>
-  <modal :closing="true" :title="'Edit the task'" id="modal-task-edit">
+  <modal :title="'Edit the task'" id="modal-task-edit">
     <div class="p-4">
       <div class="form-group mb-3">
         <div>Task name</div>
@@ -15,7 +15,7 @@
       <button type="button" class="btn btn-primary" @click="editTask">Save</button>
     </template>
   </modal>
-  <div v-if="!initialized"></div>
+  <div v-if="!populated"></div>
   <div v-else-if="tasks.length == 0" class="text-center">Add tasks to the sprint in the Planning tab</div>
   <div v-else class="row">
     <div class="col-sm px-1">

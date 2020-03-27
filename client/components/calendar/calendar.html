@@ -1,0 +1,21 @@
+<modal :title="'Pick a date'" :size="'small'">
+  <div class="navigation">
+    <div @click="previous" class="fas fa-chevron-left"></div>
+    <div class="month">{{ monthName }} {{ year }}</div>
+    <div @click="next" class="fas fa-chevron-right"></div>
+  </div>
+  <div class="header">
+    <div>Mon</div>
+    <div>Tue</div>
+    <div>Wed</div>
+    <div>Thu</div>
+    <div>Fri</div>
+    <div>Sat</div>
+    <div>Sun</div>
+  </div>
+  <div v-for="week in calendar" class="week">
+    <div v-for="day in week" class="day" :class="day" @click="selected(day.past, day.dom)">
+      {{ day.dom }}
+    </div>
+  </div>
+</modal>

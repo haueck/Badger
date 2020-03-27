@@ -52,5 +52,8 @@ export default {
         this.activate()
       })
     }
+  },
+  destroyed() {
+    this.$bus.$off("Toast")
   }
 }

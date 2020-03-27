@@ -4,6 +4,7 @@
   top: 50px;
   padding: 10px;
   min-width: 200px;
+  z-index: 2000;
 }
 .toast i {
   margin-right: 10px;

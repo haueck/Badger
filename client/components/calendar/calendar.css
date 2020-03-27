@@ -1,0 +1,52 @@
+.navigation, .header, .week {
+  display: flex;
+  justify-content: center;
+}
+.navigation {
+  margin-top: 5px;
+}
+.navigation div {
+  text-align: center;
+}
+.navigation .fas {
+  padding: 5px 15px;
+  cursor: pointer;
+}
+.header div, .day {
+  text-align: center;
+  width: 41px;
+  line-height: 41px;
+  border-radius: 5px;
+}
+.header div {
+  color: grey;
+}
+.month {
+  flex: 1;
+}
+.week {
+  margin-bottom: 5px;
+}
+.day:not(.today):hover {
+  background-color: #ebebeb;
+}
+.today {
+  font-weight: bold;
+  cursor: not-allowed;
+  background-color: lightgray;
+}
+.day:not(.current) {
+  color: lightgray;
+}
+.day:not(.today):not(.past) {
+  cursor: pointer;
+}
+.past {
+  cursor: not-allowed;
+}
+.weekend.current {
+  color: crimson;
+}
+.weekend:not(.current) {
+  color: #ff8585;
+}

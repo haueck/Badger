@@ -4,3 +4,9 @@
 .col > * {
   margin-bottom: 20px;
 }
+/deep/ .card-header {
+  padding: 0 15px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}

@@ -13,6 +13,7 @@ import planning from "components/planning"
 import tasks from "components/tasks"
 import topnav from "components/topnav"
 import dashboard from "components/dashboard"
+import todos from "components/todos"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.min.js"
@@ -50,7 +51,8 @@ let routes = [
   { path: "/revisions", component: revisions },
   { path: "/account", component: account },
   { path: "/planning", component: planning },
-  { path: "/tasks", component: tasks }
+  { path: "/tasks", component: tasks },
+  { path: "/todos", component: todos }
 ]
 
 window.addEventListener("load", () => {

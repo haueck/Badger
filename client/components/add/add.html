@@ -1,5 +1,5 @@
 <div>
-  <modal :closing="true" :title="'Select a tag'" id="modal-add-tag">
+  <modal :title="'Select a tag'" id="modal-add-tag">
     <div v-if="tags[tag]['Children'].length == 0">No tags yet</div>
     <div v-for="(name, index) in tags[tag]['Children']" v-if="!tags[name]['Inactive']" :class="{ 'border-top': index != 0 }" class="tag-select">
       <div class="tag-name p-3" @click="addTags(name)" data-dismiss="modal">{{ name }}</div>
@@ -33,7 +33,7 @@
       <button type="button" class="btn btn-primary" @click="createTag()">Create</button>
     </template>
   </modal>
-  <modal :closing="true" :title="'Remove the card'" id="modal-card-remove">
+  <modal :title="'Remove the card'" id="modal-card-remove">
     <span>Are you sure?</span>
     <template v-slot:footer>
       <button type="button" class="btn btn-danger" @click="removeCard()">Yes</button>

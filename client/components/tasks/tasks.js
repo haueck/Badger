@@ -5,7 +5,7 @@ import vue from "vue"
 export default {
   data() {
     return {
-      initialized: false,
+      populated: false,
       tasks: [],
       forms: {
         id: "",
@@ -16,9 +16,13 @@ export default {
   },
   components: { modal, task },
   created() {
-    this.$bus.$on("EditTask", tid => this.editTaskModal(tid))
-    this.$bus.$on("Tasks", response => {
-      response["Data"].forEach(project => {
+    this.$bus.$on("EditTask", this.editTaskModal)
+    this.$bus.$on("Tasks", this.populate)
+    this.$call("GetActiveTasks", {})
+  },
+  methods: {
+    populate(msg) {
+      msg["Data"].forEach(project => {
         project["Tasks"].forEach(task => {
           if (task["Status"] == "Ready" || task["Status"] == "Started" || task["Status"] == "Finished") {
             task["ProjectId"] = project["ProjectId"]
@@ -28,11 +32,8 @@ export default {
         })
       })
       this.sort()
-      vue.set(this, "initialized", true)
-    })
-    this.$call("GetActiveTasks", {})
-  },
-  methods: {
+      vue.set(this, "populated", true)
+    },
     editTaskModal(tid) {
       this.forms.id = tid
       this.tasks.forEach(task => {
@@ -86,5 +87,9 @@ export default {
     sort() {
       this.tasks.sort((a, b) => Number(a["Priority"]) - Number(b["Priority"]))
     }
+  },
+  destroyed() {
+    this.$bus.$off("EditTask", this.editTaskModal)
+    this.$bus.$off("Tasks", this.populate)
   }
 }
