@@ -48,16 +48,6 @@ export default class {
     })
   }
 
-  updateProjectCount(user, success, failure) {
-    user.collection("Projects").get().then(snapshot => {
-      return user.update({ Projects: snapshot.size })
-    }).then(() => {
-      success()
-    }).catch(error => {
-      failure("Failed to increment project count", error)
-    })
-  }
-
   changePassword(user, password, success, failure) {
     user.get().then(doc => {
       if (doc.exists) {

@@ -41,21 +41,27 @@ function performance(doc) {
   })
 }
 
-function todos(doc) {
-  let today = moment.tz(doc.data()["Timezone"]).add(1, "hour").format("YYYY-MM-DD")
-  return doc.ref.collection("Todos").where("Status", "==", "Scheduled").where("Date", "<=", today).get().then(todos => {
+function todos(user) {
+  let today = moment.tz(user.data()["Timezone"]).add(1, "hour").format("YYYY-MM-DD")
+  return user.ref.collection("Todos").where("Status", "==", "Scheduled").where("Date", "<=", today).get().then(todos => {
     let promises = []
     todos.forEach(todo => {
       promises.push(todo.ref.update({
         "Status": "Started",
         "Date": new Date()
+      }).then(() => {
+        let data = {
+          "Text": todo.data()["Text"],
+          "TodoId": todo.id
+        }
+        return user.ref.update({ "Todos": Firestore.FieldValue.arrayUnion(data) })
       }).catch(error => {
-        console.error("Failed to update todo " + todo.id + " belonging to " + doc.id, error)
+        console.error("Failed to update todo " + todo.id + " belonging to " + user.id, error)
       }))
     })
     return Promise.all(promises)
   }).catch(error => {
-    console.error("Failed to get todos belonging to " + doc.id, error)
+    console.error("Failed to get todos belonging to " + user.id, error)
   })
 }
 

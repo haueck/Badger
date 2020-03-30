@@ -34,18 +34,51 @@ export default class {
     this.get(this.user.collection("Projects").where("Status", "==", "Active"), success, failure)
   }
 
-  getInactive(success, failure) {
-    this.get(this.user.collection("Projects").where("Status", "in", [ "Future", "Finished" ]), success, failure)
+  getIdle(success, failure) {
+    this.get(this.user.collection("Projects").where("Status", "==", "Idle"), success, failure)
+  }
+
+  sprint(success, failure) {
+    return this.user.collection("Projects").where("Status", "==", "Active").get().then(projects => {
+      let promises = []
+      projects.forEach(project => {
+        let color = project.data()["Color"]
+        promises.push(project.ref.collection("Tasks").where("Status", "in", [ "Ready", "Started", "Finished" ]).get().then(tasks => {
+          let sprint = []
+          tasks.forEach(task => {
+            let data = task.data()
+            data["ProjectId"] = project.id
+            data["TaskId"] = task.id
+            data["Color"] = color
+            sprint.push(data)
+          })
+          return sprint
+        }))
+      })
+      return Promise.all(promises)
+    }).then(data => {
+      let sprint = data.flat()
+      sprint.sort((a, b) => a["Priority"] - b["Priority"])
+      return this.user.update({ "Sprint": sprint })
+    }).then(() => {
+      success()
+    }).catch(error => {
+      failure("Failed to cache current sprint", { error })
+    })
   }
 
   createProject(name, priority, color, status, success, failure) {
+    let pid = null
     this.user.collection("Projects").add({
       Name: name,
       Color: color,
       Status: status,
       Priority: priority
     }).then(doc => {
-      success("ProjectCreated", { ProjectId: doc.id })
+      pid = doc.id
+      return this.user.update({ "Projects": Firestore.FieldValue.increment(1) })
+    }).then(() => {
+      success("ProjectCreated", { ProjectId: pid })
     }).catch(error => {
       failure("Failed to create a project", { error })
     })
@@ -70,7 +103,7 @@ export default class {
       Status: status,
       Priority: priority
     }).then(() => {
-      success()
+      return this.sprint(success, failure)
     }).catch(error => {
       failure("Failed to update the project", { id, error })
     })
@@ -92,15 +125,17 @@ export default class {
       })
       return Promise.resolve()
     }).then(() => {
-      success()
+      return this.sprint(success, failure)
     }).catch(error => {
       failure("Failed to update the tasks", { error })
     })
   }
 
   removeProject(id, success, failure) {
-    this.user.collection("Projects").doc(id).delete().then(() => {
-      success()
+    this.user.collection("Projects").doc(id).update({ "Status": "Deleted" }).then(() => {
+      return this.sprint(success, failure)
+    }).then(() => {
+      return this.user.update({ "Projects": Firestore.FieldValue.increment(-1) })
     }).catch(error => {
       failure("Failed to remove the project", { id, error })
     })
@@ -108,7 +143,7 @@ export default class {
 
   removeTask(pid, tid, success, failure) {
     this.user.collection("Projects").doc(pid).collection("Tasks").doc(tid).delete().then(() => {
-      success()
+      return this.sprint(success, failure)
     }).catch(error => {
       failure("Failed to remove the task", { pid, tid, error })
     })

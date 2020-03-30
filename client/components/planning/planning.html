@@ -1,9 +1,9 @@
 <div class="root">
   <modal :title="'Create a new project'" id="modal-project-create">
-    <div class="p-4">
+    <form @submit="createProject($event)" novalidate class="p-4">
       <div class="form-group mb-3">
         <div>Project name</div>
-        <input type="text" v-model="forms.project.name" class="form-control" @keyup.enter="createProject" placeholder="Project name" required>
+        <input type="text" v-model="forms.project.name" class="form-control" placeholder="Project name" required>
       </div>
       <div class="form-group mb-3">
         <div>Priority</div>
@@ -17,17 +17,17 @@
         <div>Color</div>
         <input type="color" v-model="forms.project.color" class="form-control">
       </div>
-    </div>
+    </form>
     <template v-slot:footer>
+      <button type="button" class="btn btn-primary" @click="createProject($event)">Create</button>
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      <button type="button" class="btn btn-primary" @click="createProject">Create</button>
     </template>
   </modal>
   <modal :title="'Edit the project'" id="modal-project-edit">
-    <div class="p-4">
+    <form @submit="updateProject($event)" novalidate class="p-4">
       <div class="form-group mb-3">
         <div>Project name</div>
-        <input type="text" v-model="forms.project.name" class="form-control" @keyup.enter="updateProject" required>
+        <input type="text" v-model="forms.project.name" class="form-control" required>
       </div>
       <div class="form-group mb-3">
         <div>Priority</div>
@@ -41,67 +41,70 @@
         <div>Color</div>
         <input type="color" v-model="forms.project.color" class="form-control">
       </div>
-      <div class="form-group mb-3">
+      <div v-if="!forms.project.active" class="form-group mb-3">
         <div>Status</div>
         <select v-model="forms.project.status" class="form-control">
-          <option value="Future">Future</option>
           <option value="Active">Active</option>
-          <option value="Finished">Finished</option>
+          <option value="Idle">Idle</option>
         </select>
       </div>
-    </div>
+    </form>
     <template v-slot:footer>
-      <button type="button" class="btn btn-danger" @click="removeProject">Remove</button>
+      <button type="button" class="btn btn-primary" @click="updateProject($event)">Save</button>
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      <button type="button" class="btn btn-primary" @click="updateProject">Save</button>
+      <button type="button" class="btn btn-danger" @click="removeProject">Remove</button>
     </template>
   </modal>
   <modal :title="'Create a new task'" id="modal-task-create">
-    <div class="p-4">
+    <form @submit="createTask($event)" novalidate class="p-4">
       <div class="form-group mb-3">
         <div>Task name</div>
-        <input type="text" v-model="forms.task.name" class="form-control" @keyup.enter="createTask" placeholder="Task name" required>
+        <input type="text" v-model="forms.task.name" class="form-control" placeholder="Task name" required>
       </div>
       <div class="form-group mb-3">
         <div>Description</div>
         <textarea v-model="forms.task.description" class="form-control" rows="6"></textarea>
       </div>
-    </div>
+    </form>
     <template v-slot:footer>
+      <button type="button" class="btn btn-primary" @click="createTask($event)">Create</button>
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      <button type="button" class="btn btn-primary" @click="createTask">Create</button>
     </template>
   </modal>
   <modal :title="'Edit the task'" id="modal-task-edit">
-    <div class="p-4">
+    <form @submit="editTask($event)" novalidate class="p-4">
       <div class="form-group mb-3">
         <div>Task name</div>
-        <input type="text" v-model="forms.task.name" class="form-control" @keyup.enter="editTask" required>
+        <input type="text" v-model="forms.task.name" class="form-control" required>
       </div>
       <div class="form-group mb-3">
         <div>Description</div>
         <textarea v-model="forms.task.description" class="form-control" rows="6"></textarea>
       </div>
-    </div>
+    </form>
     <template v-slot:footer>
-      <button type="button" class="btn btn-danger" @click="removeTask">Remove</button>
+      <button type="button" class="btn btn-primary" @click="editTask($event)">Save</button>
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      <button type="button" class="btn btn-primary" @click="editTask">Save</button>
+      <button type="button" class="btn btn-danger" @click="removeTask">Remove</button>
     </template>
   </modal>
   <div class="sprint mb-4" v-if="pending || sprint.length">
     <div class="header mb-3">
       <span>Current sprint</span>
-      <button type="button" class="btn btn-outline-primary btn-sm ml-3" v-if="complete" @click="completeSprint()">Complete the sprint</button>
+      <button type="button" class="btn btn-outline-primary btn-sm ml-3" v-if="finished" @click="completeSprint()">Complete the sprint</button>
     </div>
-    <draggable v-model="sprint" @end="updatePriority">
-      <task v-for="task in sprint" v-if="task['Status'] == 'Ready' || task['Status'] == 'Started' || task['Status'] == 'Finished'" :task="task">
-        <button type="button" @click="cancel(task['TaskId'])">
-          <i class="fas fa-times"></i>
-        </button>
-      </task>
-      <div class="text-center empty">Click [+] button to add tasks to the sprint</div>
-    </draggable>
+    <div class="card" :class="{ empty: sprint.length == 0 }"">
+      <div class="card-body text-center">Click [ Add ] button to add tasks to the sprint</div>
+      <draggable v-model="sortable" class="list-group list-group-flush">
+        <div v-for="task in sortable" class="list-group-item task">
+          <div :style="{ 'background-color': task['Color'] }"></div>
+          <div @click="editTaskModal(task['TaskId'])">{{ task['Name'] }}</div>
+          <div>
+            <button type="button" @click="cancel(task['TaskId'])" class="btn btn-outline-secondary btn-sm">Cancel</button>
+          </div>
+        </div>
+      </draggable>
+    </div>
   </div>
   <div class="projects mb-4">
     <div v-for="project in projects" class="project mb-4">
@@ -109,15 +112,21 @@
         <span @click="editProjectModal(project['ProjectId'])">{{ project["Name"] }}</span>
         <button type="button" class="btn btn-outline-primary btn-sm ml-3" @click="createTaskModal(project['ProjectId'])">Create a task</button>
       </div>
-      <task v-for="task in project['Tasks']" v-if="task['Status'] == 'Pending' || (full && task['Status'] == 'Archived')" :task="task">
-        <button type="button" @click="schedule(task['TaskId'])">
-          <i class="fas fa-plus"></i>
-        </button>
-      </task>
-      <div class="text-center empty">There are no tasks to display</div>
+      <div class="card" :class="{ empty: project['Sorted'].length == 0 }"">
+        <div class="card-body text-center">Nothing to see here</div>
+        <div :class="[ 'list-group', 'list-group-flush', project['Status'].toLowerCase() ]">
+          <div v-for="task in project['Sorted']" :class="[ 'list-group-item', 'task', task['Status'].toLowerCase() ]">
+            <div :style="{ 'background-color': project['Color'] }"></div>
+            <div @click="editTaskModal(task['TaskId'])">{{ task['Name'] }}</div>
+            <div>
+              <button type="button" @click="schedule(task['TaskId'])" class="btn btn-outline-success btn-sm">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="mt-4 text-right">
-      <span v-if="!full && (hidden || archived)" @click="fullList()" class="mr-3 text-primary full">Show full list of projects and tasks</span>
+      <span v-if="!full && populated && (hidden || archived)" @click="fullList()" class="mr-3 text-primary full">Show full list of projects and tasks</span>
       <button class="btn btn-primary" @click="createProjectModal">Create a project</button>
     </div>
   </div>

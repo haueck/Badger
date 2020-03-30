@@ -14,7 +14,7 @@
     <div>Sun</div>
   </div>
   <div v-for="week in calendar" class="week">
-    <div v-for="day in week" class="day" :class="day" @click="selected(day.past, day.dom)">
+    <div v-for="day in week" class="day" :class="day" @click="selected(day.past, day.dom, day.month, day.year)">
       {{ day.dom }}
     </div>
   </div>

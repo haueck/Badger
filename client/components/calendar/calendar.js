@@ -30,6 +30,8 @@ export default {
             current: date.getMonth() == this.month,
             today: this.today(date, now),
             weekend: date.getDay() == 0 || date.getDay() == 6,
+            month: date.getMonth(),
+            year: date.getYear(),
             past: date < now
           })
           date.setDate(date.getDate() + 1)
@@ -58,11 +60,11 @@ export default {
       let day = date.getDate() == now.getDate()
       return year && month && day
     },
-    selected(past, day) {
+    selected(past, day, month, year) {
       if (!past) {
         day = String(day).padStart(2, "0")
-        let month = String(this.month + 1).padStart(2, "0")
-        this.$bus.$emit("Calendar.Selected", `${this.year}-${month}-${day}`)
+        month = String(month + 1).padStart(2, "0")
+        this.$bus.$emit("Calendar.Selected", `${year}-${month}-${day}`)
       }
     }
   },

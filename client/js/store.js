@@ -50,6 +50,12 @@ export default new vuex.Store({
     },
     setTimezones(state, timezones) {
       state.timezones = timezones
+    },
+    reorderSprint(state, tasks) {
+      state["Sprint"].splice(0, state["Sprint"].length, ...tasks)
+    },
+    updateProjects(state, difference) {
+      state["Projects"] = state["Projects"] + difference
     }
   },
   actions: {

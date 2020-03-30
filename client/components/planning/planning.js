@@ -1,6 +1,5 @@
 import draggable from "vuedraggable"
 import modal from "components/modal"
-import task from "components/task"
 import vue from "vue"
 
 export default {
@@ -8,60 +7,65 @@ export default {
     return {
       full: false,
       pending: false,
-      complete: false,
+      finished: false,
       archived: false,
+      populated: false,
       projects: [],
-      sprint: [],
       forms: {
         project: {},
         task: {}
       }
     }
   },
-  components: { modal, draggable, task },
+  components: { modal, draggable },
   created() {
     this.init()
-    this.$bus.$on("EditTask", this.editTaskModal)
     this.$bus.$on("Tasks", this.populate)
     this.$call("GetActiveTasks", {})
   },
   methods: {
     populate(tasks) {
       tasks["Data"].forEach(project => this.projects.push(project))
-      this.sort()
-      this.prepareSprint()
+      this.prepare()
+      vue.set(this, "populated", true)
     },
     init() {
       vue.set(this.forms.project, "id", "")
       vue.set(this.forms.project, "name", "")
+      vue.set(this.forms.project, "active", false)
       vue.set(this.forms.project, "priority", "2")
-      vue.set(this.forms.project, "status", "active")
-      vue.set(this.forms.project, "color", "#b5c69e")
+      vue.set(this.forms.project, "status", "Active")
+      vue.set(this.forms.project, "color", "#0080c0")
       vue.set(this.forms.task, "id", "")
       vue.set(this.forms.task, "name", "")
       vue.set(this.forms.task, "description", "")
       vue.set(this.forms.task, "status", "Pending")
     },
-    prepareSprint() {
-      this.sprint.splice(0, this.sprint.length)
+    prepare() {
+      this.projects.sort((a, b) => { return a["Priority"] == b["Priority"] ? (a["Name"] < b["Name"] ? -1 : 1) : b["Priority"] - a["Priority"] })
       this.projects.forEach(project => {
+        if ("Sorted" in project) {
+          project["Sorted"].splice(0, project["Sorted"].length)
+        }
+        else {
+          vue.set(project, "Sorted", [])
+        }
         project["Tasks"].forEach(task => {
-          task["Color"] = project["Color"]
-          if (task["Status"] == "Ready" || task["Status"] == "Started" || task["Status"] == "Finished") {
-            this.sprint.push(task)
-            if (task["Status"] == "Finished") {
-              vue.set(this, "complete", true)
-            }
+          if (task["Status"] == "Pending") {
+            vue.set(this, "pending", true)
+          }
+          else if (task["Status"] == "Finished") {
+            vue.set(this, "finished", true)
           }
           else if (task["Status"] == "Archived") {
             vue.set(this, "archived", true)
           }
-          else if (task["Status"] == "Pending") {
-            vue.set(this, "pending", true)
+          if (task['Status'] == "Pending" || (this.full && task['Status'] == "Archived")) {
+            project["Sorted"].push(task)
           }
         })
+        project["Sorted"].sort((a, b) => { return a["Name"] < b["Name"] ? -1 : 1 })
       })
-      this.sprint.sort((a, b) => Number(a["Priority"]) - Number(b["Priority"]))
     },
     createProjectModal() {
       this.init()
@@ -87,6 +91,11 @@ export default {
           this.forms.project.status = project["Status"]
           this.forms.project.priority = project["Priority"]
           this.forms.project.color = project["Color"]
+          project["Tasks"].forEach(task => {
+            if ([ "Ready", "Started", "Finished" ].includes(task["Status"])) {
+              this.forms.project.active = true
+            }
+          })
         }
       })
       let modal = $("#modal-project-edit")
@@ -108,7 +117,10 @@ export default {
       modal.removeClass("was-validated")
       modal.modal("show")
     },
-    createProject() {
+    createProject(event) {
+      console.log("WTF")
+      event.preventDefault()
+      event.stopPropagation()
       let modal = $("#modal-project-create")
       modal.addClass("was-validated")
       if (modal.find("input[type='text']").get(0).checkValidity()) {
@@ -117,19 +129,21 @@ export default {
           "Status": "Active",
           "Name": this.forms.project.name,
           "Color": this.forms.project.color,
-          "Priority": this.forms.project.priority
+          "Priority": Number(this.forms.project.priority)
         }
         this.$call("CreateProject", project, msg => {
           project["ProjectId"] = msg["ProjectId"]
           project["Tasks"] = []
           this.projects.push(project)
-          this.sort()
-          this.$call("UpdateProjectCount", {})
+          this.$store.commit("updateProjects", 1)
+          this.prepare()
         })
         modal.modal("hide")
       }
     },
-    createTask() {
+    createTask(event) {
+      event.preventDefault()
+      event.stopPropagation()
       let modal = $("#modal-task-create")
       modal.addClass("was-validated")
       if (modal.find("input").get(0).checkValidity()) {
@@ -149,12 +163,14 @@ export default {
             }
           })
           vue.set(this, "pending", true)
-          this.sort()
+          this.prepare()
         })
         modal.modal("hide")
       }
     },
-    updateProject() {
+    updateProject(event) {
+      event.preventDefault()
+      event.stopPropagation()
       let modal = $("#modal-project-edit")
       modal.addClass("was-validated")
       if (modal.find("input[type='text']").get(0).checkValidity()) {
@@ -162,7 +178,7 @@ export default {
         let update = {
           "ProjectId": this.forms.project.id,
           "Name": this.forms.project.name,
-          "Priority": this.forms.project.priority,
+          "Priority": Number(this.forms.project.priority),
           "Color": this.forms.project.color,
           "Status": this.forms.project.status
         }
@@ -174,13 +190,14 @@ export default {
               }
             }
           })
-          this.sort()
-          this.prepareSprint()
+          this.prepare()
         })
         modal.modal("hide")
       }
     },
-    editTask() {
+    editTask(event) {
+      event.preventDefault()
+      event.stopPropagation()
       let modal = $("#modal-task-edit")
       modal.addClass("was-validated")
       if (modal.find("input").get(0).checkValidity()) {
@@ -199,7 +216,7 @@ export default {
         for (let i = 0; i < this.projects.length; ++i) {
           if (this.projects[i]["ProjectId"] == this.forms.project.id) {
             this.projects.splice(i, 1)
-            this.$call("UpdateProjectCount", {})
+            this.$store.commit("updateProjects", -1)
             break
           }
         }
@@ -214,7 +231,10 @@ export default {
               "ProjectId": project["ProjectId"],
               "TaskId": this.forms.task.id
             }
-            this.$call("RemoveTask", update, () => project["Tasks"].splice(i, 1))
+            this.$call("RemoveTask", update, () => {
+              project["Tasks"].splice(i, 1)
+              this.prepare()
+            })
             break
           }
         }
@@ -248,8 +268,7 @@ export default {
             })
           })
         })
-        this.sort()
-        this.prepareSprint()
+        this.prepare()
         if (callback) {
           callback()
         }
@@ -294,24 +313,31 @@ export default {
       })
       this.updateTasks(tasks, this.updatePriority)
       vue.set(this, "archived", true)
-      vue.set(this, "complete", false)
+      vue.set(this, "finished", false)
     },
     fullList() {
       this.full = true
       this.$call("GetInactiveTasks", {}, null, () => { this.full = false })
-    },
-    sort() {
-      this.projects.sort((a, b) => { return a["Priority"] == b["Priority"] ? (a["Name"] < b["Name"] ? -1 : 1) : Number(b["Priority"]) - Number(a["Priority"]) })
-      this.projects.forEach(project => project["Tasks"].sort((a, b) => { return a["Name"] < b["Name"] ? -1 : 1 }))
     }
   },
   computed: {
     hidden() {
       return this.$store.getters.user("Projects") != this.projects.length
+    },
+    sprint() {
+      return this.$store.getters.user("Sprint")
+    },
+    sortable: {
+      get() {
+        return this.$store.getters.user("Sprint")
+      },
+      set(sprint) {
+        this.$store.commit("reorderSprint", sprint)
+        this.updatePriority()
+      }
     }
   },
   destroyed() {
-    this.$bus.$off("EditTask", this.editTaskModal)
     this.$bus.$off("Tasks", this.populate)
   }
 }

@@ -15,13 +15,55 @@
 .projects .header span:hover {
   text-decoration: underline;
 }
+.card:not(.empty) {
+  border-left-width: 0;
+}
+.card.empty .list-group {
+  display: none;
+}
+.card:not(.empty) .card-body {
+  display: none;
+}
 .sprint .task {
   cursor: grab;
+}
+.task {
+  display: flex;
+  padding: 0;
+  align-items: center;
+}
+.task div:first-child {
+  width: 4px;
+  height: 50px;
+  margin-right: 15px;
+}
+.task:first-child div:first-child {
+  border-top-left-radius: .25rem;
+}
+.task:last-child div:first-child {
+  border-bottom-left-radius: .25rem;
+}
+.task div:last-child {
+  flex: 1;
+  padding-right: 15px;
+  text-align: right;
+}
+.task div:nth-child(2) {
+  cursor: pointer;
+}
+.task:not(.archived) div:nth-child(2):hover {
+  text-decoration: underline;
+}
+.archived div:nth-child(2) {
+  text-decoration: line-through;
+}
+.archived button {
+  display: none;
+}
+.idle button {
+  display: none;
 }
 .full {
   cursor: pointer;
   text-decoration: underline;
-}
-.task + .empty {
-  display: none;
 }

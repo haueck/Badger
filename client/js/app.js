@@ -10,7 +10,7 @@ import search from "components/search"
 import revisions from "components/revisions"
 import account from "components/account"
 import planning from "components/planning"
-import tasks from "components/tasks"
+import sprint from "components/sprint"
 import topnav from "components/topnav"
 import dashboard from "components/dashboard"
 import todos from "components/todos"
@@ -51,7 +51,7 @@ let routes = [
   { path: "/revisions", component: revisions },
   { path: "/account", component: account },
   { path: "/planning", component: planning },
-  { path: "/tasks", component: tasks },
+  { path: "/tasks", component: sprint },
   { path: "/todos", component: todos }
 ]
 

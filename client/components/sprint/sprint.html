@@ -1,0 +1,64 @@
+<div class="root">
+  <modal :title="'Edit the task'" id="modal-task-sprint-edit">
+    <form @submit="editTask($event)" novalidate class="p-4">
+      <div class="form-group mb-3">
+        <div>Task name</div>
+        <input type="text" v-model="name" class="form-control" required>
+      </div>
+      <div class="form-group mb-3">
+        <div>Description</div>
+        <textarea v-model="description" class="form-control" rows="6"></textarea>
+      </div>
+    </form>
+    <template v-slot:footer>
+      <button type="button" class="btn btn-primary" @click="editTask($event)">Save</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </template>
+  </modal>
+  <div v-if="empty" class="text-center">Add tasks to the sprint in the Planning tab</div>
+  <div v-else>
+    <div v-if="started.length">
+      <div class="header mb-3">Ongoing work</div>
+      <div class="card mb-3">
+        <div class="list-group list-group-flush">
+          <div v-for="task in started" class="list-group-item task">
+            <div :style="{ 'background-color': task['Color'] }"></div>
+            <div @click="modal(task['TaskId'])">{{ task['Name'] }}</div>
+            <div>
+              <button type="button" @click="done(task['TaskId'])" class="btn btn-outline-success btn-sm">Done</button>
+              <button type="button" @click="cancel(task['TaskId'])" class="btn btn-outline-secondary btn-sm">Stop</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="ready.length">
+      <div class="header mb-3">Waiting</div>
+      <div class="card mb-3">
+        <div class="list-group list-group-flush">
+          <div v-for="task in ready" class="list-group-item task">
+            <div :style="{ 'background-color': task['Color'] }"></div>
+            <div @click="modal(task['TaskId'])">{{ task['Name'] }}</div>
+            <div>
+              <button type="button" @click="start(task['TaskId'])" class="btn btn-outline-secondary btn-sm">Start</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="finished.length">
+      <div class="header mb-3">Finished</div>
+      <div class="card">
+        <div class="list-group list-group-flush">
+          <div v-for="task in finished" class="list-group-item task">
+            <div :style="{ 'background-color': task['Color'] }"></div>
+            <div @click="modal(task['TaskId'])">{{ task['Name'] }}</div>
+            <div>
+              <button type="button" @click="cancel(task['TaskId'])" class="btn btn-outline-secondary btn-sm">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

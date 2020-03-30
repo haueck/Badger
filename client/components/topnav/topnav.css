@@ -38,9 +38,12 @@
   text-decoration: none;
   color: white;
 }
-
-.search, .status {
+.search {
   color: #9d9d9d;
+  font-size: 16pt;
+}
+.status {
+  color: white;
   font-size: 16pt;
 }
 

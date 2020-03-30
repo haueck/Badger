@@ -112,9 +112,6 @@ wss.on("connection", (ws, request) => {
     else if (msg["Message"] === "ChangePassword") {
       account.changePassword(user, msg["Password"], configuration, failure)
     }
-    else if (msg["Message"] === "UpdateProjectCount") {
-      account.updateProjectCount(user, configuration, failure)
-    }
     else if (msg["Message"] === "GetTodos") {
       todos.get(payload, failure)
     }
@@ -200,7 +197,7 @@ wss.on("connection", (ws, request) => {
       tasks.getActive(payload, failure)
     }
     else if (msg["Message"] === "GetInactiveTasks") {
-      tasks.getInactive(payload, failure)
+      tasks.getIdle(payload, failure)
     }
     else if (msg["Message"] === "CreateProject") {
       tasks.createProject(msg["Name"], msg["Priority"], msg["Color"], msg["Status"], payload, failure)
@@ -209,16 +206,16 @@ wss.on("connection", (ws, request) => {
       tasks.createTask(msg["Name"], msg["ProjectId"], msg["Description"], msg["Status"], payload, failure)
     }
     else if (msg["Message"] === "UpdateProject") {
-      tasks.updateProject(msg["ProjectId"], msg["Name"], msg["Priority"], msg["Color"], msg["Status"], ack, failure)
+      tasks.updateProject(msg["ProjectId"], msg["Name"], msg["Priority"], msg["Color"], msg["Status"], configuration, failure)
     }
     else if (msg["Message"] === "UpdateTasks") {
-      tasks.updateTasks(msg, ack, failure)
+      tasks.updateTasks(msg, configuration, failure)
     }
     else if (msg["Message"] === "RemoveProject") {
-      tasks.removeProject(msg["ProjectId"], ack, failure)
+      tasks.removeProject(msg["ProjectId"], configuration, failure)
     }
     else if (msg["Message"] === "RemoveTask") {
-      tasks.removeTask(msg["ProjectId"], msg["TaskId"], ack, failure)
+      tasks.removeTask(msg["ProjectId"], msg["TaskId"], configuration, failure)
     }
     else {
       failure("Unknown request")
