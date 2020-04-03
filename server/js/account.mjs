@@ -169,7 +169,7 @@ export default class {
           Performance: [ 0, 0, 0, 0, 0, 0 ],
           Projects: 0,
           Hits: 0,
-          LastCard: "",
+          LastCard: "English",
           LastTags: [],
           Tags: {
             "€": {

@@ -4,13 +4,6 @@ import draggable from "vuedraggable"
 import alternatives from "components/alternatives"
 
 export default {
-  data () {
-    return {
-      dragging: false,
-      trash: [],
-      icon: null
-    }
-  },
   props: [ "card" ],
   components: { tinymce, alternatives, draggable },
   created() {
@@ -38,35 +31,21 @@ export default {
       this.$parent.saveCard()
     },
     addAnswer() {
-      let last = this.card["Answers"].length
       this.card["Answers"].push("")
       vue.nextTick(() => {
-        this.$refs.answer[last].focus()
+        $(".answer:last-child input").focus()
       })
     },
-    onStart() {
-      this.dragging = true
-      vue.nextTick(() => {
-        this.icon = this.$el.getElementsByClassName("fa-trash-alt")[0]
-        let height = this.$el.getElementsByClassName("trash")[0].clientHeight
-        this.icon.style.lineHeight = height + "px"
-      })
+    removeAnswer(index) {
+      this.card["Answers"].splice(index, 1)
     },
-    onEnd(evt) {
-      if (evt.from !== evt.to) {
-        this.trash.splice(0, 1)
-      }
-      setTimeout(() => {
-        this.dragging = false
-        this.icon.style.lineHeight = "auto"
-      }, 100)
-    },
-    onMove(evt) {
-      if (evt.from === evt.to) {
-        this.icon.style.backgroundColor = "#ffe6e6"
-      } else {
-        this.icon.style.backgroundColor = "#ffcccc"
-      }
+    toggle() {
+      $(".collapse").toggle()
+    }
+  },
+  computed: {
+    single() {
+      return this.card["Answers"].length == 1
     }
   },
   destroyed() {

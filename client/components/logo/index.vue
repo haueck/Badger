@@ -1,5 +1,5 @@
 <template>
-  <router-link to="/" class="px-3 py-2">
+  <router-link to="/" class="px-lg-3 px-md-1 px-2 py-2">
     <img src="/images/favicons/favicon-24.png" class="mr-2">Badger
   </router-link>
 </template>
@@ -14,4 +14,3 @@
     text-decoration: none;
   }
 </style>
-

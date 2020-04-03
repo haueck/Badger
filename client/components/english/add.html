@@ -1,6 +1,6 @@
-<div class="english-root">
-  <div>
-    Word:<br/>
+<div>
+  <div class="form-group mb-2">
+    <div>Word:</div>
     <div class="input-group">
       <input type="text" class="form-control" v-model="card['Word']" @blur="updateExamples()"/>
       <div class="input-group-append" data-toggle="collapse" data-target="#help">
@@ -9,11 +9,11 @@
     </div>
   </div>
   <div class="collapse" id="help">
-    <alternatives></alternatives>
+    <alternatives :help="'english'"></alternatives>
   </div>
-  <div>
-    Part of speech:<br/>
-    <select class="form-control" v-model="card['PartOfSpeech']">
+  <div class="form-group mb-2">
+    <div>Part of speech:</div>
+    <select class="custom-select" v-model="card['PartOfSpeech']">
       <option>Noun</option>
       <option>Verb</option>
       <option>Adjective</option>
@@ -26,8 +26,8 @@
       <option>Suffix</option>
     </select>
   </div>
-  <div>
-    Pronunciation:<br/>
+  <div class="form-group mb-2">
+    <div>Pronunciation:</div>
     <div class="input-group">
       <input type="text" class="form-control" v-model="card['Pronunciation']"/>
       <div class="input-group-append">
@@ -58,77 +58,69 @@
       </div>
     </div>
   </div>
-  <div>
-    Use of prepositions:<br/>
+  <div class="form-group mb-2">
+    <div>Use of prepositions:</div>
     <input type="text" class="form-control" v-model="card['UseOfPrepositions']"/>
   </div>
-  <div>
-    Definition:<br/>
+  <div class="form-group mb-2">
+    <div>Definition:</div>
     <textarea rows="3" class="form-control" v-model="card['Definition']"></textarea>
   </div>
-  <div v-for="(example, index) in examples">
-    Example:<br/>
+  <div v-for="(example, index) in examples" class="form-group mb-2">
+    <div>Example:</div>
     <textarea rows="3" class="form-control" v-model="examples[index]" ref="example" @blur="replaceExample(index)" @focus="restoreExample(index)" placeholder="Leave empty to ignore"></textarea>
   </div>
-  <div>
+  <div class="my-3">
     <button class="btn btn-outline-secondary" @click="addExample">Add an example</button>
   </div>
-  <div v-for="(related, index) in card['Related']" class="related-word">
-    <div>
-      Related word:<br/>
-      <input type="text" class="form-control" v-model="related['Word']" ref="related" @blur="relatedChanged(index)" placeholder="Leave empty to ignore"/>
+  <div v-for="(related, index) in card['Related']" class="d-md-flex">
+    <div class="form-group mb-2 mr-md-2">
+      <div>Related word:</div>
+      <input class="form-control" v-model="related['Word']" ref="related" @blur="relatedChanged(index)" placeholder="Leave empty to ignore"/>
     </div>
-    <div>
-      Description:<br/>
-      <input type="text" class="form-control" v-model="related['Description']"/>
+    <div class="form-group mb-2 mr-md-2">
+      <div>Description:</div>
+      <input class="form-control" v-model="related['Description']"/>
     </div>
-    <div>
-      While learning:<br/>
-      <select class="form-control" v-model="related['Visibility']" @change="updateExamples()">
+    <div class="form-group mb-2">
+      <div>While learning:</div>
+      <select class="custom-select" v-model="related['Visibility']" @change="updateExamples()">
         <option value="Hide">Show after giving an answer</option>
         <option value="Show">Visible all the time</option>
       </select>
     </div>
   </div>
-  <div>
+  <div class="my-3">
     <button class="btn btn-outline-secondary" @click="addRelated">Add a related word</button>
   </div>
+  <div class="auxiliary mb-2">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="ak1" v-model="card['PhrasalVerb']">
+      <label class="custom-control-label" for="ak1">Phrasal verb</label>
+    </div>
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="ak4" v-model="card['Idiom']">
+      <label class="custom-control-label" for="ak4">Idiom</label>
+    </div>
+  </div>
+  <div class="auxiliary mb-2">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="ak2" v-model="card['Formal']">
+      <label class="custom-control-label" for="ak2">Formal</label>
+    </div>
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="ak5" v-model="card['Informal']">
+      <label class="custom-control-label" for="ak5">Informal</label>
+    </div>
+  </div>
   <div class="auxiliary">
-    <div>
-      <div>
-        <label>
-          <input type="checkbox" v-model="card['PhrasalVerb']"/> Phrasal verb
-        </label>
-      </div>
-      <div>
-        <label>
-          <input type="checkbox" v-model="card['Idiom']"/> Idiom
-        </label>
-      </div>
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="ak3" v-model="card['Approval']">
+      <label class="custom-control-label" for="ak3">Approval</label>
     </div>
-    <div>
-      <div>
-        <label>
-          <input type="checkbox" v-model="card['Formal']"/> Formal
-        </label>
-      </div>
-      <div>
-        <label>
-          <input type="checkbox" v-model="card['Informal']"/> Informal
-        </label>
-      </div>
-    </div>
-    <div>
-      <div>
-        <label>
-          <input type="checkbox" v-model="card['Approval']"/> Approval
-        </label>
-      </div>
-      <div>
-        <label>
-          <input type="checkbox" v-model="card['Derogatory']"/> Derogatory
-        </label>
-      </div>
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="ak6" v-model="card['Derogatory']">
+      <label class="custom-control-label" for="ak6">Derogatory</label>
     </div>
   </div>
 </div>

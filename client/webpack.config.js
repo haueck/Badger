@@ -59,7 +59,6 @@ module.exports = {
       title: 'Caching'
     }),
     new CopyPlugin([
-      { from: path.resolve(__dirname, "css"), to: "../css" },
       { from: path.resolve(__dirname, "html"), to: "../html" },
       { from: path.resolve(__dirname, "images"), to: "../images" },
       { from: path.resolve(__dirname, "images/favicons/favicon.ico"), to: ".." },

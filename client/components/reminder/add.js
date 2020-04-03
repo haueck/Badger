@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     finalizeCard() {
-      vue.set(this.card, "SearchPhrases", [ this.$parent.dehtmlize(this.card["Reminder"]) ])
+      vue.set(this.card, "SearchPhrases", this.$parent.dehtmlize(this.card["Reminder"]))
       this.$parent.saveCard()
     }
   },

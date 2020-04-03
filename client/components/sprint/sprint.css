@@ -1,9 +1,5 @@
 .root {
   max-width: 700px;
-  margin: 0 auto;
-}
-.header {
-  font-size: 16pt;
 }
 .card {
   border-left-width: 0;

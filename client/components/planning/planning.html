@@ -1,4 +1,4 @@
-<div class="root">
+<div class="root mx-auto p-2 mt-md-2">
   <modal :title="'Create a new project'" id="modal-project-create">
     <form @submit="createProject($event)" novalidate class="p-4">
       <div class="form-group mb-3">
@@ -88,12 +88,12 @@
       <button type="button" class="btn btn-danger" @click="removeTask">Remove</button>
     </template>
   </modal>
-  <div class="sprint mb-4" v-if="pending || sprint.length">
-    <div class="header mb-3">
-      <span>Current sprint</span>
+  <div class="sprint" v-if="pending || sprint.length">
+    <div class="header mb-2 mb-md-3">
+      <h5>Current sprint</h5>
       <button type="button" class="btn btn-outline-primary btn-sm ml-3" v-if="finished" @click="completeSprint()">Complete the sprint</button>
     </div>
-    <div class="card" :class="{ empty: sprint.length == 0 }"">
+    <div class="card mb-2 mb-md-3" :class="{ empty: sprint.length == 0 }">
       <div class="card-body text-center">Click [ Add ] button to add tasks to the sprint</div>
       <draggable v-model="sortable" class="list-group list-group-flush">
         <div v-for="task in sortable" class="list-group-item task">
@@ -106,13 +106,13 @@
       </draggable>
     </div>
   </div>
-  <div class="projects mb-4">
-    <div v-for="project in projects" class="project mb-4">
-      <div class="header mb-3">
-        <span @click="editProjectModal(project['ProjectId'])">{{ project["Name"] }}</span>
+  <div class="projects">
+    <div v-for="project in projects" class="project">
+      <div class="header mb-2 mb-md-3">
+        <h5 @click="editProjectModal(project['ProjectId'])">{{ project["Name"] }}</h5>
         <button type="button" class="btn btn-outline-primary btn-sm ml-3" @click="createTaskModal(project['ProjectId'])">Create a task</button>
       </div>
-      <div class="card" :class="{ empty: project['Sorted'].length == 0 }"">
+      <div class="card mb-2 mb-md-3" :class="{ empty: project['Sorted'].length == 0 }">
         <div class="card-body text-center">Nothing to see here</div>
         <div :class="[ 'list-group', 'list-group-flush', project['Status'].toLowerCase() ]">
           <div v-for="task in project['Sorted']" :class="[ 'list-group-item', 'task', task['Status'].toLowerCase() ]">
@@ -125,8 +125,8 @@
         </div>
       </div>
     </div>
-    <div class="mt-4 text-right">
-      <span v-if="!full && populated && (hidden || archived)" @click="fullList()" class="mr-3 text-primary full">Show full list of projects and tasks</span>
+    <div class="text-right">
+      <span v-if="!full && populated && (hidden || archived)" @click="fullList()" class="mr-3 text-primary full">Show full list of tasks</span>
       <button class="btn btn-primary" @click="createProjectModal">Create a project</button>
     </div>
   </div>

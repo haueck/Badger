@@ -1,8 +1,15 @@
+.root {
+  max-width: 1200px;
+}
 .search {
-  width: 50%;
+  max-width: 500px;
+}
+.search input:focus {
+  box-shadow: none;
+  border-color: rgb(206, 212, 218);
 }
 .result {
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid rgb(206, 212, 218);
 }
 .card-actions {
   display: flex;

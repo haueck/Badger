@@ -21,4 +21,5 @@
   </xsl:template>
 
   <xsl:template match="@*"/>
+  <xsl:template match="code"/>
 </xsl:stylesheet>

@@ -1,7 +1,6 @@
-:focus {
-  outline: none;
+.root {
+  height: 62px;
 }
-
 .topnav {
   background-color: #3e444d;
   position: fixed;
@@ -12,27 +11,25 @@
   align-items: stretch;
   z-index: 100;
 }
-
+:focus {
+  outline: none;
+}
 .center {
   justify-content: center;
   padding-top: 20px;
 }
-
 .left, .right {
   flex: 1 1 0px;
   border-bottom: 1px solid #dee2e6;
   display: flex;
   align-items: center;
 }
-
 .right {
   justify-content: flex-end;
 }
-
 .center a:not(.active) {
   color: #9d9d9d;
 }
-
 .center a:not(.active):hover {
   border-color: transparent;
   text-decoration: none;
@@ -46,26 +43,21 @@
   color: white;
   font-size: 16pt;
 }
-
 .search:hover {
   text-decoration: none;
   color: white;
 }
-
 .account {
   background-image: url('/images/circle.png');
   background-position: center;
   background-repeat: no-repeat;
 }
-
 .account img {
   border-radius: 50%;
 }
-
 .account > img {
   cursor: pointer;
 }
-
 .dropdown-menu {
   width: 250px;
   text-align: center;

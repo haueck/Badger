@@ -1,0 +1,42 @@
+<div class="root">
+  <div class="topnav">
+    <div @click="hide" class="logo">
+      <logo></logo>
+    </div>
+    <div v-if="jobCount &gt; 0" class="icon">
+      <i class="fas fa-spinner fa-spin"></i>
+    </div>
+    <router-link to="/search"  @click.native="hide" class="icon">
+      <i class="fas fa-search"></i>
+    </router-link>
+    <div @click="toggle" class="icon">
+      <i class="fas fa-bars"></i>
+    </div>
+  </div>
+  <div class="sidenav">
+    <router-link to="/learn" @click.native="toggle">
+      <i class="fas fa-book-reader fa-xs"></i> Learn
+    </router-link>
+    <router-link to="/add" @click.native="toggle">
+      <i class="far fa-plus-square fa-xs"></i> Create
+    </router-link>
+    <router-link to="/tasks" @click.native="toggle">
+      <i class="fas fa-tasks fa-xs"></i> Tasks
+    </router-link>
+    <router-link to="/planning" @click.native="toggle">
+      <i class="fas fa-calendar-week fa-xs"></i> Planning
+    </router-link>
+    <router-link to="/tags" @click.native="toggle">
+      <i class="fas fa-tags fa-xs"></i> Tags
+    </router-link>
+    <router-link to="/revisions" @click.native="toggle">
+      <i class="fas fa-redo fa-xs"></i> Revisions
+    </router-link>
+    <router-link to="/account" @click.native="toggle">
+      <i class="fas fa-user fa-xs"></i> Account
+    </router-link>
+    <a href="/sign-out">
+      <i class="fas fa-sign-out-alt fa-xs"></i> Sign out
+    </a>
+  </div>
+</div>

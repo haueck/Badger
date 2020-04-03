@@ -21,7 +21,7 @@ export default {
       this.$refs.answer.focus()
     })
     vue.set(this.card, "DisguisedExamples", [])
-    let related = this.card["Related"].filter(related => related["Visibility"] == "Hide")
+    let related = this.card["Related"].filter(related => related["Visibility"] == "Hide").map(related => related["Word"])
     let words = this.prepareWords([ this.card["Word"] ].concat(related))
     for (let example of this.card["Examples"]) {
       this.card["DisguisedExamples"].push(this.concealWords(example, words))
@@ -62,11 +62,17 @@ export default {
         "Approval": "approval",
         "Derogatory": "derogatory"
       }
-      let active = Object.keys(map).filter(key => this.card[key])
-      if (active.length > 0) {
-        return "(" + active.map(x => map[x]).join(", ") + ")"
+      let active = Object.keys(map).filter(key => this.card[key]).map(x => map[x])
+      active.unshift(this.card["PartOfSpeech"].toLowerCase())
+      return active.join(", ")
+    },
+    examples() {
+      if (this.card["Graded"]) {
+        return this.card["Examples"]
       }
-      return ""
+      else {
+        return this.card["DisguisedExamples"]
+      }
     }
   }
 }

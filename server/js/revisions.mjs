@@ -90,7 +90,28 @@ export default class {
   }
 
   addCard(card, revision, success, failure) {
-    this.user.collection("Cards").doc(card).update({ Revision: revision }).then(() => {
+    let current = null
+    this.user.collection("Cards").doc(card).get().then(doc => {
+      if (doc.exists) {
+        current = doc.data()["Revision"]
+        return doc.ref.update({ Revision: revision })
+      }
+      else {
+        throw Error("Card does not exist: " + card)
+      }
+    }).then(() => {
+      if (current) {
+        return this.user.update({
+          [ "Revisions." + current ]: Firestore.FieldValue.increment(-1),
+          [ "Revisions." + revision ]: Firestore.FieldValue.increment(1)
+        })
+      }
+      else {
+        return this.user.update({
+          [ "Revisions." + revision ]: Firestore.FieldValue.increment(1)
+        })
+      }
+    }).then(() => {
       success("Revision has been changed")
     }).catch(error => {
       failure("Failed to add the card to the revision", { card, revision, error })

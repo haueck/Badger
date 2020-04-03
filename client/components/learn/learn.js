@@ -27,19 +27,21 @@ export default {
       vue.set(this, "card", null)
       this.getNextCard()
     })
-    this.$bus.$on("Graded", pass => {
-      vue.set(this.card, "Pass", pass)
-      vue.set(this.card, "Graded", true)
-      vue.nextTick(() => {
-        this.$refs.next.focus()
-      })
-      this.sendResult(pass)
-    })
+    this.$bus.$on("Graded", this.graded)
     this.getNextCard()
   },
   methods: {
-    sendResult(pass) {
-      this.$call("Result", { "CardId": this.id, "Pass": pass })
+    graded(pass) {
+      vue.set(this.card, "Pass", pass)
+      this.$call("Result", { "CardId": this.id, "Pass": pass }, () => {
+        vue.set(this.card, "Graded", true)
+        vue.nextTick(() => {
+          this.$refs.next.focus()
+          $(".progress-bar").animate({ width: this.progress + "%" }, 400, "swing", () => {
+            $(".progress-bar").html(this.progress + "%")
+          })
+        })
+      })
     },
     getNextCard() {
       if (this.$route.query.revision) {
@@ -57,6 +59,14 @@ export default {
       }
       else {
         return null
+      }
+    },
+    width() {
+      if (this.card && (this.card["Type"] == "Reminder" || this.card["Type"] == "Question")) {
+        return 1200
+      }
+      else {
+        return 700
       }
     },
     lastHit() {

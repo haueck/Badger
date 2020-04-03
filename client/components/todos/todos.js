@@ -74,6 +74,17 @@ export default {
       this.$call("RescheduleTodo", { "TodoId": this.todo.id, "Date": date })
     }
   },
+  computed: {
+    started() {
+      return this.todos.filter(todo => todo["Status"] == "Started")
+    },
+    scheduled() {
+      return this.todos.filter(todo => todo["Status"] == "Scheduled")
+    },
+    finished() {
+      return this.todos.filter(todo => todo["Status"] == "Finished")
+    }
+  },
   destroyed() {
     this.$bus.$off("Todos", this.initialize)
     this.$bus.$off("Calendar.Selected", this.reschedule)

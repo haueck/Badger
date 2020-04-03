@@ -1,8 +1,8 @@
-<div>
-  <div class="input-group search mx-auto">
-    <input class="form-control" placeholder="Search..." v-model="query" v-on:keyup.enter="search()" @input="update" ref="search">
+<div class="root mx-auto p-2 mt-md-2">
+  <div class="input-group mx-auto search">
+    <input class="form-control" placeholder="Search..." v-model="query" @keyup.enter="setPage(1)" @input="update" ref="search">
     <div class="input-group-append">
-      <button class="input-group-text" @click="search()">
+      <button class="input-group-text" @click="setPage(1)">
         <i class="fas fa-search"></i>
       </button>
     </div>
@@ -10,18 +10,18 @@
   <div v-for="card in results" class="result pb-2 mt-4" v-if="!card['Missing']">
     <div class="card-actions mb-2">
       <div>
-        <router-link :to="'/edit/' + card['CardId']" tag="button" class="btn btn-primary">
+        <router-link :to="'/edit/' + card['CardId']" tag="button" class="btn btn-outline-secondary btn-sm">
           <i class="fas fa-pen"></i> Edit
         </router-link>
       </div>
       <div v-if="revisions.length" class="ml-3">
-        <select class="custom-select" @change="changeRevision(card['CardId'], $event.target.value)">
+        <select class="custom-select custom-select-sm" @change="changeRevision(card['CardId'], $event.target.value)">
           <option value="">Add to a revision</option>
           <option v-for="revision in revisions" :value="revision" :selected="revision == card['Revision']">{{ revision }}</option>
         </select>
       </div>
     </div>
-    <div class="mb-2">
+    <div v-if="card['Tags'].length" class="mb-2">
       Tags: {{ card['Tags'].join(', ') }}
     </div>
     <english v-if="card['Type'] == 'English'" :card="card"></english>

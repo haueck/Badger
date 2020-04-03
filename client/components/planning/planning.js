@@ -60,7 +60,7 @@ export default {
           else if (task["Status"] == "Archived") {
             vue.set(this, "archived", true)
           }
-          if (task['Status'] == "Pending" || (this.full && task['Status'] == "Archived")) {
+          if (task["Status"] == "Pending" || (this.full && task["Status"] == "Archived")) {
             project["Sorted"].push(task)
           }
         })
@@ -182,7 +182,7 @@ export default {
           "Color": this.forms.project.color,
           "Status": this.forms.project.status
         }
-        this.$call("UpdateProject", update, msg => {
+        this.$call("UpdateProject", update, () => {
           this.projects.forEach(project => {
             if (project["ProjectId"] == update["ProjectId"]) {
               for (let field in update) {
@@ -212,7 +212,7 @@ export default {
       }
     },
     removeProject() {
-      this.$call("RemoveProject", { "ProjectId": this.forms.project.id }, msg => {
+      this.$call("RemoveProject", { "ProjectId": this.forms.project.id }, () => {
         for (let i = 0; i < this.projects.length; ++i) {
           if (this.projects[i]["ProjectId"] == this.forms.project.id) {
             this.projects.splice(i, 1)

@@ -1,51 +1,53 @@
-<div class="topnav">
-  <div class="left">
-    <logo></logo>
-  </div>
-  <div class="center nav nav-tabs">
-    <div class="nav-item">
-      <router-link to="/" class="nav-link px-4" :class="{ active: $route.path == '/' }">
-        <i class="fas fa-home"></i>
+<div class="root">
+  <div class="topnav">
+    <div class="left">
+      <logo></logo>
+    </div>
+    <div class="center nav nav-tabs">
+      <div class="nav-item">
+        <router-link to="/" class="nav-link px-lg-4 px-3" :class="{ active: $route.path == '/' }">
+          <i class="fas fa-home"></i>
+        </router-link>
+      </div>
+      <div class="nav-item">
+        <router-link to="/learn" class="nav-link px-lg-4 px-3" :class="{ active: $route.path == '/learn' }">Learn</router-link>
+      </div>
+      <div class="nav-item">
+        <router-link to="/add" class="nav-link px-lg-4 px-3" :class="{ active: $route.path == '/add' }">Create</router-link>
+      </div>
+      <div class="nav-item">
+        <router-link to="/tasks" class="nav-link px-lg-4 px-3" :class="{ active: $route.path == '/tasks' }">Tasks</router-link>
+      </div>
+      <div class="nav-item">
+        <router-link to="/planning" class="nav-link px-lg-4 px-3" :class="{ active: $route.path == '/planning' }">Planning</router-link>
+      </div>
+      <div class="nav-item">
+        <router-link to="/tags" class="nav-link px-lg-4 px-3" :class="{ active: $route.path == '/tags' }">Tags</router-link>
+      </div>
+      <div class="nav-item">
+        <router-link to="/revisions" class="nav-link px-lg-4 px-3" :class="{ active: $route.path == '/revisions' }">Revisions</router-link>
+      </div>
+    </div>
+    <div class="right">
+      <div v-if="jobCount &gt; 0" class="status p-2 mr-lg-3">
+        <i class="fas fa-spinner fa-spin"></i>
+      </div>
+      <router-link to="/search" class="search p-2 mr-lg-3 mr-2">
+        <i class="fas fa-search"></i>
       </router-link>
-    </div>
-    <div class="nav-item">
-      <router-link to="/learn" class="nav-link px-4" :class="{ active: $route.path == '/learn' }">Learn</router-link>
-    </div>
-    <div class="nav-item">
-      <router-link to="/add" class="nav-link px-4" :class="{ active: $route.path == '/add' }">Create</router-link>
-    </div>
-    <div class="nav-item">
-      <router-link to="/tasks" class="nav-link px-4" :class="{ active: $route.path == '/tasks' }">Tasks</router-link>
-    </div>
-    <div class="nav-item">
-      <router-link to="/planning" class="nav-link px-4" :class="{ active: $route.path == '/planning' }">Planning</router-link>
-    </div>
-    <div class="nav-item">
-      <router-link to="/tags" class="nav-link px-4" :class="{ active: $route.path == '/tags' }">Tags</router-link>
-    </div>
-    <div class="nav-item">
-      <router-link to="/revisions" class="nav-link px-4" :class="{ active: $route.path == '/revisions' }">Revisions</router-link>
-    </div>
-  </div>
-  <div class="right">
-    <div v-if="jobCount &gt; 0" class="status p-2 mr-2">
-      <i class="fas fa-spinner fa-spin"></i>
-    </div>
-    <router-link to="/search" class="search p-2 mr-3">
-      <i class="fas fa-search"></i>
-    </router-link>
-    <div class="account dropdown mr-3">
-      <img :src="smallAvatar" data-toggle="dropdown">
-      <div class="dropdown-menu">
-        <div class="text-center py-2">
-          <img :src="mediumAvatar">
+      <div class="account dropdown mr-lg-3 mr-1">
+        <img :src="smallAvatar" data-toggle="dropdown">
+        <div class="dropdown-menu">
+          <div class="text-center py-2">
+            <img :src="mediumAvatar">
+          </div>
+          <div class="text-center">{{ name }}</div>
+          <div class="text-center text-secondary">{{ email }}</div>
+          <div class="dropdown-divider"></div>
+          <router-link to="/account" class="text-dark">Account</router-link>
+          <div class="dropdown-divider"></div>
+          <a href="/sign-out" class="text-dark">Sign out</a>
         </div>
-        <div class="text-center">{{ name }}</div>
-        <div class="text-center text-secondary">{{ email }}</div>
-        <div class="dropdown-divider"></div>
-        <router-link to="/account" class="text-dark">Account</router-link>
-        <div class="dropdown-divider"></div>
-        <a href="/sign-out" class="text-dark">Sign out</a>
       </div>
     </div>
   </div>

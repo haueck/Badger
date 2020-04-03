@@ -1,10 +1,17 @@
-.tags {
-  width: 500px;
-  margin: 0 auto;
+.root {
+  max-width: 700px;
 }
 #modal-tag-menu .modal-body > div {
   cursor: pointer;
 }
 #modal-tag-menu .modal-body > div:hover {
   background-color: #f5f6f7;
+}
+.tag {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.name {
+  flex: 1;
 }

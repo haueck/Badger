@@ -1,16 +1,18 @@
-import vue from "vue"
 import modal from "components/modal"
+import vue from "vue"
 
 export default {
   data() {
     return {
-      current: ""
+      current: "",
+      updated: ""
     }
   },
   components: { modal },
   methods: {
     menu(revision) {
       vue.set(this, "current", revision)
+      vue.set(this, "updated", revision)
       $("#modal-revision-menu").modal("show")
     },
     revise() {
@@ -24,42 +26,46 @@ export default {
       }
     },
     createModal() {
-      let input = $("#modal-revision-create input").get(0)
-      input.parentElement.classList.remove("was-validated")
-      $("#modal-revision-create").one("shown.bs.modal", () => {
+      let modal = $("#modal-revision-create")
+      let input = modal.find("input").get(0)
+      modal.removeClass("was-validated")
+      modal.one("shown.bs.modal", () => {
         input.value = ""
         input.focus()
       })
-      $("#modal-revision-create").modal("show")
+      modal.modal("show")
     },
     create() {
-      let input = $("#modal-revision-create input").get(0)
-      input.parentElement.classList.add("was-validated")
+      let modal = $("#modal-revision-create")
+      let input = modal.find("input").get(0)
+      modal.addClass("was-validated")
       if (input.checkValidity()) {
         this.$call("CreateRevision", { "Revision": input.value })
         $("#modal-revision-create").modal("hide")
       }
     },
     renameModal() {
-      let input = $("#modal-revision-rename input").get(0)
-      input.parentElement.classList.remove("was-validated")
-      $("#modal-revision-rename").one("shown.bs.modal", () => {
+      let modal = $("#modal-revision-rename")
+      let input = modal.find("input").get(0)
+      modal.removeClass("was-validated")
+      modal.one("shown.bs.modal", () => {
         input.focus()
         input.select()
       })
-      $("#modal-revision-rename").modal("show")
+      modal.modal("show")
     },
     rename() {
-      let input = $("#modal-revision-rename input").get(0)
-      input.parentElement.classList.add("was-validated")
+      let modal = $("#modal-revision-rename")
+      let input = modal.find("input").get(0)
+      modal.addClass("was-validated")
       if (input.checkValidity()) {
-        if (this.current != input.value) {
+        if (this.current != this.updated) {
           this.$call("RenameRevision", {
             "From": this.current,
-            "To": input.value
+            "To": this.updated
           })
         }
-        $("#modal-revision-rename").modal("hide")
+        modal.modal("hide")
       }
     },
     remove() {

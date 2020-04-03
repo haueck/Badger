@@ -1,6 +1,6 @@
 {
   "name": "badger-midnight",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "dependencies": {
     "@google-cloud/firestore": "*",
     "moment-timezone": "*"

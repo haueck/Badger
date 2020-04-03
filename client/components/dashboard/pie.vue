@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
       <div v-if="empty" class="text-center">Nothing to see here</div>
-      <canvas v-else height="150"></canvas>
+      <canvas v-else></canvas>
     </div>
   </div>
 </template>

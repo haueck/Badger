@@ -51,7 +51,7 @@ export default class {
         })
       }
       else {
-        console.warn("Failed to get user data", error)
+        console.warn("Failed to get user data")
       }
     }).catch(error => {
       console.warn("Failed to get a scheduled card", error)

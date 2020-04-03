@@ -1,4 +1,4 @@
-<div>
+<div class="root mx-auto p-2 mt-md-2">
   <modal :title="current" id="modal-tag-menu">
     <div class="p-3" data-dismiss="modal" @click="showCards(current)">Show cards with this tag</div>
     <div class="p-3 border-top" data-dismiss="modal" @click="revisionsModal()">Add cards with this tag to a revision</div>
@@ -41,8 +41,14 @@
       <button v-if="revisions.length" type="button" class="btn btn-primary" data-dismiss="modal" @click="addToRevision(current)">Add</button>
     </template>
   </modal>
-  <div v-if="tags['€'].Children.length == 0">No tags</div>
-  <div v-else class="border-bottom tags">
-    <tree v-for="(child, index) in tags['€']['Children']" :tags="tags" :tag="child" :depth="1" :key="index"></tree>
+  <div class="card">
+    <div v-if="list.length == 0" class="card-body text-center">Nothing to see here</div>
+    <div v-else class="list-group list-group-flush">
+      <div v-for="tag in list" class="list-group-item tag" @click="show(tag.name, tag.disabled)">
+        <div :style="{ 'width': (20 * tag.depth) + 'px' }"></div>
+        <div class="name" :class="{ 'text-muted': tag.inactive }">{{ tag.name }}</div>
+        <div class="badge badge-pill" :class="[ tag.inactive ? 'badge-secondary' : 'badge-primary' ]">{{ tag.count }}</div>
+      </div>
+    </div>
   </div>
 </div>

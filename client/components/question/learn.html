@@ -3,23 +3,17 @@
   <div v-if="card['Unordered']">
     <strong>The order of answers is not important.</strong>
   </div>
-  <div>
-    <div v-for="(answer, index) in answers" class="answer">
+  <div class="answers mb-3" :class="{ graded: card['Graded'] }">
+    <div v-for="(answer, index) in answers" class="form-group mb-1" :class="[ card['Graded'] && feedback[index]['Pass'] ? 'correct' : 'wrong' ]">
       <div>Answer<span class="answer-index"> {{index + 1}}</span>:</div>
-      <div class="answer-input">
-        <input type="text" v-on:keyup.enter="grade($event)" :class="'form-control answer-' + (card['Graded'] ? feedback[index]['Pass'] : 'not-graded')" v-model="answers[index]" ref="answer" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false">
-      </div>
-      <div v-if="card['Graded']">
-        <img v-if="feedback[index]['Pass']" src="/images/correct.png">
-        <img v-else src="/images/wrong.png">
-        <span v-if="!feedback[index]['Pass']">Expected: {{ feedback[index]['Expected'] }}</span>
-        <span v-else-if="feedback[index]['Possible'].length">Possible: {{ feedback[index]['Possible'].join(', ') }}</span>
-      </div>
+      <input @keyup.enter="grade" class="form-control" v-model="answers[index]" ref="answer" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false">
+      <div v-if="card['Graded']" class="feedback negative">{{ feedback[index]['Expected'] }}</div>
+      <div v-if="card['Graded']" class="feedback optional">{{ feedback[index]['Possible'].join(', ') }}</div>
     </div>
   </div>
-  <div v-if="card['Graded']" class="feedback">
+  <div v-if="card['Graded']">
     <strong v-if="card['Pass']">That's right! You rock!</strong>
     <strong v-else>Wrong!</strong>
   </div>
-  <button v-else v-on:click="grade()" class="btn btn-primary check-button">Check</button>
+  <button v-else @click="grade" class="btn btn-primary check-button">Check</button>
 </div>

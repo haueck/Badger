@@ -1,4 +1,4 @@
-<div>
+<div class="root mx-auto p-2 mt-md-2">
   <modal :title="current" id="modal-revision-menu">
     <div class="p-3" data-dismiss="modal" @click="revise" :class="{ 'text-muted': revisions[current] == 0 }">Revise</div>
     <div class="border-top p-3" data-dismiss="modal" @click="renameModal">Rename this revision</div>
@@ -9,7 +9,7 @@
   </modal>
   <modal :title="'Rename ' + current" id="modal-revision-rename">
     <div class="p-3">
-      <input type="text" class="form-control" @keyup.enter="rename" pattern="^[^~\*\/\[\]\.]+$" :value="current" required/>
+      <input type="text" class="form-control" @keyup.enter="rename" pattern="^[^~\*\/\[\]\.]+$" v-model="updated" required/>
       <div class="invalid-feedback">The name must not be empty and must not contain .~*/[]</div>
     </div>
     <template v-slot:footer>
@@ -27,13 +27,16 @@
       <button type="button" class="btn btn-primary" @click="create">Create</button>
     </template>
   </modal>
-  <div class="revisions">
-    <div v-for="revision in sorted" @click="menu(revision)" class="revision border py-3 px-4">
-      <div>{{ revision }}</div>
-      <div class="badge badge-pill badge-primary">{{ revisions[revision] }}</div>
+  <div class="card">
+    <div v-if="sorted.length == 0" class="card-body text-center">Nothing to see here</div>
+    <div v-else class="list-group list-group-flush">
+      <div v-for="revision in sorted" @click="menu(revision)" class="revision list-group-item">
+        <div>{{ revision }}</div>
+        <div class="badge badge-pill badge-primary">{{ revisions[revision] }}</div>
+      </div>
     </div>
-    <div class="mt-4 text-right">
-      <button class="btn btn-primary" @click="createModal">Create a revision</button>
-    </div>
+  </div>
+  <div class="mt-4 text-right">
+    <button class="btn btn-primary" @click="createModal">Create a revision</button>
   </div>
 </div>

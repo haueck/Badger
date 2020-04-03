@@ -1,5 +1,4 @@
 import modal from "components/modal"
-import vue from "vue"
 
 export default {
   data() {
@@ -31,7 +30,7 @@ export default {
             today: this.today(date, now),
             weekend: date.getDay() == 0 || date.getDay() == 6,
             month: date.getMonth(),
-            year: date.getYear(),
+            year: date.getFullYear(),
             past: date < now
           })
           date.setDate(date.getDate() + 1)
@@ -55,7 +54,7 @@ export default {
       this.initialize()
     },
     today(date, now) {
-      let year = date.getYear() == now.getYear()
+      let year = date.getFullYear() == now.getFullYear()
       let month = date.getMonth() == now.getMonth()
       let day = date.getDate() == now.getDate()
       return year && month && day

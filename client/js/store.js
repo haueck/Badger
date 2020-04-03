@@ -15,7 +15,7 @@ export default new vuex.Store({
       for (let key in data) {
         vue.set(state, key, data[key])
       }
-      let tags = Object.keys(state["Tags"]).sort((a, b) => { return a.toLowerCase().localeCompare(b.toLowerCase()) })
+      let tags = Object.keys(state["Tags"]).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
       for (let tag of tags) {
         vue.set(state["Tags"][tag], "Children", [])
       }

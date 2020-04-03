@@ -1,5 +1,3 @@
-import Firestore from "@google-cloud/firestore"
-
 export default class {
   constructor(options) {
     this.db = options.db

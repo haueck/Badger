@@ -5,7 +5,6 @@ ADD client/plugins /client/plugins
 ADD client/images /client/images
 ADD client/tests /client/tests
 ADD client/html /client/html
-ADD client/css /client/css
 ADD client/js /client/js
 ADD client/webpack.config.js /client/
 ADD client/package.json /client/

@@ -1,12 +1,20 @@
 <template>
-  <div class="row">
-    <div class="col">
-      <todos></todos>
-      <tasks></tasks>
+  <div class="row py-2">
+    <div class="col-md-6 col-12 py-0 px-2">
+      <div class="pb-2 pt-md-2">
+        <todos></todos>
+      </div>
+      <div class="pb-2 pt-md-2">
+        <tasks></tasks>
+      </div>
     </div>
-    <div class="col">
-      <performance></performance>
-      <pie></pie>
+    <div class="col-md-6 col-12 py-0 px-2">
+      <div class="pb-2 pt-md-2">
+        <performance></performance>
+      </div>
+      <div class="pb-2 pt-md-2">
+        <pie></pie>
+      </div>
     </div>
   </div>
 </template>
@@ -20,11 +28,9 @@
   }
 </script>
 <style scoped>
-  .col {
-    padding: 0 10px;
-  }
-  .col > * {
-    margin-bottom: 20px;
+  .row {
+    max-width: 1200px;
+    margin: 0 auto;
   }
   /deep/ .card-header {
     padding: 0 15px;

@@ -1,35 +1,36 @@
 <div>
-   <tinymce id="tinymce" v-model="card['Question']">{{ card['Question'] }}</tinymce>
-   <div class="answers">
-     <draggable v-if="dragging" v-model="trash" group="answers" class="trash">
-       <i class="fas fa-trash-alt"></i>
-     </draggable>
-     <draggable v-model="card['Answers']" handle=".input-group-append" group="answers" @start="onStart" @end="onEnd" :move="onMove" class="inputs">
-       <div v-for="(answer, index) in card['Answers']" class="answer">
-         Answer<span class="answer-index"> ({{index + 1}})</span>:<br>
-         <div class="input-group">
-           <input class="form-control" v-model="card['Answers'][index]" ref="answer">
-           <div class="input-group-append">
-             <span class="input-group-text"><i class="fas fa-bars"></i></span>
-           </div>
+   <tinymce id="tinymce" v-model="card['Question']" class="mt-3 mb-2">{{ card['Question'] }}</tinymce>
+   <draggable v-model="card['Answers']" handle=".sort">
+     <div v-for="(answer, index) in card['Answers']" class="answer form-group mb-2">
+       <div>Answer<span v-if="!single"> ({{index + 1}})</span>:</div>
+       <div class="input-group">
+         <input class="form-control" v-model="card['Answers'][index]">
+         <div v-if="!single" class="input-group-append">
+           <span class="input-group-text cursor-pointer" @click="removeAnswer(index)">
+             <i class="fas fa-trash"></i>
+           </span>
+           <span class="input-group-text sort cursor-grab">
+             <i class="fas fa-sort"></i>
+           </span>
          </div>
        </div>
-     </draggable>
+     </div>
+   </draggable>
+   <div class="my-3">
+     <button class="btn btn-outline-secondary" @click="addAnswer()">Add answer</button>
    </div>
-   <div v-bind:class="{ 'order-invisible': card['Answers'].length == 1 }">
-     <label>
-       <input type="checkbox" v-model="card['Unordered']"> Order of answers is not important
-     </label>
+   <div class="custom-control custom-checkbox mb-2" :class="{ 'd-none': single }">
+     <input type="checkbox" class="custom-control-input" id="u17" v-model="card['Unordered']">
+     <label class="custom-control-label" for="u17">Order of answers is not important</label>
    </div>
-   <div>
-     <button class="btn btn-secondary" v-on:click="addAnswer()">Add answer</button>
+   <div class="form-group mb-2">
+     <div>Explanation:</div>
+     <textarea rows="2" class="form-control" v-model="card['Explanation']" placeholder="Shown after giving an answer"></textarea>
    </div>
-   <div class="explanation">
-     Explanation:<br>
-     <textarea rows="3" class="form-control" v-model="card['Explanation']"></textarea>
+   <div class="custom-control custom-checkbox mb-2">
+     <input type="checkbox" class="custom-control-input" id="u18" v-model="card['Raw']">
+     <label class="custom-control-label" for="u18">Treat (, ) and / as any other character</label>
+     <i class="text-secondary cursor-pointer fas fa-question-circle" @click="toggle"></i>
    </div>
-   <div>
-     <input type="checkbox" v-model="card['Raw']"> Don't parse
-   </div>
-   <alternatives></alternatives>
+   <alternatives :help="'question'" class="collapse"></alternatives>
 </div>

@@ -1,7 +1,7 @@
 <div id="toaster" v-if="active">
   <div class="toast" data-delay="5000" ref="toast">
     <div class="toast-body">
-      <i v-bind:class="'fas fa-' + icon + ' ' + color"></i> {{ message }}
+      <i :class="'fas fa-' + icon + ' ' + color"></i> {{ message }}
     </div>
   </div>
 </div>

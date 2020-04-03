@@ -40,6 +40,7 @@ export default {
             this.results.push(card)
           }
         }
+        vue.nextTick(() => $("html, body").animate({ scrollTop: 0 }, "fast"))
       })
     },
     update() {
@@ -47,10 +48,13 @@ export default {
     },
     changePage(page) {
       if (page != this.page) {
-        this.page = page
-        this.update()
-        this.search()
+        this.setPage(page)
       }
+    },
+    setPage(page) {
+      this.page = page
+      this.update()
+      this.search()
     },
     changeRevision(card, revision) {
       this.$call("AddCardToRevision", {

@@ -12,14 +12,13 @@ import account from "components/account"
 import planning from "components/planning"
 import sprint from "components/sprint"
 import topnav from "components/topnav"
+import sidenav from "components/sidenav"
 import dashboard from "components/dashboard"
 import todos from "components/todos"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.min.js"
-import "css/main.css"
-import "css/large.css"
-import "css/small.css"
+import "prismjs/themes/prism.css"
 
 let broker = new vue()
 Object.defineProperties(vue.prototype, {
@@ -63,11 +62,11 @@ window.addEventListener("load", () => {
       mode: "history",
       routes: routes
     }),
-    components: { toasts, topnav },
+    components: { toasts, topnav, sidenav },
     data() {
       return {
-          loading: true,
-          ws: Object
+        loading: true,
+        ws: Object
       }
     },
     mounted() {

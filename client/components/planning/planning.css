@@ -1,13 +1,9 @@
 .root {
   max-width: 700px;
-  margin: 0 auto;
 }
 .header {
   display: flex;
   align-items: center;
-}
-.header span {
-  font-size: 16pt;
 }
 .projects .header span {
   cursor: pointer;

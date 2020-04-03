@@ -3,7 +3,7 @@
     <modal :title="'Add to your to-do list'" id="modal-todo-add">
       <form novalidate>
         <div class="form-group p-4 mb-0">
-          <textarea v-model="todo" class="form-control" rows="4" required></textarea>
+          <textarea v-model="todo" class="form-control" rows="3" required></textarea>
         </div>
       </form>
       <template v-slot:footer>

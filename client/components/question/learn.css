@@ -1,23 +1,25 @@
-.answer {
-  display: flex;
-  align-items: center;
+.feedback {
+  display: none;
+  font-size: 10pt;
 }
-.answer-input {
-  margin: 5px 10px;
-  width: 300px;
+.graded .wrong .negative {
+  display: block;
+}
+.graded .correct .optional {
+  display: block;
+}
+.negative {
+  color: red;
+}
+.answers {
+  max-width: 500px;
 }
 .answer:only-child .answer-index {
   display: none;
 }
-.answer-true {
+.graded .correct input {
   border-color: green;
 }
-.answer-false {
+.graded .wrong input {
   border-color: red;
-}
-.check-button {
-  margin: 10px 0;
-}
-.feedback {
-  margin: 15px 0;
 }

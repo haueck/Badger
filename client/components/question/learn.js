@@ -1,4 +1,5 @@
 import vue from "vue"
+import prismjs from "components/prismjs"
 import contractions from "components/contractions"
 import alternatives from "components/alternatives"
 
@@ -10,16 +11,16 @@ export default {
       count: 0
     }
   },
-  mixins: [ alternatives, contractions ],
+  mixins: [ alternatives, contractions, prismjs ],
   props: [ "card" ],
-  components: { },
-  mounted () {
+  mounted() {
     this.count = this.card["Answers"].length
     vue.set(this, "feedback", new Array(this.count))
     vue.set(this, "answers", new Array(this.count))
     vue.nextTick(() => {
       this.$refs.answer[0].focus()
     })
+    this.highlight(this.$el)
   },
   methods: {
     grade() {

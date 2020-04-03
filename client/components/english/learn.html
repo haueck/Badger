@@ -1,31 +1,26 @@
 <div>
-  <div>Part of speech: {{ card['PartOfSpeech'].toLowerCase() }}</div>
-  <div>Definition: <i>{{ grammar }}</i> <strong>{{ card['UseOfPrepositions'] }}</strong> {{ card['Definition'] }}</div>
-  <div v-for="example in card['DisguisedExamples']">Example: <i>{{ example }}</i></div>
-  <div v-for="related in card['Related']" v-if="related['Visibility'] == 'Show'">
-    <span v-if="related['Description'].length">{{ related['Description'] }}:</span>
-    <span v-else>Related word:</span>
-    <i>{{ related['Word'] }}</i>
+  <div class="mb-2"><i>({{ grammar }})</i> <strong>{{ card['UseOfPrepositions'] }}</strong> {{ card['Definition'] }}</div>
+  <div class="mb-2" v-for="example in examples"><i>{{ example }}</i></div>
+  <div v-for="related in card['Related']" v-if="card['Graded'] || related['Visibility'] == 'Show'" class="mb-2">
+    <span>Related word: {{ related['Word'] }}</span>
+    <span v-if="related['Description'].length">- {{ related['Description'] }}</span>
   </div>
   <div>
-    Answer:<br/>
-    <input type="text" class="form-control" v-on:keyup.enter="grade()" v-model="answer" ref="answer" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false"/>
+    <input type="text" class="form-control my-3" @keyup.enter="grade()" v-model="answer" ref="answer" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false"/>
   </div>
   <div v-if="card['Graded']">
-    <p v-if="card['Pass']">That's right! You rock!</p>
-    <p v-else>Wrong!</p>
-    <p><strong>{{ card['Word'] }}</strong> /{{ card['Pronunciation'] }}/</p>
-    <div v-if="complex">
-      <p v-for="phrase in correct" class="correct">Correct: {{ phrase }}</p>
-      <p v-for="phrase in wrong" class="wrong">Wrong: {{ phrase }}</p>
-      <p v-for="phrase in possible">Possible answer: {{ phrase }}</p>
+    <div class="mb-2">
+      <strong v-if="card['Pass']">That's right! You rock!</strong>
+      <strong v-else>Wrong!</strong>
     </div>
-    <p v-for="example in card['Examples']">Example: <i>{{ example }}</i></p>
-    <p v-for="related in card['Related']" v-if="related['Visibility'] == 'Hide'">
-      <span v-if="related['Description'].length">{{ related['Description'] }}:</span>
-      <span v-else>Related word:</span>
-      <i>{{ related['Word'] }}</i>
-    </p>
+    <div class="mb-2">
+      <strong>{{ card['Word'] }}</strong> /{{ card['Pronunciation'] }}/
+    </div>
+    <div v-if="complex">
+      <div v-if="correct.length" class="mb-2 text-success">Correct: {{ correct.join(', ') }}</div>
+      <div v-if="wrong.length" class="mb-2 text-danger">Wrong: {{ wrong.join(', ') }}</div>
+      <div v-if="possible.length" class="mb-2">Possible: {{ possible.join(', ') }}</div>
+    </div>
   </div>
   <button v-else @click="grade" class="btn btn-primary">Check</button>
 </div>

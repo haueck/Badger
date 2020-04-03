@@ -70,13 +70,6 @@ wss.on("connection", (ws, request) => {
   let todos = new Todos({ db, user })
   ws.on("message", message => {
     let msg = JSON.parse(message)
-    let ack = () => {
-      ws.send(JSON.stringify({
-        "Message": "Ack",
-        "Success": true,
-        "JobId": msg["JobId"]
-      }))
-    }
     let status = (level, text, success) => {
       ws.send(JSON.stringify({
         "Success": success,
@@ -182,7 +175,7 @@ wss.on("connection", (ws, request) => {
       revisions.addTag(msg["Tag"], msg["Revision"], configuration, failure)
     }
     else if (msg["Message"] === "AddCardToRevision") {
-      revisions.addCard(msg["Card"], msg["Revision"], success, failure)
+      revisions.addCard(msg["Card"], msg["Revision"], configuration, failure)
     }
     else if (msg["Message"] === "Learn") {
       learn.next(payload, failure)

@@ -1,33 +1,31 @@
 <div>
-  <div>
-    Question:<br/>
+  <div class="form-group mb-2">
+    <div>Question:</div>
     <textarea rows="3" class="form-control" v-model="card['Question']"></textarea>
   </div>
-  <div>
-    Type:<br/>
-    <select class="form-control" v-model="card['Variation']">
+  <div class="form-group mb-2">
+    <div>Type:</div>
+    <select class="custom-select" v-model="card['Variation']">
       <option value="SingleResponse" selected>One correct</option>
       <option value="MultipleResponse">Zero or more correct</option>
     </select>
   </div>
-  <table>
-    <tr>
-      <td>Correct</td>
-      <td>Answer</td>
-      <td></td>
-    </tr>
-    <tr v-for="(answer, index) in card['Answers']">
-      <td>
-        <input type="checkbox" v-model="answer['Correct']">
-      </td>
-      <td>
-        <input type="text" v-model="answer['Answer']" ref="answer">
-      </td>
-      <td>
-        <i class="fas fa-trash" @click="removeAnswer(index)"></i>
-      </td>
-    </tr>
-  </table>
+  <div>Answers:</div>
+  <div v-for="(answer, index) in card['Answers']">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <input type="checkbox" v-model="answer['Correct']">
+        </div>
+      </div>
+      <input type="text" class="form-control" placeholder="Answer" v-model="answer['Answer']" ref="answer">
+      <div v-if="!single" class="input-group-append">
+        <span class="input-group-text cursor-pointer" @click="removeAnswer(index)">
+          <i class="fas fa-trash"></i>
+        </span>
+      </div>
+    </div>
+  </div>
   <div>
     <button class="btn btn-outline-secondary" @click="addAnswer">Add an answer</button>
   </div>

@@ -1,8 +1,8 @@
-<div class="container" v-if="populated">
+<div class="root mx-auto p-2 mt-md-2" v-if="populated">
   <modal :title="'Edit'" id="modal-todo-edit">
     <form novalidate>
       <div class="form-group p-4 mb-0">
-        <textarea v-model="todo.text" class="form-control" rows="4" required></textarea>
+        <textarea v-model="todo.text" class="form-control" rows="3" required></textarea>
       </div>
     </form>
     <template v-slot:footer>
@@ -11,27 +11,36 @@
     </template>
   </modal>
   <calendar id="modal-todo-edit-date"></calendar>
-  <div class="header">Things to do now</div>
-  <div class="list-group">
-    <div v-for="todo in todos" v-if="todo['Status'] == 'Started'" class="list-group-item">
-      <div class="todo" @click="editModal(todo)">{{ todo['Text'] }}</div>
-      <div class="buttons"></div>
-    </div>
-    <div class="list-group-item text-center empty">Nothing to see here</div>
-  </div>
-  <div class="header">Things to do later</div>
-  <div class="list-group">
-    <div v-for="todo in todos" v-if="todo['Status'] == 'Scheduled'" class="list-group-item">
-      <div class="todo" @click="editModal(todo)">{{ todo['Text'] }}</div>
-      <div class="buttons">
-        <button type="button" class="btn btn-outline-primary btn-sm" @click="dateModal(todo['TodoId'])">{{ todo['Date'] }}</button>
+  <div v-if="started.length">
+    <h5 class="mb-2 mb-md-3">Things to do now</h5>
+    <div class="card mb-2 mb-md-3">
+      <div class="list-group list-group-flush">
+        <div v-for="todo in started" class="list-group-item">
+          <div class="todo" @click="editModal(todo)">{{ todo['Text'] }}</div>
+        </div>
       </div>
     </div>
-    <div class="list-group-item text-center empty">Nothing to see here</div>
   </div>
-  <div class="header">Finished</div>
-  <div class="list-group">
-    <div v-for="todo in todos" v-if="todo['Status'] == 'Finished'" class="list-group-item">{{ todo['Text'] }}</div>
-    <div class="list-group-item text-center empty">Nothing to see here</div>
+  <div v-if="todos.length == 0" class="text-center">Nothing to see here</div>
+  <div v-if="scheduled.length">
+    <h5 class="mb-2 mb-md-3">Things to do later</h5>
+    <div class="card mb-2 mb-md-3">
+      <div class="list-group list-group-flush">
+        <div v-for="todo in scheduled" class="list-group-item">
+          <div class="todo" @click="editModal(todo)">{{ todo['Text'] }}</div>
+          <div class="buttons">
+            <button type="button" class="btn btn-outline-primary btn-sm" @click="dateModal(todo['TodoId'])">{{ todo['Date'] }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div v-if="finished.length">
+    <h5 class="mb-2 mb-md-3">Finished</h5>
+    <div class="card">
+      <div class="list-group list-group-flush">
+        <div v-for="todo in finished" class="list-group-item">{{ todo['Text'] }}</div>
+      </div>
+    </div>
   </div>
 </div>

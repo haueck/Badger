@@ -2,9 +2,6 @@ import vue from "vue"
 import tinymce from "components/tinymce"
 
 export default {
-  data () {
-    return {}
-  },
   props: [ "card" ],
   components: { tinymce },
   created() {
@@ -53,6 +50,11 @@ export default {
     },
     removeAnswer(i) {
       this.card["Answers"].splice(i, 1)
+    }
+  },
+  computed: {
+    single() {
+      return this.card["Answers"].length == 1
     }
   },
   destroyed() {

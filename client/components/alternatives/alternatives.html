@@ -1,38 +1,50 @@
 <div>
-  <p class="help">
-    You can only use slash / and brackets () in this field in the way that is explained below.
-  </p>
-  <p class="help">
-    You can use / to separate <strong>alternative parts</strong> in a sentence.<br/>
-    In this riddle<br/>
-    <i>stick up for sb/oneself/sth</i><br/>
-    These three answers are correct:<br/>
-    <i>stick up for sb</i><br/>
-    <i>stick up for oneself</i><br/>
-    <i>stick up for sth</i><br/>
-  </p>
-  <p class="help">
-    You may use brackets to <strong>group words</strong><br/>
-    <i>bend on sth/(doing sth)</i><br/>
-    Correct answers:<br/>
-    <i>bend on sth</i><br/>
-    <i>bend on doing sth</i>
-  </p>
-  <p class="help">
-    Brackets are also used to indicate <strong>optional parts</strong><br/>
-    <i>bludgeon sb into (doing) sth</i><br/>
-    Correct answers:<br/>
-    <i>bludgeon sb into sth</i><br/>
-    <i>bludgeon sb into doing sth</i>
-  </p>
-  <p class="help" style="margin-bottom: 0">
-    Complex example with brackets and slashes<br/>
-    <i>conjure sth up/((up) from/(out of) sth)</i><br/>
-    Correct answers:<br/>
-    <i>conjure sth up</i><br/>
-    <i>conjure sth from sth</i><br/>
-    <i>conjure sth up from sth</i><br/>
-    <i>conjure sth out of sth</i><br/>
-    <i>conjure sth up out of sth</i>
-  </p>
+  <div v-if="help == 'english'">
+    <p>
+      You can only use slash / and brackets () in this field in the way that is explained below.
+    </p>
+    <p>You can use / to separate <strong>alternative parts</strong>. For example, for this phrase:</p>
+    <p><i>stick up for sb/oneself/sth</i></p>
+    <p>These three answers are correct:</p>
+    <p>
+      <i>stick up for sb</i><br/>
+      <i>stick up for oneself</i><br/>
+      <i>stick up for sth</i>
+    </p>
+    <p>You may use brackets to <strong>group words</strong>:</p>
+    <p><i>bend on sth/(doing sth)</i></p>
+    <p>Correct answers:</p>
+    <p>
+      <i>bend on sth</i><br/>
+      <i>bend on doing sth</i>
+    </p>
+    <p>Brackets are also used to indicate <strong>optional parts</strong>:</p>
+    <p><i>bludgeon sb into (doing) sth</i></p>
+    <p>Correct answers:</p>
+    <p>
+      <i>bludgeon sb into sth</i><br/>
+      <i>bludgeon sb into doing sth</i>
+    </p>
+  </div>
+  <div v-else-if="help == 'question'">
+    <p>You can use / to separate <strong>alternative parts</strong>. For example, for this answer:</p>
+    <p><i>Matterhorn/Cervino</i></p>
+    <p>Both Matterhorn and Cervino are correct answers.</p>
+    <p>You may use brackets to <strong>group words</strong>:</p>
+    <p><i>Chomolungma/(Mount Everest)</i></p>
+    <p>Correct answers:</p>
+    <p>
+      <i>Chomolungma</i><br/>
+      <i>Mount Everest</i>
+    </p>
+    <p>Brackets are also used to indicate <strong>optional parts</strong>:</p>
+    <p><i>(Mount) Kilimanjaro</i></p>
+    <p>Correct answers:</p>
+    <p>
+      <i>Kilimanjaro</i><br/>
+      <i>Mount Kilimanjaro</i>
+    </p>
+    <p>This entire answer is optional:</p>
+    <p><i>(Fitz Roy)</i></p>
+  </div>
 </div>

@@ -1,6 +1,6 @@
 {
   "name": "Badger",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Badger",
   "repository": {
     "type": "git",
@@ -16,10 +16,10 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "babel-core": "^7.0.0-bridge.0",
-    "copy-webpack-plugin": "*",
     "@fortawesome/fontawesome-free": "*",
     "vue-template-compiler": "*",
     "html-webpack-plugin": "*",
+    "copy-webpack-plugin": "*",
     "@babel/preset-env": "*",
     "@vue/test-utils": "*",
     "jest-raw-loader": "*",
@@ -45,8 +45,8 @@
     "vue-cli": "*",
     "tinymce": "*",
     "natural": "*",
-    "webpack": "*",
     "prismjs": "*",
+    "webpack": "*",
     "jquery": "*",
     "eslint": "*",
     "vuex": "*",

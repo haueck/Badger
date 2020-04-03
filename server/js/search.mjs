@@ -40,7 +40,7 @@ export default class {
       let promises = []
       results["Pages"] = Math.ceil(response.data["Matches"] / pagesize)
       for (let id of response.data["Results"]) {
-        let promise = this.db.collection("Cards").doc(id).get().then(doc => {
+        let promise = this.user.collection("Cards").doc(id).get().then(doc => {
           if (doc.exists) {
             let card = doc.data()
             card["CardId"] = id

@@ -1,20 +1,22 @@
 <div>
-  <div class="mb-3">{{ card['Question'] }}</div>
-  <p v-for="(answer, index) in card['Answers']" class="my-0">
-    <label class="mb-0 py-1">
-      <span v-if="isSingle()">
-        <input type="radio" name="answer" :value="index" class="mx-2" v-model="single"> {{ answer['Answer'] }}
-      </span>
-      <span v-else>
-        <input type="checkbox" class="mx-2" v-model="multiple[index]"> {{ answer['Answer'] }}
-      </span>
-    </label>
-  </p>
-  <div v-if="card['Graded']">
-    <p v-if="card['Pass']">That's right! You rock!</p>
-    <p v-else>Wrong!</p>
+  <div class="mb-2">{{ card['Question'] }}</div>
+  <div v-for="(answer, index) in card['Answers']" class="mb-2">
+    <div v-if="isSingle()" class="custom-control custom-radio">
+      <input type="radio" name="answer" :value="index" class="custom-control-input" :id="'pi' + index" v-model="single">
+      <label class="custom-control-label" :for="'pi' + index">
+        <span :class="{ 'text-success': card['Graded'] && answer['Correct'] }">{{ answer['Answer'] }}</span>
+      </label>
+    </div>
+    <div v-else class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" :id="'fi' + index" v-model="multiple[index]">
+      <label class="custom-control-label" :for="'fi' + index">
+        <span :class="{ 'text-success': card['Graded'] && answer['Correct'] }">{{ answer['Answer'] }}</span>
+      </label>
+    </div>
   </div>
-  <div v-else>
-    <button @click="grade" class="btn btn-primary mt-2">Check</button>
+  <div v-if="card['Graded']" class="mb-2">
+    <strong v-if="card['Pass']">That's right! You rock!</strong>
+    <strong v-else>Wrong!</strong>
   </div>
+  <button v-else @click="grade" class="btn btn-primary mt-3">Check</button>
 </div>

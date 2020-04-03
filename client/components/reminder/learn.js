@@ -1,9 +1,10 @@
+import prismjs from "components/prismjs"
+
 export default {
-  data () {
-    return { }
-  },
   props: [ "card" ],
-  mounted () {
+  mixins: [ prismjs ],
+  mounted() {
+    this.highlight(this.$el)
     this.$bus.$emit("Graded", true)
   }
 }

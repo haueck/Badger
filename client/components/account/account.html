@@ -1,4 +1,4 @@
-<div>
+<div class="root mx-auto p-2 mt-md-2" style="max-width: 700px">
   <div v-if="ready">
     <form @submit="update($event)" novalidate>
       <div class="form-group mb-3">
@@ -31,7 +31,7 @@
       </div>
     </form>
     <form @submit="changePassword($event)" novalidate>
-      <div class="form-group mb-3 mt-5">
+      <div class="form-group mb-3 mt-4">
         <div>Password</div>
         <input type="password" class="form-control" placeholder="New password" v-model="password" required/>
         <div class="invalid-feedback">Please enter a new password.</div>

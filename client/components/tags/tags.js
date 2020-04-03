@@ -1,4 +1,3 @@
-import tree from "./tree.vue"
 import modal from "components/modal"
 
 export default {
@@ -9,10 +8,7 @@ export default {
       count: 0
     }
   },
-  components: { tree, modal },
-  mounted() {
-    this.$bus.$on("show-modal", this.show)
-  },
+  components: { modal },
   methods: {
     show(tag, inactive) {
       this.inactive = inactive
@@ -100,9 +96,26 @@ export default {
     },
     tags() {
       return this.$store.getters.user("Tags")
+    },
+    list() {
+      let stack = [ { name: "€", depth: -1 } ]
+      let list = []
+      while (stack.length > 0) {
+        let current = stack.pop()
+        let children = Array.from(this.$store.getters.user("Tags")[current.name]["Children"]).reverse()
+        for (let child of children) {
+          stack.push({
+            name: child,
+            depth: current.depth + 1,
+            count: this.tags[child]["Count"],
+            disabled: current.inactive,
+            inactive: Boolean(this.tags[child]["Inactive"] || current.inactive)
+          })
+        }
+        list.push(current)
+      }
+      list.shift()
+      return list
     }
-  },
-  destroyed() {
-    this.$bus.$off("show-modal")
   }
 }

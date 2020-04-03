@@ -78,6 +78,7 @@ function generateAlternatives(graph) {
 }
 
 export default {
+  props: [ "help" ],
   methods: {
     alternatives(input) {
       let text = String(input)

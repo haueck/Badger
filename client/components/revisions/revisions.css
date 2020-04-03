@@ -1,6 +1,5 @@
-.revisions {
-  width: 500px;
-  margin: 0 auto;
+.root {
+  max-width: 700px;
 }
 .revision {
   display: flex;
@@ -10,9 +9,6 @@
 }
 .revision:hover {
   background-color: #f8f9fa;
-}
-.revision + .revision {
-  border-top-width: 0 !important;
 }
 #modal-revision-menu .modal-body > div {
   cursor: pointer;

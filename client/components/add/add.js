@@ -9,6 +9,7 @@ import vue from "vue"
 export default {
   data() {
     return {
+      schedule: false,
       tag: "€",
       card: {}
     }
@@ -27,6 +28,9 @@ export default {
   created() {
     if (this.editing) {
       vue.set(this, "card", this.editing)
+      if ("ScheduledFor" in this.card) {
+        this.schedule = true
+      }
     }
     else {
       this.resetCard(this.$store.getters.user("LastCard"), this.$store.getters.user("LastTags"))
@@ -34,9 +38,7 @@ export default {
   },
   methods: {
     changeType(type) {
-      if (this.card["Type"] != type) {
-        this.resetCard(type, this.card["Tags"])
-      }
+      this.resetCard(type, this.card["Tags"])
     },
     resetCard(type, tags) {
       vue.set(this, "card", {
@@ -149,6 +151,9 @@ export default {
       xslt.importStylesheet(parser.parseFromString(xsl, "text/xml"))
       let output = xslt.transformToFragment(parser.parseFromString(xhtml, "text/xml"), document).firstChild.nodeValue
       return JSON.parse(output).filter(text => text.match(regex))
+    },
+    resetSchedule() {
+      vue.set(this.card, "ScheduledFor", "")
     }
   },
   computed: {

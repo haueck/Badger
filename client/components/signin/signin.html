@@ -1,9 +1,13 @@
-<div class="welcome mx-auto mt-4">
+<div class="welcome mx-auto mt-2 mt-md-4 px-2">
+  <div class="description text-dark mb-2">Badger is a study tool based on flashcards</div>
+  <div class="author text-secondary mb-4 mb-md-5">
+    Created by <a href="https://github.com/haueck" target="_blank" class="text-secondary">Rafał Kozik</a>
+  </div>
   <nav>
     <div class="nav nav-tabs">
-      <a class="nav-item nav-link active" :data-toggle="working ? 'none' : 'tab'" href="#nav-sign-in">Sign in</a>
-      <a class="nav-item nav-link" :data-toggle="working ? 'none' : 'tab'" href="#nav-sign-up">Sign up</a>
-      <a class="nav-item nav-link" :data-toggle="working ? 'none' : 'tab'" href="#nav-password">Forgot your password</a>
+      <a class="nav-item nav-link px-2 px-md-3 active" :data-toggle="working ? 'none' : 'tab'" href="#nav-sign-in">Sign in</a>
+      <a class="nav-item nav-link px-2 px-md-3" :data-toggle="working ? 'none' : 'tab'" href="#nav-sign-up">Sign up</a>
+      <a class="nav-item nav-link px-2 px-md-3" :data-toggle="working ? 'none' : 'tab'" href="#nav-password">Forgot password?</a>
     </div>
   </nav>
   <div class="tab-content">
@@ -77,9 +81,5 @@
       <div class="pl-3 pb-3" v-else-if="error">There was a problem</div>
       <div class="pl-3 pb-3" v-else-if="linkSent">Reset link has been sent</div>
     </div>
-  </div>
-  <div class="description text-dark mt-5">Badger is a study tool based on flashcards</div>
-  <div class="author text-secondary mt-2 mb-5">
-    Created by <a href="https://github.com/haueck" target="_blank" class="text-secondary">Rafał Kozik</a>
   </div>
 </div>

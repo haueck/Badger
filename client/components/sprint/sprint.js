@@ -1,5 +1,4 @@
 import modal from "components/modal"
-import vue from "vue"
 
 export default {
   data() {

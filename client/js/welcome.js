@@ -6,9 +6,6 @@ import password from "components/password"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.min.js"
-import "css/main.css"
-import "css/large.css"
-import "css/small.css"
 
 vue.use(router)
 let routes = [

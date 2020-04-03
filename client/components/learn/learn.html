@@ -1,23 +1,18 @@
-<div>
+<div class="mx-auto mt-md-2 mb-1 p-2" :style="{ 'max-width': width + 'px' }">
   <div v-if="currentComponent">
-    <div class="progress mb-2">
-      <div :class="[ progress == 100 ? 'bg-success' : 'bg-info' ]" class="progress-bar progress-bar-striped" :style="{ width: progress + '%' }"></div>
+    <div class="mb-2">
+      <button v-for="tag in card['Tags']" type="button" class="btn btn-outline-primary btn-sm" disabled>{{ tag }}</button>
     </div>
-    <p v-if="card['Tags'].length">Tags: {{ card['Tags'].join(', ') }}</p>
     <component :is="currentComponent" :card="card"></component>
-    <div v-if="card['Graded']">
-      <div class="mb-5">
-        <button @click="$bus.$emit('GetNextCard')" class="btn btn-primary" ref="next">Next one!</button>
-      </div>
-      <div class="card-actions">
-        <div>
-          <router-link :to="'/edit/' + id" tag="button" class="btn btn-primary">
-            <i class="fas fa-pen"></i> Edit
-          </router-link>
-        </div>
-      </div>
+    <div v-if="card['Graded']" class="progress mt-3">
+      <div :class="[ progress == 100 ? 'bg-success' : 'bg-primary' ]" class="progress-bar"></div>
+    </div>
+    <div v-if="card['Graded']" class="mt-4">
+      <button @click="$bus.$emit('GetNextCard')" class="btn btn-primary mr-2" ref="next">Next one!</button>
+      <router-link :to="'/edit/' + id" tag="button" class="btn btn-outline-primary">
+        <i class="fas fa-pen"></i> Edit
+      </router-link>
     </div>
   </div>
-  <div v-else-if="done">Nothing to learn</div>
-  <div v-else>Waiting...</div>
+  <div v-if="done">Nothing to learn</div>
 </div>

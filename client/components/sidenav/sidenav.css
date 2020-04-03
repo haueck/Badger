@@ -1,0 +1,55 @@
+.root {
+  height: 48px;
+}
+.topnav {
+  background-color: #3e444d;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  padding: 0;
+}
+*, a {
+  color: #9d9d9d;
+}
+.logo {
+  flex: 1;
+}
+.icon {
+  padding: 8px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.icon:hover {
+  color: white
+}
+.sidenav {
+  display: none;
+  background-color: #3e444d;
+  position: fixed;
+  top: 48px;
+  left: 0;
+  right: 25%;
+  bottom: 0;
+  z-index: 200;
+  padding: 0;
+}
+.sidenav a {
+  display: block;
+  padding: 10px;
+  border-top: 1px solid #454b54;
+}
+.sidenav a:last-of-type {
+  border-bottom: 1px solid #454b54;
+}
+.sidenav a:hover {
+  color: white;
+  background-color: #454b54;
+  text-decoration: none;
+}
+.sidenav a i {
+  margin-right: 10px;
+}
