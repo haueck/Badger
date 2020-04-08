@@ -27,9 +27,21 @@ const db = new Firestore({ projectId: secrets["ProjectId"]})
 let session = new Session({ database: db })
 let account = new Account({ database: db })
 
+app.use(session.parser)
+app.get("/js/app.js", (req, res) => {
+  let entry = "/badger/dist/js/welcome.js"
+  if (req.session.user) {
+    entry = "/badger/dist/js/app.js"
+  }
+  if (fs.existsSync(entry + ".gz")) {
+    entry = entry + ".gz"
+    res.setHeader("Content-Encoding", "gzip")
+    res.setHeader("Content-Type", "application/javascript; charset=UTF-8")
+  }
+  res.sendFile(entry)
+})
 app.use(express.static("/badger/dist"))
 app.use(parser.urlencoded({ extended: true }))
-app.use(session.parser)
 app.post("/sign-in", account.signIn.bind(account))
 app.post("/sign-up", account.signUp.bind(account))
 app.post("/reset-password-link", account.resetPasswordLink.bind(account))
@@ -219,6 +231,6 @@ wss.on("connection", (ws, request) => {
 console.log("Starting...")
 server.listen(443)
 http.createServer((req, res) => {
-  res.writeHead(301, { "Location": "https://" + req.headers["host"] })
+  res.writeHead(301, { "Location": "https://www.badger-sett.com" })
   res.end()
 }).listen(80)

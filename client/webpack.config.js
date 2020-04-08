@@ -4,7 +4,6 @@ let HtmlWebpackPlugin = require('html-webpack-plugin')
 let CopyPlugin = require('copy-webpack-plugin');
 const { VueLoaderPlugin } = require("vue-loader")
 
-
 module.exports = {
   mode: "development",
   entry: {

@@ -171,6 +171,8 @@ export default class {
           Hits: 0,
           LastCard: "English",
           LastTags: [],
+          Todos: [],
+          Sprint: [],
           Tags: {
             "€": {
               "Parent": false

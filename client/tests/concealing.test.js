@@ -41,6 +41,11 @@ describe("Concealing", () => {
     expect(vm.prepareWords([ "Holy cow!" ])).toStrictEqual([ "holy", "cow" ])
   })
 
+  it("handles empty string", () => {
+    const disguised = vm.concealWords("", [])
+    expect(disguised).toBe("")
+  })
+
   it("handles 'I would be wiser to wait few days'", () => {
     const disguised = vm.concealWords("I would be wiser to wait few days", [ "wise" ])
     expect(disguised).toBe("I would be ~er to wait few days")

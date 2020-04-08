@@ -9,12 +9,14 @@
   "scripts": {
     "eslint": "eslint js components tests",
     "build": "webpack",
+    "compress": "gzip dist/js/*.js",
     "watch": "webpack --watch",
     "test": "jest --no-cache"
   },
   "author": "Rafal Kozik",
   "license": "GPL-3.0",
   "devDependencies": {
+    "underscore": "1.9.2",
     "babel-core": "^7.0.0-bridge.0",
     "@fortawesome/fontawesome-free": "*",
     "vue-template-compiler": "*",

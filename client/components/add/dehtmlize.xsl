@@ -10,7 +10,7 @@
     <xsl:text>""]</xsl:text>
   </xsl:template>
 
-  <xsl:template match="*">
+  <xsl:template match="*[not(self::pre)]">
     <xsl:apply-templates/>
   </xsl:template>
 
@@ -21,5 +21,5 @@
   </xsl:template>
 
   <xsl:template match="@*"/>
-  <xsl:template match="code"/>
+  <xsl:template match="pre"/>
 </xsl:stylesheet>
