@@ -1,6 +1,9 @@
+import moment from "moment-timezone"
+
 export default {
   data() {
     return {
+      timezone: "",
       error: false,
       working: false,
       linkSent: false,
@@ -10,6 +13,7 @@ export default {
   },
   mounted() {
     $("a[data-toggle='tab']").on("shown.bs.tab", this.initialize)
+    this.timezone = moment.tz.guess()
   },
   methods: {
     validate(event, url) {

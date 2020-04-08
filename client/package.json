@@ -10,7 +10,7 @@
     "eslint": "eslint js components tests",
     "build": "webpack",
     "compress": "gzip dist/js/*.js",
-    "watch": "webpack --watch",
+    "watch": "rm -f dist/js/*.js.gz && webpack --watch",
     "test": "jest --no-cache"
   },
   "author": "Rafal Kozik",
@@ -23,6 +23,7 @@
     "html-webpack-plugin": "*",
     "copy-webpack-plugin": "*",
     "@babel/preset-env": "*",
+    "moment-timezone": "*",
     "@vue/test-utils": "*",
     "jest-raw-loader": "*",
     "expose-loader": "*",

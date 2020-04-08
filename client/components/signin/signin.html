@@ -30,6 +30,7 @@
     </div>
     <div class="tab-pane fade border-left border-right p-3" id="nav-sign-up">
       <form @submit="validate($event, '/sign-up')" novalidate>
+        <input type="hidden" name="timezone" v-model="timezone"/>
         <div class="form-group mb-3">
           <div>Firstname</div>
           <input type="text" name="firstname" class="form-control" placeholder="Firstname" required/>

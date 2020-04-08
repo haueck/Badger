@@ -143,7 +143,7 @@ export default class {
 
   signUp(req, res) {
     let valid = true
-    for (let field of [ "firstname", "lastname", "email", "password", "terms" ]) {
+    for (let field of [ "firstname", "lastname", "email", "password", "terms", "timezone" ]) {
       valid = valid && req.body[field]
     }
     valid = valid && req.body.email.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
@@ -161,6 +161,7 @@ export default class {
           Email: req.body.email,
           Firstname: req.body.firstname,
           Lastname: req.body.lastname,
+          Timezone: req.body.timezone,
           Password: sha.sha512(req.body.password + salt),
           Salt: salt,
           Revisions: {},
