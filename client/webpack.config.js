@@ -4,7 +4,7 @@ let HtmlWebpackPlugin = require('html-webpack-plugin')
 let CopyPlugin = require('copy-webpack-plugin');
 const { VueLoaderPlugin } = require("vue-loader")
 
-module.exports = {
+let config = {
   mode: "development",
   entry: {
     app: "./js/app.js",
@@ -18,7 +18,6 @@ module.exports = {
   node: {
     fs: "empty"
   },
-  devtool: 'inline-source-map',
   module: {
     rules: [
       {
@@ -41,7 +40,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      vue: "vue/dist/vue.js"
+      vue: "vue/dist/vue.min.js"
     },
     extensions: [".js", ".vue"],
     modules: [ "node_modules", path.resolve(__dirname, "js"), path.resolve(__dirname) ],
@@ -64,4 +63,12 @@ module.exports = {
       { from: path.resolve(__dirname, "node_modules/tinymce/skins"), to: "../css/tinymce" }
     ])
   ]
+}
+
+module.exports = (env, argv) => {
+  if (argv.mode == "development") {
+    config.devtool = "inline-source-map"
+    config.resolve.alias.vue = "vue/dist/vue.js"
+  }
+  return config
 }

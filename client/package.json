@@ -8,9 +8,9 @@
   },
   "scripts": {
     "eslint": "eslint js components tests",
-    "build": "webpack",
+    "build": "webpack --mode=production",
     "compress": "gzip dist/js/*.js",
-    "watch": "rm -f dist/js/*.js.gz && webpack --watch",
+    "watch": "rm -f dist/js/*.js.gz && webpack --mode=development --watch",
     "test": "jest --no-cache"
   },
   "author": "Rafal Kozik",
