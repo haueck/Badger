@@ -29,16 +29,17 @@ let account = new Account({ database: db })
 
 app.use(session.parser)
 app.get("/js/app.js", (req, res) => {
-  let entry = "/badger/dist/js/welcome.js"
-  if (req.session.user) {
-    entry = "/badger/dist/js/app.js"
-  }
-  if (fs.existsSync(entry + ".gz")) {
-    entry = entry + ".gz"
+  let script = req.session.user ? "home.js" : "welcome.js"
+  let entry = "/badger/dist/js/" + script
+  let gz = entry + ".gz"
+  if (fs.existsSync(gz)) {
     res.setHeader("Content-Encoding", "gzip")
     res.setHeader("Content-Type", "application/javascript; charset=UTF-8")
+    res.sendFile(gz)
   }
-  res.sendFile(entry)
+  else {
+    res.sendFile(entry)
+  }
 })
 app.use(express.static("/badger/dist"))
 app.use(parser.urlencoded({ extended: true }))
@@ -47,14 +48,7 @@ app.post("/sign-up", account.signUp.bind(account))
 app.post("/reset-password-link", account.resetPasswordLink.bind(account))
 app.post("/reset-password", account.resetPassword.bind(account))
 app.get("/sign-out", account.signOut.bind(account))
-app.get(/\/.*/, (req, res) => {
-  if (req.session.user) {
-    res.sendFile("/badger/dist/html/home.html")
-  }
-  else {
-    res.sendFile("/badger/dist/html/welcome.html")
-  }
-})
+app.get("*", (_, res) => res.sendFile("/badger/dist/html/header.html"))
 
 server.on("upgrade", function(request, socket, head) {
   session.parser(request, {}, () => {
@@ -228,7 +222,6 @@ wss.on("connection", (ws, request) => {
   })
 })
 
-console.log("Starting...")
 server.listen(443)
 http.createServer((req, res) => {
   res.writeHead(301, { "Location": "https://www.badger-sett.com" })

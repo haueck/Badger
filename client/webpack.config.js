@@ -7,7 +7,7 @@ const { VueLoaderPlugin } = require("vue-loader")
 let config = {
   mode: "development",
   entry: {
-    app: "./js/app.js",
+    home: "./js/home.js",
     welcome: "./js/welcome.js"
   },
   output: {

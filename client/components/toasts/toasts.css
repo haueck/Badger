@@ -1,7 +1,7 @@
 #toaster {
-  position: absolute;
+  position: fixed;
   right: 0;
-  top: 50px;
+  top: 62px;
   padding: 10px;
   min-width: 200px;
   z-index: 2000;
