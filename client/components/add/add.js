@@ -76,7 +76,7 @@ export default {
     removeCard() {
       $("#modal-card-remove").modal("hide")
       this.$call("RemoveCard", { "CardId": this.id }, () => {
-        this.$router.push("/tags")
+        this.$router.push("/")
       })
     },
     switchModals(hide, show) {

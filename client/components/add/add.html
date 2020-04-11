@@ -34,7 +34,7 @@
     </template>
   </modal>
   <modal :title="'Remove the card'" id="modal-card-remove">
-    <span>Are you sure?</span>
+    <div class="text-center p-3">Are you sure?</div>
     <template v-slot:footer>
       <button type="button" class="btn btn-danger" @click="removeCard()">Yes</button>
       <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>

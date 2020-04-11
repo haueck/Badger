@@ -1,7 +1,7 @@
 <div class="mx-auto mt-md-2 mb-1 p-2" :style="{ 'max-width': width + 'px' }">
   <div v-if="currentComponent">
     <div class="mb-2">
-      <button v-for="tag in card['Tags']" type="button" class="btn btn-outline-primary btn-sm" disabled>{{ tag }}</button>
+      <button v-for="tag in card['Tags']" type="button" class="btn btn-outline-primary btn-sm mr-2" disabled>{{ tag }}</button>
     </div>
     <component :is="currentComponent" :card="card"></component>
     <div v-if="card['Graded']" class="progress mt-3">

@@ -52,8 +52,10 @@ export default {
       }
     },
     setPage(page) {
-      this.page = page
-      this.update()
+      if (this.page != page) {
+        this.page = page
+        this.update()
+      }
       this.search()
     },
     changeRevision(card, revision) {
