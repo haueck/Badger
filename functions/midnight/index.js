@@ -31,7 +31,7 @@ function performance(doc) {
   let bonus = Math.round(user["DailyTarget"] * (0.2 * Math.random() - 0.1))
   let stats = user["Performance"]
   stats.pop()
-  stats.unshift(Math.min(100, Math.ceil(user["Hits"] / user["TodaysTarget"])))
+  stats.unshift(Math.min(100, Math.ceil(100 * user["Hits"] / user["TodaysTarget"])))
   return doc.ref.update({
     "TodaysTarget": user["DailyTarget"] + bonus,
     "Performance": stats,
