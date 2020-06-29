@@ -8,10 +8,12 @@ ADD client/html /client/html
 ADD client/js /client/js
 ADD client/webpack.config.js /client/
 ADD client/package.json /client/
+ADD client/package-lock.json /client/
 ADD server/certificates/badger-sett.com /server/certificates
 ADD server/tests /server/tests
 ADD server/js /server/js
 ADD server/package.json /server/
+ADD server/package-lock.json /server/
 WORKDIR /client
 RUN npm install
 RUN npm run-script eslint
