@@ -5,12 +5,12 @@
     </div>
     <div class="card-body">
       <div v-if="empty" class="text-center">Nothing to see here</div>
-      <canvas v-else></canvas>
+      <canvas v-else style="max-height: 300px"></canvas>
     </div>
   </div>
 </template>
 <script>
-  import Chart from "chart.js"
+  import {Chart, PieController, Arc, Legend} from "chart.js"
   import vue from "vue"
   export default {
     data() {
@@ -30,12 +30,13 @@
       }
       if (top.length > 0) {
         let data = {
-          labels : top.map(tag => tag[0]),
-          datasets : [{
+          labels: top.map(tag => tag[0]),
+          datasets: [{
             data: top.map(tag => tag[1]),
             backgroundColor: [ "#698474", "#889e81", "#bac7a7", "#e5e4cc" ]
           }]
         }
+        Chart.register(PieController, Arc, Legend);
         this.chart = new Chart($(this.$el).find("canvas"), {
           type: "pie",
           data: data,

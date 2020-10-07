@@ -1,9 +1,7 @@
 import natural from "natural"
 import dictionary from "components/dictionary"
 import alternatives from "components/alternatives"
-import parser from "natural/lib/natural/brill_pos_tagger/lib/TF_Parser.js"
 import lexicon from "natural/lib/natural/brill_pos_tagger/data/English/lexicon_from_posjs.json"
-import rules from "natural/lib/natural/brill_pos_tagger/data/English/tr_from_posjs.txt"
 
 // https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 
@@ -50,8 +48,7 @@ export default {
     this.lexicon.addWord("sobers", [ "VBZ" ])
     this.lexicon.addWord("meshes", [ "VBZ" ])
     this.lexicon.addWord("rehashes", [ "VBZ" ])
-    this.rules = new natural.RuleSet()
-    this.rules.rules = parser.parse(rules)
+    this.rules = new natural.RuleSet("EN")
     this.tagger = new natural.BrillPOSTagger(this.lexicon, this.rules)
     let patterns = []
     patterns.push("(?:[A-zÀ-ÿąćęłńóśźż-]+s['’](?=[^A-zÀ-ÿąćęłńóśźż-]|$))")
