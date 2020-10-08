@@ -1,4 +1,5 @@
 import tinymce from "tinymce/tinymce"
+import "tinymce/icons/default"
 import "tinymce/themes/silver"
 import "tinymce/plugins/autolink"
 import "tinymce/plugins/lists"

@@ -60,6 +60,7 @@ let config = {
       patterns: [
         { from: path.resolve(__dirname, "html"), to: "../html" },
         { from: path.resolve(__dirname, "images"), to: "../images" },
+        { from: path.resolve(__dirname, "open-search.xml"), to: ".." },
         { from: path.resolve(__dirname, "images/favicons/favicon.ico"), to: ".." },
         { from: path.resolve(__dirname, "node_modules/tinymce/skins"), to: "../css/tinymce" }
     ]})

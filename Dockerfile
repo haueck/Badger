@@ -6,6 +6,7 @@ ADD client/images /client/images
 ADD client/tests /client/tests
 ADD client/html /client/html
 ADD client/js /client/js
+ADD client/open-search.xml /client/
 ADD client/webpack.config.js /client/
 ADD client/package.json /client/
 ADD client/package-lock.json /client/
