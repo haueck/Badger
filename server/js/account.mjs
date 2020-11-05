@@ -70,7 +70,7 @@ export default class {
       if (!snapshot.empty) {
         let token = sha.sha512(req.body.email + Math.random())
         let html = "<p>Hey there,</p><p>Someone requested a new password for your Badger account: "
-        html += "<a href=\"https://boldh.com/reset-password-form/" + token + "\">reset link</a></p><p>Have fun!</p>"
+        html += "<a href=\"https://www.badger-sett.com/reset-password-form/" + token + "\">reset link</a></p><p>Have fun!</p>"
         sendgrid.setApiKey(secrets["Sendgrid"])
         return sendgrid.send({
           to: req.body.email,
