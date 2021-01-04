@@ -10,7 +10,6 @@ ADD client/open-search.xml /client/
 ADD client/webpack.config.js /client/
 ADD client/package.json /client/
 ADD client/package-lock.json /client/
-ADD server/certificates/badger-sett.com /server/certificates
 ADD server/tests /server/tests
 ADD server/js /server/js
 ADD server/package.json /server/
@@ -32,6 +31,5 @@ RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y dumb-init
 WORKDIR /badger
 COPY --from=0 /client/dist /badger/dist
 COPY --from=0 /server/node_modules /badger/node_modules
-COPY --from=0 /server/certificates /badger/certificates
 COPY --from=0 /server/js /badger/js
 CMD [ "dumb-init", "node", "--experimental-modules", "js/main.mjs" ]

@@ -29,6 +29,6 @@ then
     docker rmi -f $(docker images -f "dangling=true" -q)
 fi
 
-docker run -d --log-driver=gcplogs --restart=on-failure:5 --net=local --ip=172.16.0.2 --add-host=badger_search:172.16.0.3 --publish=80:80 --publish=443:443 --name=$BADGER_CONTAINER $BADGER_IMAGE
+docker run -d --log-driver=gcplogs --restart=on-failure:5 --net=local --ip=172.16.0.2 --volume=/mnt/stateful_partition/certificates:/badger/certificates --add-host=badger_search:172.16.0.3 --publish=80:80 --publish=443:443 --name=$BADGER_CONTAINER $BADGER_IMAGE
 docker run -d --log-driver=gcplogs --restart=on-failure:5 --net=local --ip=172.16.0.3 --volume=/mnt/stateful_partition/xapiandb:/mnt/xapiandb --name=$BADGER_SEARCH_CONTAINER $BADGER_SEARCH_IMAGE
 
